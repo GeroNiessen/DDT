@@ -1,0 +1,54 @@
+target/
+.metadata/
+.settings/
+pom.out.xml
+.DS_Store
+.classpath
+.project
+*.properties
+*.log
+
+### /Users/user/.gitignore-boilerplates/Java.gitignore
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+
+### /Users/user/.gitignore-boilerplates/Global/Eclipse.gitignore
+
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+### /Users/user/.gitignore-boilerplates/Maven.gitignore
+
+target/
+Servers/
+

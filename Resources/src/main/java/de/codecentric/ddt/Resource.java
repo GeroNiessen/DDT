@@ -1,0 +1,167 @@
+package de.codecentric.ddt;
+import java.beans.Transient;
+import java.io.File;
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlRootElement;
+//import javax.persistence.MappedSuperclass;
+
+import de.codecentric.ddt.logincredentials.LoginCredential;
+
+
+//@EJB
+//@MappedSuperclass
+@XmlRootElement
+@Entity
+public class Resource<T extends ResourceStrategy> implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	private static final String reflectionPackageSearchPath = Resource.class.getPackage().getName(); //"de.codecentric.ddt";
+	
+	@Id
+	private String name;
+	private String url;
+
+	private File workDirectory;
+	private T strategy;
+
+	public Resource(){
+		this.name="";
+		this.url="";
+		this.workDirectory = null;
+	}
+	
+	/*
+	public Resource(Resource<?> otherResource){
+		this.name = otherResource.getName();
+		this.url = otherResource.getUrl();
+		this.workDirectory = otherResource.workDirectory;
+	}
+	*/
+
+	@Transient
+	public LoginCredential getLoginCredential(){
+		return LoginCredential.getLoginCredentialStore().find(this.name);
+	}
+
+	private String suggestWorkDirectoryPath(){
+		String fileSeparator = System.getProperty("file.separator");
+		String suggestedWorkDirectoryPath = Configuration.getBaseWorkDirectory().getPath() + fileSeparator + this.name + fileSeparator;
+		return suggestedWorkDirectoryPath;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+		if(getWorkDirectory().getPath().equals(Configuration.getBaseWorkDirectory().getPath())){
+			this.workDirectory = null;
+			getWorkDirectory();
+		}
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void purgeWorkDirectory(){
+		for(File currentFile: getWorkDirectory().listFiles()){
+			delete(currentFile);
+		}
+	}
+
+	private void delete(File f){
+		if((f != null) && (f.exists()==true) ){
+			if (f.isDirectory()) {
+				for (File c : f.listFiles())
+					delete(c);
+			}
+			f.delete();
+		}
+	}
+
+	@Transient
+	public File getWorkDirectory() {
+		if ((this.workDirectory == null) || (this.workDirectory.exists()==false)) {
+			setWorkDirectory(new File(suggestWorkDirectoryPath()));
+		}
+		return this.workDirectory;
+	}
+
+	@Transient
+	public void setWorkDirectory(File workDirectory) {
+		//Purge old dir?
+		if(!workDirectory.exists()){
+			workDirectory.mkdirs();
+		}
+		this.workDirectory = workDirectory;
+	}
+
+	public String getStrategyName(){
+		return strategy.getName();
+	}
+
+	public T getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(T strategy) {
+		this.strategy = strategy;
+	}
+	
+	@Transient
+	public boolean isStrategyExtending(Class<?> baseStrategy){
+		Set<Class<?>> allStrategyClassImplementations = ReflectionHelper.getAllImplementations(reflectionPackageSearchPath, baseStrategy);
+		return allStrategyClassImplementations.contains(this.strategy.getClass());
+	}
+	
+	@Transient
+	public static Set<Class<?>> getAllRessources(){
+		return ReflectionHelper.getAllImplementations(reflectionPackageSearchPath, Resource.class);
+	}	
+
+	@Transient
+	public static Set<Class<?>> getAllInstanciableRessource(){
+		return ReflectionHelper.getAllInstanciableImplementations(reflectionPackageSearchPath, Resource.class);
+	}
+	
+	@Transient
+	public static Set<Class<?>> getAllRessourceStrategies(){
+		return ReflectionHelper.getAllImplementations(reflectionPackageSearchPath, ResourceStrategy.class);
+	}
+	
+	@Transient
+	public static Set<Class<?>> getAllInstanciableRessourceStrategies(){
+		return ReflectionHelper.getAllInstanciableImplementations(reflectionPackageSearchPath, ResourceStrategy.class);
+	}
+			
+	@Override
+	public String toString(){
+		return this.name;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		if (obj == this)
+			return true;
+		if (obj.getClass() != getClass())
+			return false;
+		Resource otherResource = (Resource) obj;
+		if(getName().equals(otherResource.getName())){
+			return true;
+		}
+		return false;
+	}
+}

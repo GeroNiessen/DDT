@@ -1,0 +1,14 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo -e -n "\n******* Creating Eclipse Project with Javadoc and Sources for every project below $DIR \n\n"
+
+for POMXML in $( find $DIR -name pom.xml )
+do
+   POMDIR=$(dirname $POMXML)
+   echo -e -n "\n******* Creating Eclipse Project with Javadoc and Sources in $POMDIR ********\n\n"
+   cd $POMDIR
+   echo 
+   mvn eclipse:eclipse -DdownloadSources -DdownloadJavadocs
+   cd -
+done

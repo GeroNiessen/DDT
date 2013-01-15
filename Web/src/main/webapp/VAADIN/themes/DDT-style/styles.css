@@ -1,0 +1,31 @@
+@import "../reindeer/styles.css";
+
+.v-table-row.v-table-row-highlight-green,
+.v-table-row-odd.v-table-row-highlight-green {
+  background-color: #00ffa6;
+}
+
+.v-table-row.v-table-row-highlight-red,
+.v-table-row-odd.v-table-row-highlight-red {
+  background-color: #f78181;
+}
+
+.diff-lines > div > div {
+	height: auto !important;
+}
+
+.v-label.diff-this {
+	white-space: pre-wrap;
+	overflow: visible;
+	word-wrap: normal;
+	font-family: Monospace;
+	background-color: #ffffc2;
+}
+
+.v-label.diff-other {
+	white-space: pre-wrap;
+	overflow: visible;
+	word-wrap: normal;
+	font-family: Monospace;
+	background-color: #fccdb3;
+}

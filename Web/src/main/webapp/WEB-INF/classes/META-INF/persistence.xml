@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="DDTPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/__default</jta-data-source>
+    <class>de.codecentric.ddt.Application</class>
+    <class>de.codecentric.ddt.Configuration</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+      <property name="eclipselink.target-database" value="DERBY"/>
+      <property name="eclipelink.logging.level" value="FINEST"/>
+      <!--
+      <property name="eclipselink.jdbc.timeout" value="10"/>
+      <property name="eclipselink.deploy-on-startup" value="false"/>
+      <property name="eclipselink.logging.exceptions" value="false"/>
+       
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/chapter02DB;create=true"/> -->
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby:DDT-DATABASE;create=true"/>
+      <property name="javax.persistence.jdbc.user" value="APP"/>
+      <property name="javax.persistence.jdbc.password" value="APP"/>
+    </properties>
+  </persistence-unit>
+</persistence>
