@@ -1,34 +1,17 @@
 Manifest-Version: 1.0
 Class-Path: vaadin-6.8.2.jar jpacontainer-addon-agpl-3.0-2.1.0.jar ref
- resher-1.1.1.jar IssueTrackers.jar Resources.jar javax.ejb-3.1.1.jar 
- javax.transaction-3.1.1.jar javax.annotation-3.1.1.jar persistence-ap
- i-1.0.2.jar eclipselink-2.4.0.jar javax.persistence-2.0.4.v2011121610
- 09.jar jira-rest-java-client-1.0.jar joda-time-1.6.jar jersey-client-
- 1.5.jar jersey-core-1.5.jar jersey-multipart-1.5.jar mimepull-1.4.jar
-  jersey-apache-client-1.5.jar commons-httpclient-3.1.jar commons-logg
- ing-1.0.4.jar commons-codec-1.2.jar jersey-json-1.5.jar jettison-1.1.
- jar stax-api-1.0.1.jar jaxb-impl-2.2.6.jar jackson-core-asl-1.5.5.jar
-  jackson-mapper-asl-1.5.5.jar jackson-jaxrs-1.5.5.jar jackson-xc-1.5.
- 5.jar guava-13.0.jar oauth-client-1.5.jar oauth-signature-1.5.jar Rep
- ositories.jar javahg-0.5-SNAPSHOT.jar Databases.jar ojdbc6.jar runtim
- e12.jar translator.jar maven-jar-plugin-2.4.jar maven-plugin-api-2.0.
- 6.jar maven-project-2.0.6.jar maven-settings-2.0.6.jar maven-model-2.
- 0.6.jar plexus-utils-3.0.jar plexus-container-default-1.0-alpha-9-sta
- ble-1.jar classworlds-1.1-alpha-2.jar maven-profile-2.0.6.jar maven-a
- rtifact-manager-2.0.6.jar maven-repository-metadata-2.0.6.jar maven-a
- rtifact-2.0.6.jar wagon-provider-api-1.0-beta-2.jar maven-plugin-regi
- stry-2.0.6.jar maven-archiver-2.5.jar maven-core-2.0.6.jar wagon-file
- -1.0-beta-2.jar maven-plugin-parameter-documenter-2.0.6.jar wagon-htt
- p-lightweight-1.0-beta-2.jar wagon-http-shared-1.0-beta-2.jar jtidy-4
- aug2000r7-dev.jar xml-apis-1.0.b2.jar maven-reporting-api-2.0.6.jar d
- oxia-sink-api-1.0-alpha-7.jar maven-error-diagnostics-2.0.6.jar commo
- ns-cli-1.0.jar wagon-ssh-external-1.0-beta-2.jar wagon-ssh-common-1.0
- -beta-2.jar plexus-interactivity-api-1.0-alpha-4.jar maven-plugin-des
- criptor-2.0.6.jar maven-monitor-2.0.6.jar wagon-ssh-1.0-beta-2.jar js
- ch-0.1.27.jar plexus-archiver-2.1.jar plexus-io-2.0.2.jar plexus-inte
- rpolation-1.15.jar commons-lang-2.1.jar javax.servlet-3.1.1.jar javax
- .inject-1.jar cdi-api-1.1-PRD.jar el-api-2.2.jar jboss-interceptors-a
- pi_1.1_spec-1.0.0.Beta1.jar jsr250-api-1.0.jar javax.resource-3.1.2.2
- .jar javax.transaction-3.1.2.2.jar derbynet-10.9.1.0.jar derby-10.9.1
- .0.jar
+ resher-1.1.1.jar eclipselink-2.4.0.jar javax.persistence-2.0.4.v20111
+ 2161009.jar javax.ejb-3.1.1.jar javax.transaction-3.1.1.jar javax.ann
+ otation-3.1.1.jar javax.servlet-3.1.1.jar javax.inject-1.jar cdi-api-
+ 1.1-PRD.jar el-api-2.2.jar jboss-interceptors-api_1.1_spec-1.0.0.Beta
+ 1.jar jsr250-api-1.0.jar javax.resource-3.1.2.2.jar javax.transaction
+ -3.1.2.2.jar derbynet-10.9.1.0.jar derby-10.9.1.0.jar ojdbc6.jar runt
+ ime12.jar translator.jar jira-rest-java-client-1.0.jar joda-time-1.6.
+ jar jersey-client-1.5.jar jersey-core-1.5.jar jersey-multipart-1.5.ja
+ r mimepull-1.4.jar jersey-apache-client-1.5.jar commons-httpclient-3.
+ 1.jar commons-logging-1.0.4.jar commons-codec-1.2.jar jersey-json-1.5
+ .jar jettison-1.1.jar stax-api-1.0.1.jar jaxb-impl-2.2.6.jar jackson-
+ core-asl-1.5.5.jar jackson-mapper-asl-1.5.5.jar jackson-jaxrs-1.5.5.j
+ ar jackson-xc-1.5.5.jar guava-13.0.jar oauth-client-1.5.jar oauth-sig
+ nature-1.5.jar javahg-0.5-SNAPSHOT.jar
 

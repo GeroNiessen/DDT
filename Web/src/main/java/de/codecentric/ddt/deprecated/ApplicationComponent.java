@@ -11,12 +11,12 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import de.codecentric.ddt.Application;
-import de.codecentric.ddt.Resource;
+import de.codecentric.ddt.configuration.Application;
+import de.codecentric.ddt.configuration.Resource;
 
 public class ApplicationComponent extends CustomComponent {
 	
-	private de.codecentric.ddt.Application application;
+	private de.codecentric.ddt.configuration.Application application;
 	
 	private TextField applicationNameTextField;
 	private Button saveButton;
@@ -27,7 +27,7 @@ public class ApplicationComponent extends CustomComponent {
 	private Panel applicationPanel;
 	private Panel actionPanel;
 	
-	public ApplicationComponent(de.codecentric.ddt.Application application){
+	public ApplicationComponent(de.codecentric.ddt.configuration.Application application){
 		
 		this.application = application;
 		

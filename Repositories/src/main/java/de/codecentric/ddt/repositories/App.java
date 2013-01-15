@@ -11,7 +11,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import de.codecentric.ddt.Resource;
+import de.codecentric.ddt.configuration.Resource;
+import de.codecentric.ddt.resourcestrategies.repositories.MercurialRepositoryStrategy;
+import de.codecentric.ddt.resourcestrategies.repositories.Repository;
 public class App {
 
 	/**

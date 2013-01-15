@@ -10,8 +10,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 
-import de.codecentric.ddt.Application;
-import de.codecentric.ddt.Resource;
+import de.codecentric.ddt.configuration.Application;
+import de.codecentric.ddt.configuration.Resource;
 
 @SessionScoped
 public class ApplicationConfigurationComponent extends CustomComponent{
@@ -21,7 +21,7 @@ public class ApplicationConfigurationComponent extends CustomComponent{
 	Panel 		  mainPanel  = new Panel();
 	private Table allApplicationConfiguration;
 	
-	public ApplicationConfigurationComponent(List<de.codecentric.ddt.Application> allApplications){
+	public ApplicationConfigurationComponent(List<de.codecentric.ddt.configuration.Application> allApplications){
 		mainPanel.setContent(new HorizontalLayout());
 		setSizeUndefined();
 		getApplications(allApplications);
@@ -29,14 +29,14 @@ public class ApplicationConfigurationComponent extends CustomComponent{
 		setCompositionRoot(mainPanel);
 	}
 	
-	private void getApplications(List<de.codecentric.ddt.Application> allApplications){
+	private void getApplications(List<de.codecentric.ddt.configuration.Application> allApplications){
 		this.allApplicationConfiguration = new Table("All Applications");
 		this.allApplicationConfiguration.addContainerProperty("Application", String.class,  null);
 		this.allApplicationConfiguration.addContainerProperty("Resource", String.class,  null);
 		this.allApplicationConfiguration.addContainerProperty("Strategy", String.class,  null);
 		int i = 0;
-		for (de.codecentric.ddt.Application currentApplication: allApplications){
-			for(Resource<?> currentResource: currentApplication.getResources()){
+		for (de.codecentric.ddt.configuration.Application currentApplication: allApplications){
+			for(Resource currentResource: currentApplication.getResources()){
 				this.allApplicationConfiguration.addItem(new Object[]{currentApplication.getName(),currentResource.getName(), currentResource.getStrategyName()}, i);
 				i++;
 			}

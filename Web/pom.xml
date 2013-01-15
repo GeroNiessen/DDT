@@ -98,6 +98,19 @@
 			<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
 		</repository>
 
+		<repository>
+			<id>sonatype-ossrh</id>
+			<name>Sonatype Open Source Software Repository Hosting</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
+
+		<repository>
+			<id>atlassian.com</id>
+			<name>Atlassian</name>
+			<url>http://maven.atlassian.com/public</url>
+			<layout>default</layout>
+		</repository>
+
 	</repositories>
 
 	<pluginRepositories>
@@ -131,28 +144,6 @@
 			<artifactId>refresher</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-
-		<dependency>
-			<groupId>de.codecentric.ddt</groupId>
-			<artifactId>IssueTrackers</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>de.codecentric.ddt</groupId>
-			<artifactId>Repositories</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>de.codecentric.ddt</groupId>
-			<artifactId>Databases</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-		<!-- <dependency> <groupId>org.apache.derby</groupId> <artifactId>derbyclient</artifactId> 
-			<version>10.9.1.0</version> <scope>runtime</scope> </dependency> <dependency> 
-			<groupId>org.apache.derby</groupId> <artifactId>derbynet</artifactId> <version>10.9.1.0</version> 
-			<scope>runtime</scope> </dependency> <dependency> <groupId>org.apache.derby</groupId> 
-			<artifactId>derbytools</artifactId> <version>10.9.1.0</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
@@ -203,11 +194,46 @@
 			<version>3.1.2.2</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbynet</artifactId>
 			<version>10.9.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>Oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>6.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>Oracle</groupId>
+			<artifactId>runtime12</artifactId>
+			<version>12</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/runtime12.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>Oracle</groupId>
+			<artifactId>translator</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/translator.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.atlassian.jira</groupId>
+			<artifactId>jira-rest-java-client</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aragost.javahg</groupId>
+			<artifactId>javahg</artifactId>
+			<version>0.5-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

@@ -1,5 +1,8 @@
 package de.codecentric.ddt;
 
+import de.codecentric.ddt.resourcestrategies.databases.Database;
+import de.codecentric.ddt.resourcestrategies.databases.OracleDatabaseStrategy;
+
 /**
  * Hello world!
  */

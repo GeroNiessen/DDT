@@ -8,10 +8,10 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import de.codecentric.ddt.Application;
-import de.codecentric.ddt.Resource;
-import de.codecentric.ddt.ResourceStrategiesComboBox;
-import de.codecentric.ddt.ResourceStrategy;
+import de.codecentric.ddt.configuration.Application;
+import de.codecentric.ddt.configuration.Resource;
+import de.codecentric.ddt.configuration.ResourceStrategy;
+import de.codecentric.ddt.web.ResourceStrategiesComboBox;
 
 public class ResourceComponent extends CustomComponent{
 	
@@ -30,9 +30,9 @@ public class ResourceComponent extends CustomComponent{
 	private Button saveButton;
 	private Button cancelButton;
 	
-	private de.codecentric.ddt.Application application;
+	private de.codecentric.ddt.configuration.Application application;
 	
-	public ResourceComponent(de.codecentric.ddt.Application application, Resource resource){
+	public ResourceComponent(de.codecentric.ddt.configuration.Application application, Resource resource){
 		this.application = application;
 		
 		this.resourcePanel = new Panel();
@@ -80,9 +80,9 @@ public class ResourceComponent extends CustomComponent{
 		this.resourceStrategy.setValue(resource.getStrategy());
 	}
 	
-	private Resource<ResourceStrategy> getResource(){
+	private Resource getResource(){
 		ResourceStrategy newResourceStrategy = (ResourceStrategy) this.resourceStrategy.getValue();
-		Resource<ResourceStrategy> newResource = new Resource<ResourceStrategy>();
+		Resource newResource = new Resource();
 		newResource.setName((String) nameTextField.getValue());
 		newResource.setUrl((String) urlTextField.getValue());
 		//newResource.setUserName((String) userNameTextField.getValue());
