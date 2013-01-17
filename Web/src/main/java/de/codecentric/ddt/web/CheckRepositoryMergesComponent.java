@@ -31,8 +31,8 @@ public class CheckRepositoryMergesComponent extends CustomComponent implements C
 	private Button showMergesButton;
 	private Button refreshRepositoryButton;
 	
-	Panel         menuPanel  = new Panel();
-	Panel 		  mainPanel  = new Panel();
+	HorizontalLayout         menuPanelLayout;
+	VerticalLayout 		  	mainLayout;
 	
 	private Table branchMergeTable;
 	private Repository selectedRepository;
@@ -52,24 +52,24 @@ public class CheckRepositoryMergesComponent extends CustomComponent implements C
 		this.selectedApplication = selectedApplication.getBean();
 		initializeRepositoriesComboBox(this.selectedApplication); //To be removed
 		
-		menuPanel.setContent(new HorizontalLayout());
+		menuPanelLayout = new HorizontalLayout();
+		mainLayout = new VerticalLayout();
+		mainLayout.setSizeFull();
 		
 		//initializeRepositoriesComboBox();
-		menuPanel.addComponent(repositoriesComboBox);
+		menuPanelLayout.addComponent(repositoriesComboBox);
 		
 		initializeShowMergesButton();
-		menuPanel.addComponent(showMergesButton);
+		menuPanelLayout.addComponent(showMergesButton);
 		initializeRefreshRepositoryButton();
-		menuPanel.addComponent(refreshRepositoryButton);
+		menuPanelLayout.addComponent(refreshRepositoryButton);
 
-		menuPanel.getContent().setSizeUndefined();
-		menuPanel.setSizeUndefined();
-		setSizeUndefined();
+		menuPanelLayout.setSizeUndefined();
 
-		mainPanel.setContent(new VerticalLayout());
-		mainPanel.addComponent(menuPanel);
+		mainLayout.addComponent(menuPanelLayout);
 		
-		setCompositionRoot(mainPanel);		
+		setSizeFull();
+		setCompositionRoot(mainLayout);		
 	}
 	
 	private Set<Repository> getRepositories(){
@@ -114,11 +114,12 @@ public class CheckRepositoryMergesComponent extends CustomComponent implements C
 
 			public void buttonClick(ClickEvent event) {
 				if(branchMergeTable != null){
-					mainPanel.removeComponent(branchMergeTable);
+					mainLayout.removeComponent(branchMergeTable);
 				}
 				initializeBranchMergeTable();
 				fillBranchMergesTable();
-				mainPanel.addComponent(branchMergeTable);
+				mainLayout.addComponent(branchMergeTable);
+				mainLayout.setExpandRatio(branchMergeTable, 1.0f);
 			}
 		});
 	}
@@ -138,9 +139,10 @@ public class CheckRepositoryMergesComponent extends CustomComponent implements C
 		
 	private void initializeBranchMergeTable(){
 		if(this.branchMergeTable != null){
-			mainPanel.removeComponent(this.branchMergeTable);
+			mainLayout.removeComponent(this.branchMergeTable);
 		}
 		this.branchMergeTable = new Table("All Branches");
+		this.branchMergeTable.setSizeFull();
 		this.branchMergeTable.addContainerProperty("Branch", String.class, null);
 		this.branchMergeTable.addContainerProperty("Merged Branch", String.class, null);
 		this.branchMergeTable.addContainerProperty("Merged Version", Integer.class, null);

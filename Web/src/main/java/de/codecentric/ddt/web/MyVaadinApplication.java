@@ -18,37 +18,37 @@ package de.codecentric.ddt.web;
 import java.util.HashSet;
 
 import javax.ejb.DependsOn;
-import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.vaadin.Application;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.Terminal;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
-import de.codecentric.ddt.configuration.Configuration;
-import de.codecentric.ddt.configuration.ConfigurationDAO;
-import de.codecentric.ddt.configuration.JPAConfigurationDAO;
-import de.codecentric.ddt.configuration.Resource;
-import de.codecentric.ddt.configuration.XMLConfigurationDAO;
+import de.codecentric.ddt.configuration.*;
 import de.codecentric.ddt.resourcestrategies.databases.OracleDatabaseStrategy;
 import de.codecentric.ddt.resourcestrategies.issuetrackers.JiraIssueTrackerStrategy;
 import de.codecentric.ddt.resourcestrategies.repositories.MercurialRepositoryStrategy;
-
+import de.codecentric.ddt.web.configuration.ConfigurationForm;
 
 /**
  * The Application's "main" class
  */
+
 //@SuppressWarnings("serial")
 @SessionScoped
 @DependsOn("LocalDatabase")
@@ -61,13 +61,8 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 	private CustomComponent logPanel;
 	private Component mainComponent;
 	private VerticalLayout superLayout;
-	private Layout mainLayout;
-
-	@EJB
-	private JPAConfigurationDAO jpaConfigurationDAO;
-	
-	@EJB
-	private XMLConfigurationDAO xmlConfigurationDAO;
+	private HorizontalSplitPanel horizontalSplitPanel;
+	private VerticalSplitPanel verticalSplitPanel;
 	
 	private ConfigurationDAO configurationDAO;
 
@@ -77,10 +72,8 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 		setTheme("DDT-style");
 		
 		Configuration testConfiguration = generateTestConfiguration();
-		configurationDAO = xmlConfigurationDAO;
+		configurationDAO = new XMLConfigurationDAO();
 		configurationDAO.save(testConfiguration);
-		
-		ConfigurationContainerProvider.setConfigurationDAO(configurationDAO);
 				
 		mainWindow = new Window("Distributed Dependency Tracker (DDT)");
 		mainWindow.setSizeFull();
@@ -88,25 +81,33 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 		setMainWindow(mainWindow);
 		
 		superLayout = new VerticalLayout();
-		
 		superLayout.setSizeFull();
-		mainLayout = new HorizontalSplitPanel();
-		mainLayout.setSizeFull();
+		
+		horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel.setSizeFull();
+		horizontalSplitPanel.setSplitPosition(10, Sizeable.UNITS_PERCENTAGE);
 
 		MenuComponent menuComponent = new MenuComponent(mainComponent);
 		menuComponent.addMenuButtonAndComponent("Check Repository Merges", CheckRepositoryMergesComponent.class);
 		menuComponent.addMenuButtonAndComponent("Check Generated Proxy Classes", CheckProxyClassesComponent.class);
-		superLayout.addComponent(menuComponent);
-		
+		superLayout.addComponent(menuComponent);	
+	
 		ConfigurationForm configForm = new ConfigurationForm();
-		mainComponent = configForm;
-		mainLayout.addComponent(mainComponent);
+		horizontalSplitPanel.addComponent(configForm);
+
+		verticalSplitPanel = new VerticalSplitPanel();
+		mainComponent = new Label("Ready");
+		verticalSplitPanel.addComponent(mainComponent);
 		
-		logPanel = new LogPanel();
-		mainLayout.addComponent(logPanel);
+		logPanel = new LogComponent();
+		verticalSplitPanel.addComponent(logPanel);
+		verticalSplitPanel.setSplitPosition(80, Sizeable.UNITS_PERCENTAGE);
 		
-		superLayout.addComponent(mainLayout);
-		superLayout.setExpandRatio(mainLayout, 1.0f);
+		
+		horizontalSplitPanel.addComponent(verticalSplitPanel);
+		
+		superLayout.addComponent(horizontalSplitPanel);
+		superLayout.setExpandRatio(horizontalSplitPanel, 1.0f);
 		
 		mainWindow.addComponent(superLayout);	
 	}
@@ -120,6 +121,7 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 		// Some custom behaviour.
 		if (getMainWindow() != null) {
 			getMainWindow().showNotification(
+					//event.getThrowable().getCause().getMessage(),
 					"An unchecked exception occured!",
 					event.getThrowable().toString(),
 					Notification.TYPE_ERROR_MESSAGE);
@@ -193,7 +195,7 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 	}
 	
 	public static void setMainComponent(Component newMainComponent){
-		threadLocal.get().mainLayout.replaceComponent(threadLocal.get().mainComponent, newMainComponent);
+		threadLocal.get().verticalSplitPanel.replaceComponent(threadLocal.get().mainComponent, newMainComponent);
 		threadLocal.get().mainComponent = newMainComponent;
 	}
 	

@@ -23,8 +23,9 @@ public class MyVaadinApplicationServlet extends AbstractApplicationServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 2924939355386218671L;
-	@Inject
-    Instance<MyVaadinApplication> application;
+	//@Inject
+    //Instance<MyVaadinApplication> application;
+	MyVaadinApplication application = new MyVaadinApplication();
 
     @Override
     protected Class<? extends Application> getApplicationClass() throws ClassNotFoundException {
@@ -35,7 +36,8 @@ public class MyVaadinApplicationServlet extends AbstractApplicationServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        return MyVaadinApplication.class;
+        //return MyVaadinApplication.class;
+    	return MyVaadinApplication.class;
     }
 
     @Override
@@ -47,7 +49,8 @@ public class MyVaadinApplicationServlet extends AbstractApplicationServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return application.get();
+    	//return application.get();
+    	return application;
     }
 
     /*

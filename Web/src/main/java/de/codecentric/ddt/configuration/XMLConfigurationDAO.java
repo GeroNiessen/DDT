@@ -7,24 +7,26 @@ import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Alternative;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-@Stateless
-@LocalBean
+//@Stateless
+//@LocalBean
+@Alternative
 public class XMLConfigurationDAO implements ConfigurationDAO{
-	
+
 	private JAXBContext context;
 	private Marshaller marshaller;
 	private Unmarshaller unmarshaller;
 	private String configurationFile;
-	
+
 	public XMLConfigurationDAO(){
 		String fileSeparator = System.getProperty("file.separator");
 		this.configurationFile = Configuration.getBaseWorkDirectory().getPath() + fileSeparator + "DDT-Configuration.xml";
-		
+
 		Set<Class<?>> classes = Resource.getAllRessourceStrategies();
 		classes.addAll(Resource.getAllRessources());
 		classes.add(Configuration.class);
@@ -39,10 +41,18 @@ public class XMLConfigurationDAO implements ConfigurationDAO{
 			throw new RuntimeException("Failed to initialize JAXBContext in XMLConfigurationDAO");
 		}
 	}
-	
+
 	@Override
 	public void save(Configuration configuration) {
-		try {
+
+		/*
+		File oldConfigurationFile = new File(configurationFile);
+		if(oldConfigurationFile.exists()){
+			oldConfigurationFile.delete();
+		}
+		*/
+
+		try{
 			marshaller.marshal(configuration, new File(configurationFile));
 		} catch (JAXBException e) {
 			e.printStackTrace();

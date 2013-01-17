@@ -10,11 +10,11 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-@Stateless
-@LocalBean
+//@Stateless
+//@LocalBean
 public class JPAConfigurationDAO implements ConfigurationDAO{
 	
-	@PersistenceContext
+	//@PersistenceContext
 	private EntityManager em;
 	
 	public JPAConfigurationDAO(){

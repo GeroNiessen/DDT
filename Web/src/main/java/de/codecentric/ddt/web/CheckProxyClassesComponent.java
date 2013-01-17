@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.aragost.javahg.log.Logger;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
@@ -41,6 +42,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 	private de.codecentric.ddt.configuration.Application selectedApplication;
 	private static final String defaultPackageName =  "de.wgvi.icisplus.adapter.jpub";
 	private static final boolean enableDisableComponentsFeature = true;
+	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(CheckProxyClassesComponent.class .getName());
 
 	private Button updateRepositoryButton;
 	private Button updateDatabaseButton;
@@ -53,7 +55,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 	private ComboBox databasesComboBox;
 	private Button generateFileComparisons;
 	private Table fileComparisonTable;
-	private Panel contentPanel;
+	private VerticalLayout verticalLayout;
 
 	public CheckProxyClassesComponent(){
 		super();
@@ -67,9 +69,8 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 	public void setApplication(BeanItem<de.codecentric.ddt.configuration.Application> selectedApplicationBeanItem) {
 		this.selectedApplication = selectedApplicationBeanItem.getBean();
 
-		contentPanel = new Panel();
-		contentPanel.setContent(new VerticalLayout());
-		contentPanel.setSizeFull();
+		verticalLayout = new VerticalLayout();
+		verticalLayout.setSizeFull();
 						
 		this.repositoriesComboBox = new ComboBox("Repository");
 		this.repositoriesComboBox.setNullSelectionAllowed(false);
@@ -80,56 +81,55 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 		this.updateRepositoryButton = new Button("Update Repository");
 		initUpdateRepositoryButtonListeners();
 		
-		Panel repositoryPanel = new Panel();
-		repositoryPanel.setContent(new HorizontalLayout());
-		repositoryPanel.addComponent(this.repositoriesComboBox);
-		repositoryPanel.addComponent(this.updateRepositoryButton);
-		contentPanel.addComponent(repositoryPanel);
+		HorizontalLayout horizontalRepositoryLayout = new HorizontalLayout();
+		horizontalRepositoryLayout.addComponent(this.repositoriesComboBox);
+		horizontalRepositoryLayout.addComponent(this.updateRepositoryButton);
+		verticalLayout.addComponent(horizontalRepositoryLayout);
 
 		this.branchesComboBox = new ComboBox("Branch");
 		this.branchesComboBox.setNullSelectionAllowed(false);
 		this.branchesComboBox.setImmediate(true);
 		fillBranchesComboBox();
 		initBranchesComboBoxListeners();
-		contentPanel.addComponent(branchesComboBox);
+		verticalLayout.addComponent(branchesComboBox);
 
 		this.packagesComboBox = new ComboBox("Package");
 		this.packagesComboBox.setNullSelectionAllowed(false);
 		this.packagesComboBox.setImmediate(true);
 		fillPackagesComboBox();
 		initPackagesComboBoxListeners();
-		contentPanel.addComponent(packagesComboBox);
+		verticalLayout.addComponent(packagesComboBox);
 
 		this.packagesDirectoriesComboBox = new ComboBox("Package Directory");
 		this.packagesDirectoriesComboBox.setNullSelectionAllowed(false);
 		fillPackagesDirectoriesComboBox();
-		contentPanel.addComponent(packagesDirectoriesComboBox);
+		verticalLayout.addComponent(packagesDirectoriesComboBox);
 
-		Panel databasePanel = new Panel();
-		databasePanel.setContent(new HorizontalLayout());
+		HorizontalLayout horizontalDatabaseLayout = new HorizontalLayout();
 		this.databasesComboBox = new ComboBox("Database");
 		this.databasesComboBox.setNullSelectionAllowed(false);
 		fillDatabasesComboBox();
-		databasePanel.addComponent(this.databasesComboBox);
+		horizontalDatabaseLayout.addComponent(this.databasesComboBox);
 		
 		this.updateDatabaseButton = new Button("Generate Proxy Classes Database (Takes roughly a minute)");
 		initUpdateDatabaseButtonListeners();
-		databasePanel.addComponent(this.updateDatabaseButton);
+		horizontalDatabaseLayout.addComponent(this.updateDatabaseButton);
 		
 		this.updateDatabaseIndicator = new ProgressIndicator(new Float(0.0));
 		this.updateDatabaseIndicator.setPollingInterval(500);
 		this.updateDatabaseIndicator.setVisible(false);
-		databasePanel.addComponent(updateDatabaseIndicator);
+		horizontalDatabaseLayout.addComponent(updateDatabaseIndicator);
 		
-		contentPanel.addComponent(databasePanel);
+		verticalLayout.addComponent(horizontalDatabaseLayout);
 
 		initGenerateFileComparisonButton();
-		contentPanel.addComponent(generateFileComparisons);
+		verticalLayout.addComponent(generateFileComparisons);
 
 		initFileComparisonTable();
-		contentPanel.addComponent(fileComparisonTable);
+		verticalLayout.addComponent(fileComparisonTable);
+		verticalLayout.setExpandRatio(fileComparisonTable, 1.0f);
 
-		setCompositionRoot(contentPanel);		
+		setCompositionRoot(verticalLayout);		
 	}
 	
 	private Set<Repository> getRepositories(){
@@ -191,7 +191,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 		Set<Repository> repositories = getRepositories();
 		fillComboBox(repositoriesComboBox, repositories);
 		selectFirstItem(repositoriesComboBox, repositories);
-		showTrayNotification("Detected " + repositories.size() + " repositories");
+		LOGGER.info("Detected " + repositories.size() + " repositories");
 	}
 
 	private void initRepositoriesComboBoxListeners(){
@@ -238,7 +238,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 		fillComboBox(branchesComboBox, allBranchesInSelectedRepository);
 		String currentBranch = selectedRepository.getCurrentBranch();
 		branchesComboBox.select(currentBranch);
-		showTrayNotification("Detected " + allBranchesInSelectedRepository + " branches");
+		LOGGER.info("Detected " + allBranchesInSelectedRepository + " branches");
 	}
 
 	private void initBranchesComboBoxListeners(){
@@ -252,7 +252,6 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 					String selectedBranch = (String) branchesComboBox.getValue();
 					if (enableDisableComponentsFeature) packagesComboBox.setEnabled(false);
 					selectedRepository.setBranch(selectedBranch);
-					showTrayNotification("Switched repository to branch: " + selectedBranch);
 					fillPackagesComboBox();
 				}
 			}
@@ -270,7 +269,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 		} else {
 			selectFirstItem(packagesComboBox, allPackagesInBranch);
 		}
-		showTrayNotification("Detected " + allPackagesInBranch.size() + " Java Packages");
+		LOGGER.info("Detected " + allPackagesInBranch.size() + " Java Packages");
 	}
 
 	private void initPackagesComboBoxListeners(){
@@ -296,11 +295,11 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 		if (enableDisableComponentsFeature) packagesDirectoriesComboBox.setEnabled(true);
 		fillComboBox(packagesDirectoriesComboBox, packageDirectories);
 		selectFirstItem(packagesDirectoriesComboBox, packageDirectories);
-		showTrayNotification("Detected " + packageDirectories.size() + " folder candidates for Java package: " + selectedPackage);
+		LOGGER.info("Detected " + packageDirectories.size() + " folder candidates for Java package: " + selectedPackage);
 	}
 
 	private void initGenerateFileComparisonButton(){
-		this.generateFileComparisons = new Button("Gererate Diff");
+		this.generateFileComparisons = new Button("Compare package folder with generated proxy classes");
 		this.generateFileComparisons.addListener(new Button.ClickListener() {		
 
 			private static final long serialVersionUID = -2838399923012330788L;
@@ -322,11 +321,12 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 
 	private void initFileComparisonTable(){
 		fileComparisonTable = new Table("Generated Diff:");
+		fileComparisonTable.setSizeFull();
 		fileComparisonTable.addContainerProperty("File", String.class, null);
 		fileComparisonTable.addContainerProperty("Result", String.class, null);
 		fileComparisonTable.addContainerProperty("Difference", FileComparisonComponent.class, null);
 		fileComparisonTable.setColumnExpandRatio("Difference", 1);
-		contentPanel.addComponent(fileComparisonTable);
+		verticalLayout.addComponent(fileComparisonTable);
 	}
 
 	private void fillFileComparisonTable(List<FileComparison> comparedFiles){
@@ -349,6 +349,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 	
 	//===============================================
 	
+	/*
 	private void showTrayNotification(String message){
 		Notification notification = new Notification("", Notification.TYPE_HUMANIZED_MESSAGE);
 		notification.setPosition(Notification.POSITION_BOTTOM_RIGHT);
@@ -356,6 +357,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 		notification.setDelayMsec(200);
 		MyVaadinApplication.getInstance().showNotification(notification);
 	}
+	*/
 
 	private void selectFirstItem(ComboBox comboBox, Collection<?> collection){
 		if(collection == null) {
@@ -388,7 +390,7 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 			if(selectedDatabase != null && selectedPackageName !=null){
 				selectedDatabase.generateProxyClasses(selectedPackageName);
 			} else {
-				showTrayNotification("Please select a database and a package name, first!");
+				LOGGER.warning("Please select a database and a package name, first!");
 			}
 
 	        while (true) {
@@ -422,6 +424,8 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 	
 
 	private List<FileComparison> getDifferences(String referenceDirectoryPath, String otherDirectoryPath){
+		LOGGER.info("Comparing files in directory:\n" + referenceDirectoryPath + "\n with files in directory:\n" + otherDirectoryPath);
+		
 		List<FileComparison> differences = new ArrayList<FileComparison>();
 
 		File referenceDirectory = new File(referenceDirectoryPath);

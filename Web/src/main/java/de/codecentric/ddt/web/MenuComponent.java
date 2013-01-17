@@ -9,10 +9,13 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Button.ClickEvent;
+
+import de.codecentric.ddt.web.configuration.ConfigurationContainerProvider;
 
 public class MenuComponent extends CustomComponent {
 	
@@ -21,7 +24,7 @@ public class MenuComponent extends CustomComponent {
 	private HashMap<Button, Component> buttonsAndComponentInstances;
 	
 	private ComboBox applicationsComboBox;
-	private Component mainComponet;
+	//private Component mainComponet;
 	private Panel menuPanel;
 	
 	private Container applicationsContainer;
@@ -33,7 +36,7 @@ public class MenuComponent extends CustomComponent {
 		ConfigurationContainerProvider configurationContainerProvider = new ConfigurationContainerProvider();
 		this.applicationsContainer = configurationContainerProvider.getApplicationsContainer();
 				
-		this.mainComponet = mainComponet;
+		//this.mainComponet = mainComponet;
 
 		menuPanel = new Panel();
 		menuPanel.setContent(new HorizontalLayout());
@@ -76,7 +79,7 @@ public class MenuComponent extends CustomComponent {
 						newComponent = buttonsAndComponentClasses.get(clickedButton).newInstance();
 						newComponent.setApplication(getSelectedApplicationBeanItem());
 						buttonsAndComponentInstances.put(clickedButton, newComponent);
-						MyVaadinApplication.setMainComponent(newComponent);
+						MyVaadinApplication.getInstance().setMainComponent(newComponent);
 					} catch (InstantiationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -87,7 +90,7 @@ public class MenuComponent extends CustomComponent {
 					}
 				} else {
 					//Component componentInstance = buttonsAndComponentInstances.get(clickedButton);
-					MyVaadinApplication.setMainComponent(new HorizontalLayout());
+					MyVaadinApplication.getInstance().setMainComponent(new Label("Please select an action"));
 					buttonsAndComponentInstances.remove(clickedButton);
 				}
 			}
@@ -99,6 +102,7 @@ public class MenuComponent extends CustomComponent {
 		this.applicationsComboBox.setNullSelectionAllowed(false);
 		this.applicationsComboBox.setImmediate(true);
 		this.applicationsComboBox.setItemCaptionPropertyId("caption");
+		//this.applicationsComboBox.setItemCaptionMode(ComboBox.ITEM_CAPTION_MODE_ITEM);
 		this.applicationsComboBox.setContainerDataSource(applicationsContainer);
 		this.applicationsComboBox.select(getFirstApplicationBeanItem());
 		

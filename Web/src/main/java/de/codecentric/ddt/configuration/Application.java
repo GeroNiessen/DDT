@@ -22,6 +22,10 @@ public class Application implements Serializable{
 	@OneToMany
 	private Set<Resource> resources;
 	
+	public Application(){
+		resources = new HashSet<Resource>();
+	}
+	
 	public Set<Resource> getResources() {
 		return resources;
 	}
