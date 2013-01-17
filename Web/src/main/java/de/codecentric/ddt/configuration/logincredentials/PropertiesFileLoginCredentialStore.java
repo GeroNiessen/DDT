@@ -69,8 +69,16 @@ public class PropertiesFileLoginCredentialStore implements LoginCredentialStore{
 		String propertyPrefix = loginCredentialName + ".";
 		try {
 			Properties properties = getPropertiesFiles();
-			returnedLoginCredential.setUsername(properties.getProperty(propertyPrefix + "username"));
-			returnedLoginCredential.setPassword(properties.getProperty(propertyPrefix + "password"));
+			String username = properties.getProperty(propertyPrefix + "username");
+			if(username == null){
+				username = "";
+			}
+			returnedLoginCredential.setUsername(username);
+			String password = properties.getProperty(propertyPrefix + "password");
+			if(password == null){
+				password = "";
+			}
+			returnedLoginCredential.setPassword(password);
 		} catch(Exception ex){
 			returnedLoginCredential.setUsername("anonymous");
 			returnedLoginCredential.setPassword("anonymous");

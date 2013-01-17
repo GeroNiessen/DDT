@@ -473,9 +473,9 @@ public class CheckProxyClassesComponent extends CustomComponent implements Custo
 				@Override
 				public void buttonClick(ClickEvent event) {
 					diffWindow = new Window("Diff: " + fileComparison.getReferenceFile().getName());
-					diffWindow.setSizeFull();
-					//diffWindow.setWidth("98%");
-					//diffWindow.setHeight("98%");
+					//diffWindow.setSizeFull();
+					diffWindow.setWidth("70%");
+					diffWindow.setHeight("70%");
 
 					Label repositoryLabel = new Label("Repository");
 					repositoryLabel.addStyleName(repositorySytle);

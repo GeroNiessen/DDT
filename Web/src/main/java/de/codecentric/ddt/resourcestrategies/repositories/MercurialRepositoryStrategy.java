@@ -2,6 +2,8 @@ package de.codecentric.ddt.resourcestrategies.repositories;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,6 +23,9 @@ import com.aragost.javahg.commands.LogCommand;
 import com.aragost.javahg.commands.PullCommand;
 import com.aragost.javahg.commands.UpdateCommand;
 
+import de.codecentric.ddt.configuration.ConnectionTestHelper;
+import de.codecentric.ddt.configuration.Resource;
+
 @XmlRootElement
 @Entity
 public class MercurialRepositoryStrategy extends RepositoryStrategy {
@@ -38,7 +43,32 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 	
 	@Override
-	public List<String> getBranches(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext) {
+	public boolean passesSmokeTest(Resource context) {
+		String urlWithUsernameAndPassword = getUrlWithUsernameAndPassword(context);
+		System.out.println(urlWithUsernameAndPassword);
+		return ConnectionTestHelper.testURLConnection(urlWithUsernameAndPassword, 2000);
+	}
+	
+	private String getUrlWithUsernameAndPassword(Resource context){
+		String urlWithUsernameAndPassword = context.getUrl(); 
+		URL url;
+		try {
+			String urlString = context.getUrl();
+			url = new URL(urlString);
+			String host = url.getHost();
+			String username = context.getLoginCredential().getUsername();
+			String password = context.getLoginCredential().getUsername();
+			// http://username:password@mydomain.com/myproject
+			urlWithUsernameAndPassword = urlString.replace(host, username + ":" + password + "@" + host);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return urlWithUsernameAndPassword;
+	}
+	
+	@Override
+	public List<String> getBranches(Resource repositoryContext) {
 		return getBranches(getMercurialRepository(repositoryContext));
 	}
 	private List<String> getBranches(BaseRepository mercurialRepository){
@@ -46,7 +76,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 
 	@Override
-	public void setBranch(String branchName, de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext) {
+	public void setBranch(String branchName, Resource repositoryContext) {
 		BaseRepository mercurialRepository = getMercurialRepository(repositoryContext);
 
 		UpdateCommand switchToBranch = new UpdateCommand(mercurialRepository);
@@ -62,7 +92,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 
 	@Override
-	public void getLatestVersion(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext) {
+	public void getLatestVersion(Resource repositoryContext) {
 		String fileSeparator = System.getProperty("file.separator");
 		String mercurialFolderPath = repositoryContext.getWorkDirectory().getPath() + fileSeparator + ".hg";
 
@@ -81,21 +111,21 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 
 	@Override
-	public String getCurrentBranch(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext) {
+	public String getCurrentBranch(Resource repositoryContext) {
 		BaseRepository mercurialRepository = getMercurialRepository(repositoryContext);
 		String currentBranch = BranchCommand.on(mercurialRepository).get();
 		return currentBranch;
 	}
 	//===========================================================================
 	@Override
-	public int getLatestRepositoryRevision(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext){		
+	public int getLatestRepositoryRevision(Resource repositoryContext){		
 		return getLatestRepositoryRevision(getMercurialRepository(repositoryContext));
 	}
 	private int getLatestRepositoryRevision(BaseRepository mercurialRepository){
 		return getLatestRevision(getHeadChangesets(mercurialRepository));
 	}
 	//===========================================================================
-	public Map<String, Integer> getLatestBranchRevisions(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext){
+	public Map<String, Integer> getLatestBranchRevisions(Resource repositoryContext){
 		return getLatestBranchRevisions(getMercurialRepository(repositoryContext));
 	}
 	private Map<String, Integer> getLatestBranchRevisions(BaseRepository mercurialRepository){
@@ -111,14 +141,14 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return logcommand.execute();
 	}
 
-	private BaseRepository getMercurialRepository(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext){
+	private BaseRepository getMercurialRepository(Resource repositoryContext){
 		RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration();
 		repositoryConfiguration.setCommandWaitTimeout(commandWaitTimeoutInSeconds);
 		repositoryConfiguration.setServerIdleTime(commandWaitTimeoutInSeconds);
 		return BaseRepository.open(repositoryConfiguration, repositoryContext.getWorkDirectory());
 	}
 
-	public Map<String, Map<String, Integer>> getLatestBranchMerges(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext){
+	public Map<String, Map<String, Integer>> getLatestBranchMerges(Resource repositoryContext){
 		return getLatestBranchMerges(getMercurialRepository(repositoryContext));
 	}
 	
@@ -235,7 +265,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 
 	@Override
-	public void testme(de.codecentric.ddt.resourcestrategies.repositories.Repository repositoryContext){
+	public void testme(Resource repositoryContext){
 		System.out.println("Start: ANCESTORS");
 
 		Map<String, Integer> latestVersions = getLatestBranchRevisions(repositoryContext);
@@ -250,4 +280,5 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 			System.out.print("=======================\n");
 		}
 	}
+
 }

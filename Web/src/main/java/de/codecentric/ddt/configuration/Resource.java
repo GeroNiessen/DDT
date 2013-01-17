@@ -50,6 +50,11 @@ public class Resource implements Serializable{
 	public LoginCredential getLoginCredential(){
 		return LoginCredential.getLoginCredentialStore().find(this.name);
 	}
+	
+	@Transient
+	public boolean passesSmokeTest(){
+		return strategy.passesSmokeTest(this);
+	}
 
 	private String suggestWorkDirectoryPath(){
 		String fileSeparator = System.getProperty("file.separator");

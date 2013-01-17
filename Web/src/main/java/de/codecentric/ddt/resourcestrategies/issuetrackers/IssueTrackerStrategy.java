@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.configuration.ResourceStrategy;
 
 @XmlRootElement
@@ -15,8 +16,8 @@ public abstract class IssueTrackerStrategy extends ResourceStrategy {
 		super();
 	}
 	
-	public abstract List<String> getAllProjects(IssueTracker issueTrackerContext);
-	public abstract List<String> getIssuesForProject(IssueTracker issueTrackerContext, String projectName);
-	public abstract List<String> getOpenIssuesForProject(IssueTracker issueTrackerContext, String projectName);
-	public abstract String getIssueStatus(IssueTracker issueTrackerContext, String ticketNumber);
+	public abstract List<String> getAllProjects(Resource issueTrackerContext);
+	public abstract List<String> getIssuesForProject(Resource issueTrackerContext, String projectName);
+	public abstract List<String> getOpenIssuesForProject(Resource issueTrackerContext, String projectName);
+	public abstract String getIssueStatus(Resource issueTrackerContext, String ticketNumber);
 }

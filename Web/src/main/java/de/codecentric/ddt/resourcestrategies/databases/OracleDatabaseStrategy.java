@@ -12,19 +12,25 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.codecentric.ddt.configuration.Resource;
+
 @XmlRootElement
 @Entity
 public class OracleDatabaseStrategy extends DatabaseStrategy{
 
 	private static final long serialVersionUID = 2889106510128560500L;
-
 	
 	public OracleDatabaseStrategy(){
 		setName("OracleDatabaseStrategy");
 	}
+	
+	@Override
+	public boolean passesSmokeTest(Resource context) {
+		return (getConnection(context) != null);
+	}
 
 	@Override
-	public void generateProxyClasses(Database databaseContext, String packageName) {
+	public void generateProxyClasses(Resource databaseContext, String packageName) {
 		databaseContext.purgeWorkDirectory();
 		String fileSeparator = System.getProperty("file.separator");
 		
@@ -55,14 +61,14 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		}
 	}
 	
-	private String getConnectionString(Database databaseContext){
+	private String getConnectionString(Resource databaseContext){
 		String userName = databaseContext.getLoginCredential().getUsername();
 		String password = databaseContext.getLoginCredential().getPassword();
 		String connectionString = databaseContext.getUrl().replace("@", userName + "/" + password + "@");
 		return connectionString;
 	}
 	
-	private Connection getConnection(Database databaseContext){
+	private Connection getConnection(Resource databaseContext){
 		Connection returnedConnection = null; //"jdbc:oracle:thin:ICIS/pvcs@wgvli36.swlabor.local:1522:ICISPLUS"
 				
 		try {
@@ -88,7 +94,7 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		return returnedConnection;
 	}
 	
-	private String getPackagesWithTranslation(Database databaseContext){
+	private String getPackagesWithTranslation(Resource databaseContext){
 		String returnedString = "";
 		String[] packages = getPackages(databaseContext);
 		int lastPackage = packages.length-1;
@@ -109,7 +115,7 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		return returnedString;
 	}
 	
-	private String[] getPackages(Database databaseContext){
+	private String[] getPackages(Resource databaseContext){
 		List<String> packages = new ArrayList<String>();
 		try {
 			Connection conn = getConnection(databaseContext);

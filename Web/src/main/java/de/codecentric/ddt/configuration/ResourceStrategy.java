@@ -23,6 +23,8 @@ public abstract class ResourceStrategy implements Serializable{
 	public void setName(String newName){
 		this.name = newName;
 	}
+	
+	public abstract boolean passesSmokeTest(Resource context);
 
 	@Override
 	public String toString(){

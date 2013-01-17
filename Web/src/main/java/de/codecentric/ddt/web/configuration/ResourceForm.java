@@ -17,10 +17,12 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 
 import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.configuration.ResourceStrategy;
 import de.codecentric.ddt.web.DDTException;
+import de.codecentric.ddt.web.MyVaadinApplication;
 
 public class ResourceForm extends Form {
 
@@ -30,6 +32,8 @@ public class ResourceForm extends Form {
 
 	private Button commitButton;
 	private Button cancelButton;
+	private Button testButton;
+	
 	private HierarchicalContainer configurationContainer;
 	private Object parent;
 
@@ -58,12 +62,34 @@ public class ResourceForm extends Form {
 		initCommitButton();
 		getFooter().addComponent(commitButton);
 		
+		testButton = new Button("Test");
+		initTestButton();
+		getFooter().addComponent(testButton);
+		
 		getFooter().addComponent(new Button("Discard", this, "discard"));
 		
 		cancelButton = new Button("Cancel");
 		initCancelButton();
 		
 		setLayout(layout);
+	}
+	
+	private void initTestButton(){
+		this.testButton.addListener(new Button.ClickListener() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Resource resource = ((BeanItem<Resource>) getItemDataSource()).getBean();
+				boolean resourcePassesSmokeTest = resource.passesSmokeTest();
+				if(resourcePassesSmokeTest){
+					MyVaadinApplication.getMainWindows().showNotification("Test Passed!", Notification.TYPE_HUMANIZED_MESSAGE);
+				} else {
+					MyVaadinApplication.getMainWindows().showNotification("Test Failed!", Notification.TYPE_ERROR_MESSAGE);
+				}
+			}
+		});
 	}
 
 	private void initCommitButton(){

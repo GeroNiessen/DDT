@@ -2,9 +2,6 @@ package de.codecentric.ddt.web.configuration;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -13,10 +10,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.data.util.IndexedContainer;
 
-import de.codecentric.ddt.configuration.Configuration;
-import de.codecentric.ddt.configuration.ConfigurationDAO;
-import de.codecentric.ddt.configuration.Resource;
-import de.codecentric.ddt.configuration.XMLConfigurationDAO;
+import de.codecentric.ddt.configuration.*;
 import de.codecentric.ddt.web.MyVaadinApplication;
 
 public class ConfigurationContainerProvider {
@@ -43,7 +37,7 @@ public class ConfigurationContainerProvider {
 		}
 
 		if(configurationContainer == null){
-			configurationContainer = getConfigurationContainer(configuration); //configuration may be still null
+			configurationContainer = getConfigurationContainer(configuration);
 			initConfigurationContainer();
 			resourcesContainers = new HashMap<BeanItem<de.codecentric.ddt.configuration.Application>, Container>();
 			fillSecondaryContainers();

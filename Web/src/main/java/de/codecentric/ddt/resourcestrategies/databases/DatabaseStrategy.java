@@ -2,6 +2,7 @@ package de.codecentric.ddt.resourcestrategies.databases;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.configuration.ResourceStrategy;
 
 @XmlRootElement
@@ -9,6 +10,6 @@ import de.codecentric.ddt.configuration.ResourceStrategy;
 public abstract class DatabaseStrategy extends ResourceStrategy {
 	private static final long serialVersionUID = 5278375323743063152L;
 
-	public abstract void generateProxyClasses(Database databaseContext, String packageName);
+	public abstract void generateProxyClasses(Resource databaseContext, String packageName);
 	
 }
