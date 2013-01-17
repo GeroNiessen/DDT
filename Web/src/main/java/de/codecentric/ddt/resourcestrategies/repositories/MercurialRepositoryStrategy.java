@@ -56,8 +56,8 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 			String urlString = context.getUrl();
 			url = new URL(urlString);
 			String host = url.getHost();
-			String username = context.getLoginCredential().getUsername();
-			String password = context.getLoginCredential().getUsername();
+			String username = context.getUsername();
+			String password = context.getUsername();
 			// http://username:password@mydomain.com/myproject
 			urlWithUsernameAndPassword = urlString.replace(host, username + ":" + password + "@" + host);
 		} catch (MalformedURLException e) {

@@ -62,8 +62,8 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 	}
 	
 	private String getConnectionString(Resource databaseContext){
-		String userName = databaseContext.getLoginCredential().getUsername();
-		String password = databaseContext.getLoginCredential().getPassword();
+		String userName = databaseContext.getUsername();
+		String password = databaseContext.getPassword();
 		String connectionString = databaseContext.getUrl().replace("@", userName + "/" + password + "@");
 		return connectionString;
 	}

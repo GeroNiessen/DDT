@@ -14,18 +14,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 import de.codecentric.ddt.configuration.logincredentials.LoginCredential;
 
 
-//@EJB
 @MappedSuperclass
 @XmlRootElement
 @Entity
 public class Resource implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private static final String reflectionPackageSearchPath = "de.codecentric.ddt"; //;
+	private static final String reflectionPackageSearchPath = "de.codecentric.ddt";
 	
 	@Id
 	private String name;
 	private String url;
+	private String username;
+	private String password;
 
 	private File workDirectory;
 	
@@ -35,21 +36,17 @@ public class Resource implements Serializable{
 	public Resource(){
 		this.name="";
 		this.url="";
+		this.username = "";
+		this.password = "";
 		this.workDirectory = null;
 	}
 	
 	/*
-	public Resource(Resource<?> otherResource){
-		this.name = otherResource.getName();
-		this.url = otherResource.getUrl();
-		this.workDirectory = otherResource.workDirectory;
-	}
-	*/
-
 	@Transient
 	public LoginCredential getLoginCredential(){
 		return LoginCredential.getLoginCredentialStore().find(this.name);
 	}
+	*/
 	
 	@Transient
 	public boolean passesSmokeTest(){
@@ -121,6 +118,22 @@ public class Resource implements Serializable{
 
 	public ResourceStrategy getStrategy() {
 		return strategy;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void setStrategy(ResourceStrategy strategy) {

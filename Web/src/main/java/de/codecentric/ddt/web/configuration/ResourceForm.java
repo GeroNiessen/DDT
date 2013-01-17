@@ -27,7 +27,7 @@ import de.codecentric.ddt.web.MyVaadinApplication;
 public class ResourceForm extends Form {
 
 	private static final long serialVersionUID = 300486871594883748L;
-	private static final String[] visibleItemProperties = new String[]{"name","url","workDirectory","strategy"};
+	private static final String[] visibleItemProperties = new String[]{"name","url","username","password","workDirectory","strategy"};
 	private static final Set<String> requiredItemProperties = new HashSet<String>(Arrays.asList(new String[]{"name","url","workDirectory","strategy"}));
 
 	private Button commitButton;

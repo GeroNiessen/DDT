@@ -16,8 +16,10 @@ import de.codecentric.ddt.resourcestrategies.issuetrackers.JiraIssueTrackerStrat
 public class JiraIssueTrackerStrategyTest {
 	
 	private IssueTracker issueTracker;
-	private static final String TESTPROJECT = "CRM 4.0";
-	private static final String TESTISSUE = "ICISCRM-891";
+        
+	private static final String TESTPROJECT = "Twitter4J";
+	private static final String TESTISSUE = "TFJ-700";
+        private static final String URL = "http://jira.twitter4j.org/";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -30,9 +32,11 @@ public class JiraIssueTrackerStrategyTest {
 	@Before
 	public void setUp() throws Exception {
 		issueTracker = new IssueTracker();
-		issueTracker.setName("ICIS_Jira_IssueTracker");
-		issueTracker.setUrl("http://wgvli39.swlabor.local:8181");
+		issueTracker.setName("LOG4J_Jira_IssueTracker");
+		issueTracker.setUrl(URL);
 		issueTracker.setStrategy(new JiraIssueTrackerStrategy());
+                issueTracker.setUsername("anonymous");
+                issueTracker.setPassword("anonymous");
 	}
 
 	@After

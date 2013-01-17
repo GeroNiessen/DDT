@@ -1,5 +1,26 @@
 package de.codecentric.ddt.web;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.AbstractSelect.Filtering;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.ProgressIndicator;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import de.codecentric.ddt.configuration.FileHelper;
+import de.codecentric.ddt.resourcestrategies.databases.Database;
+import de.codecentric.ddt.resourcestrategies.databases.DatabaseStrategy;
+import de.codecentric.ddt.resourcestrategies.repositories.Repository;
+import de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
@@ -10,31 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-
-import com.aragost.javahg.log.Logger;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.AbstractSelect.Filtering;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.ProgressIndicator;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Window.Notification;
-
-import de.codecentric.ddt.configuration.FileHelper;
-import de.codecentric.ddt.resourcestrategies.databases.Database;
-import de.codecentric.ddt.resourcestrategies.databases.DatabaseStrategy;
-import de.codecentric.ddt.resourcestrategies.repositories.Repository;
-import de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy;
 
 public class CheckProxyClassesComponent extends CustomComponent implements CustomApplicationComponent {
 

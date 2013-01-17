@@ -45,8 +45,8 @@ public class JiraIssueTrackerStrategy extends IssueTrackerStrategy implements Se
 		JiraRestClient jiraRestClient = null;
 		try {
 			URI jiraServerUri = new URI(issueTrackerContext.getUrl());
-			String username = issueTrackerContext.getLoginCredential().getUsername();
-			String password = issueTrackerContext.getLoginCredential().getPassword();
+			String username = issueTrackerContext.getUsername();
+			String password = issueTrackerContext.getPassword();
 			jiraRestClient = factory.createWithBasicHttpAuthentication(jiraServerUri, username, password);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block

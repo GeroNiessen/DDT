@@ -1,8 +1,11 @@
 package de.codecentric.ddt.configuration;
 
+import java.beans.Transient;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -12,11 +15,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.codecentric.ddt.configuration.logincredentials.LoginCredential;
+import de.codecentric.ddt.configuration.logincredentials.LoginCredentialStore;
+import de.codecentric.ddt.configuration.logincredentials.PropertiesFileLoginCredentialStore;
+
 @XmlRootElement
 @Entity
 public class Configuration implements Serializable{
 
 	private static final long serialVersionUID = -2128961018429921607L;
+	private static final String configurationDAOPropertiesFile = "ConfigurationDAO.properties";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -46,5 +54,22 @@ public class Configuration implements Serializable{
 			baseWorkDirectoryFolder.mkdirs();
 		}
 		return baseWorkDirectoryFolder;
+	}
+	
+	@Transient
+	public static ConfigurationDAO getConfigurationDAO(){
+		ConfigurationDAO configurationDAO;
+		Properties configurationDAOConfiguration = new Properties();
+		try {
+			configurationDAOConfiguration.load(LoginCredential.class.getClassLoader().getResourceAsStream(configurationDAOPropertiesFile));
+			String configurationDAOClass = configurationDAOConfiguration.getProperty("ConfigurationDAOImplementation");
+			Class<?> c = Class.forName(configurationDAOClass);
+			configurationDAO = (ConfigurationDAO) c.newInstance();
+		} catch (IOException|ClassNotFoundException|InstantiationException|IllegalAccessException e) {
+			configurationDAO = new XMLConfigurationDAO();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return configurationDAO;
 	}
 }

@@ -62,7 +62,7 @@ public class XMLConfigurationDAO implements ConfigurationDAO{
 
 	@Override
 	public Configuration load() {
-		Configuration restoredConfiguration;
+		Configuration restoredConfiguration = new Configuration();
 		try {
 			restoredConfiguration = (Configuration) unmarshaller.unmarshal(new FileReader(configurationFile));
 		} catch (FileNotFoundException|JAXBException e) {
