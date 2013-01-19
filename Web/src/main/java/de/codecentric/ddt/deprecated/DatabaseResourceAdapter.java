@@ -60,8 +60,6 @@ public class DatabaseResourceAdapter implements ResourceAdapter{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		
 	}
 
 	@Override
@@ -69,5 +67,4 @@ public class DatabaseResourceAdapter implements ResourceAdapter{
 		// TODO Auto-generated method stub
 		
 	}
-
 }
