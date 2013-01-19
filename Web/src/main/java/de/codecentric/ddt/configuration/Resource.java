@@ -9,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-//import javax.persistence.MappedSuperclass;
-
-import de.codecentric.ddt.configuration.logincredentials.LoginCredential;
 
 
 @MappedSuperclass
@@ -40,14 +37,7 @@ public class Resource implements Serializable{
 		this.password = "";
 		this.workDirectory = null;
 	}
-	
-	/*
-	@Transient
-	public LoginCredential getLoginCredential(){
-		return LoginCredential.getLoginCredentialStore().find(this.name);
-	}
-	*/
-	
+		
 	@Transient
 	public boolean passesSmokeTest(){
 		return strategy.passesSmokeTest(this);

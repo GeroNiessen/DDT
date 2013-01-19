@@ -16,8 +16,6 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import de.codecentric.ddt.configuration.logincredentials.LoginCredential;
-import de.codecentric.ddt.configuration.logincredentials.LoginCredentialStore;
-import de.codecentric.ddt.configuration.logincredentials.PropertiesFileLoginCredentialStore;
 
 @XmlRootElement
 @Entity

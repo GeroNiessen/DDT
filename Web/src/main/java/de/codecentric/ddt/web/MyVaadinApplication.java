@@ -30,10 +30,8 @@ import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
@@ -86,23 +84,21 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 		horizontalSplitPanel = new HorizontalSplitPanel();
 		horizontalSplitPanel.setSizeFull();
 		horizontalSplitPanel.setSplitPosition(10, Sizeable.UNITS_PERCENTAGE);
-
-		MenuComponent menuComponent = new MenuComponent(mainComponent);
-		menuComponent.addMenuButtonAndComponent("Check Repository Merges", CheckRepositoryMergesComponent.class);
-		menuComponent.addMenuButtonAndComponent("Check Generated Proxy Classes", CheckProxyClassesComponent.class);
-		superLayout.addComponent(menuComponent);	
+		
+		TabSheet tabSheet = new TabSheet();
+		DDTMenuBar menuBar = new DDTMenuBar(tabSheet);
+		superLayout.addComponent(menuBar);
 	
 		ConfigurationForm configForm = new ConfigurationForm();
 		horizontalSplitPanel.addComponent(configForm);
 
 		verticalSplitPanel = new VerticalSplitPanel();
-		mainComponent = new Label("Ready");
+		mainComponent = tabSheet;//;new Label("Ready");
 		verticalSplitPanel.addComponent(mainComponent);
 		
 		logPanel = new LogComponent();
 		verticalSplitPanel.addComponent(logPanel);
-		verticalSplitPanel.setSplitPosition(80, Sizeable.UNITS_PERCENTAGE);
-		
+		verticalSplitPanel.setSplitPosition(80, Sizeable.UNITS_PERCENTAGE);		
 		
 		horizontalSplitPanel.addComponent(verticalSplitPanel);
 		
@@ -115,10 +111,8 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 
 	@Override
 	public void terminalError(Terminal.ErrorEvent event) {
-		// Call the default implementation.
 		super.terminalError(event);
 
-		// Some custom behaviour.
 		if (getMainWindow() != null) {
 			getMainWindow().showNotification(
 					//event.getThrowable().getCause().getMessage(),
@@ -207,7 +201,6 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 		mainWindow.showNotification(notification);
 	}
 
-	// Set the current application instance
 	public static void setInstance(MyVaadinApplication application) { 					
 		threadLocal.set(application); 		
 	}      

@@ -1,7 +1,6 @@
 package de.codecentric.ddt.web.configuration;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -17,11 +16,11 @@ public class ConfigurationContainerProvider {
 
 	private static HierarchicalContainer configurationContainer;
 	private static Container applicationsContainer;
-	private static HashMap<BeanItem<de.codecentric.ddt.configuration.Application>, Container> resourcesContainers;
 
 	private static Configuration configuration;
 	private static ConfigurationDAO configurationDAO;
 
+	@SuppressWarnings("static-access")
 	public ConfigurationContainerProvider(){
 		if(configurationDAO == null){
 			configurationDAO = MyVaadinApplication.getInstance().getConfigurationDAO();	
@@ -38,76 +37,93 @@ public class ConfigurationContainerProvider {
 
 		if(configurationContainer == null){
 			configurationContainer = getConfigurationContainer(configuration);
-			initConfigurationContainer();
-			resourcesContainers = new HashMap<BeanItem<de.codecentric.ddt.configuration.Application>, Container>();
-			fillSecondaryContainers();
 		}
-	}
-
-	private void initConfigurationContainer(){
-		configurationContainer.addListener(new Container.ItemSetChangeListener() {
-			private static final long serialVersionUID = -6654514039519839190L;
-
-			@Override
-			public void containerItemSetChange(ItemSetChangeEvent event) {
-				boolean isConfigurationContainerInValidState = (configurationContainer.rootItemIds() != null && configurationContainer.rootItemIds().size() == 1); 
-				if(isConfigurationContainerInValidState){
-					fillSecondaryContainers();
-				}
-			}
-		});
 	}
 
 	public void save(){
 		configurationDAO.save(getConfigurationFromContainer());
 	}
 
-	/*
-	private Set<Item> getContainerItems(Container container){
-		Set<Item> containerItems = new HashSet<Item>();
-		for (Iterator i = container.getItemIds().iterator(); i.hasNext();) {
-			int iid = (Integer) i.next();
-			containerItems.add(container.getItem(iid));
-		}
-		return containerItems;
+	public Container getApplicationsContainer(){
+		return applicationsContainer;
 	}
-	 */
+	
+	private boolean isConfigurationContainerInValidState(){
+		return (configurationContainer.rootItemIds() != null && configurationContainer.rootItemIds().size() == 1);
+	}
+	
+	public Container createApplicationContainer(final Class<?>[] resourceStrategyFilters){
+		final IndexedContainer filteredApplicationContainer =  new IndexedContainer();
+		filteredApplicationContainer.addContainerProperty("caption", String.class, "");
+		fillApplicationContainer(filteredApplicationContainer, resourceStrategyFilters);
+		configurationContainer.addListener(new Container.ItemSetChangeListener() {
+		
+			private static final long serialVersionUID = -7542690028011567694L;
 
-	private void fillSecondaryContainers(){
+			@Override
+			public void containerItemSetChange(ItemSetChangeEvent event) {
+				if(isConfigurationContainerInValidState()){ 
+					fillApplicationContainer(filteredApplicationContainer, resourceStrategyFilters);
+				}
+			}
+		});
+		return filteredApplicationContainer;
+	}
+	
+	public void fillApplicationContainer(Container referenceContainer, Class<?>[] resourceStrategyFilters){
+		referenceContainer.removeAllItems();
+		
 		Collection<?> configurationBeanItems = configurationContainer.rootItemIds();
-
-		applicationsContainer.removeAllItems();
-
 		for(Object currentConfigurationBeanItem: configurationBeanItems){
-
-			Collection<?> newApplicationBeanItems = configurationContainer.getChildren(currentConfigurationBeanItem);
-
-			//adding new items
-			for(Object currentApplicationBeanItem: newApplicationBeanItems){
-				if(!applicationsContainer.containsId(currentApplicationBeanItem)){
-					Item addedApplicationBeanItem = applicationsContainer.addItem(currentApplicationBeanItem);
-					String currentApplicationName = ((BeanItem<de.codecentric.ddt.configuration.Application>)currentApplicationBeanItem).getBean().getName();
-					addedApplicationBeanItem.getItemProperty("caption").setValue(currentApplicationName);
+			if(configurationContainer.hasChildren(currentConfigurationBeanItem)){
+				Collection<?> applicationBeanItems = configurationContainer.getChildren(currentConfigurationBeanItem);
+				for(Object currentApplicationBeanItem: applicationBeanItems){
+					@SuppressWarnings("unchecked")
+					de.codecentric.ddt.configuration.Application currentApplication = ((BeanItem<de.codecentric.ddt.configuration.Application>) currentApplicationBeanItem).getBean(); 
+					boolean foundAllRequiredResourceStrategies = true;
+					for(Class<?> currentResourceStrategyFilter: resourceStrategyFilters){
+						@SuppressWarnings("unchecked")
+						Container currentResourceStrategyContainer = createResourceContainer((BeanItem<de.codecentric.ddt.configuration.Application>) currentApplicationBeanItem, currentResourceStrategyFilter);
+						if(currentResourceStrategyContainer.size() == 0){
+							foundAllRequiredResourceStrategies = false;
+							break;
+						}
+					}
+					if(foundAllRequiredResourceStrategies){
+						Item addedApplicationBeanItem = referenceContainer.addItem(currentApplicationBeanItem);
+						addedApplicationBeanItem.getItemProperty("caption").setValue(currentApplication.getName());
+					}
 				}
-
-				//Collection<?> currentApplicationResourceBeanItems = configurationContainer.getChildren(currentApplicationBeanItem);
-				//ToDo: remove old
-				//for (Iterator i = table.getItemIds().iterator(); i.hasNext();) {
-
-				//ToDo: fill other containers
-				/*
-				if(){
-
+			}
+		}
+	}
+	
+	public Container createResourceContainer(BeanItem<de.codecentric.ddt.configuration.Application> applicationBeanItem, Class<?> resourceStrategyFilter){
+		IndexedContainer resourceContainer = new IndexedContainer();
+		resourceContainer.addContainerProperty("caption", String.class, "");
+		if(applicationBeanItem != null){
+			fillResourceContainer(applicationBeanItem, resourceContainer, resourceStrategyFilter);
+		}
+		return resourceContainer;
+	}
+	
+	public void fillResourceContainer(BeanItem<de.codecentric.ddt.configuration.Application> applicationBeanItem, Container referenceContainer, Class<?> resourceStrategyFilter){
+		
+		referenceContainer.removeAllItems();
+		if(configurationContainer.hasChildren(applicationBeanItem)){
+			Collection<?> resourceBeanItems = configurationContainer.getChildren(applicationBeanItem);
+			for(Object currentResourceBeanItem: resourceBeanItems){
+				@SuppressWarnings("unchecked")
+				Resource currentResource = ((BeanItem<Resource>) currentResourceBeanItem).getBean();
+				if(resourceStrategyFilter == null || currentResource.isStrategyExtending(resourceStrategyFilter)){
+					Item addedResourceBeanItem = referenceContainer.addItem(currentResourceBeanItem);
+					addedResourceBeanItem.getItemProperty("caption").setValue(currentResource.getName());
 				}
-				 */
 			}
 		}
 	}
 
-	public Container getApplicationsContainer(){
-		return applicationsContainer;
-	}
-
+	@SuppressWarnings("unchecked")
 	public Configuration getConfigurationFromContainer(){
 		Configuration returnedConfiguration = null;
 
@@ -166,14 +182,4 @@ public class ConfigurationContainerProvider {
 	public HierarchicalContainer getConfigurationAsHierarchicalContainer(){
 		return configurationContainer;
 	}
-
-	/*
-	public Container getApplicationsAsContainer(){
-
-	}
-
-	public Container getRessourceAsContainer(BeanItem<de.codecentric.ddt.Application> Application){
-
-	}
-	 */
 }

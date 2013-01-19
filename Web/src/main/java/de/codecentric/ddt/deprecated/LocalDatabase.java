@@ -1,4 +1,3 @@
-
 package de.codecentric.ddt.deprecated;
 
 import java.io.File;

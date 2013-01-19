@@ -1,25 +1,16 @@
 package de.codecentric.ddt.web.configuration;
 
 import java.util.Collection;
-import java.util.HashSet;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.DefaultFieldFactory;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.Select;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.Tree;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.VerticalSplitPanel;
 
 import de.codecentric.ddt.configuration.Application;
 import de.codecentric.ddt.configuration.Resource;
@@ -28,33 +19,34 @@ public class ConfigurationForm extends Form {
 
 	private static final long serialVersionUID = -1138811604498909722L;
 
-	private Layout layout;
+	//private Layout layout;
 	private final Tree tree;
 	private HierarchicalContainer configurationContainer;
 	private ConfigurationContainerProvider configurationContainerProvider;
 	private Form editorForm;
 	private Button saveConfigurationButton;
-
+	private VerticalSplitPanel verticalSplitPanel;
+	
 	public ConfigurationForm(){
 		setHeight("100%");
-		layout = new VerticalLayout();
-		layout.setHeight("100%");
+		verticalSplitPanel = new VerticalSplitPanel();
 		
 		configurationContainerProvider = new ConfigurationContainerProvider();
 		configurationContainer = configurationContainerProvider.getConfigurationAsHierarchicalContainer();
 		tree = new Tree("Configuration");
 		tree.setContainerDataSource(configurationContainer);
 		initTree();
-		layout.addComponent(tree);
+		verticalSplitPanel.addComponent(tree);
 
 		editorForm = new Form();
 		editorForm.setCaption("Edit Item");
-
+		verticalSplitPanel.addComponent(editorForm);
+		
 		saveConfigurationButton = new Button("Save Configuration");
 		initSaveConfigurationButton();
 		getFooter().addComponent(saveConfigurationButton);
 		
-		setLayout(layout);
+		setLayout(verticalSplitPanel);
 	}
 	
 	private void initSaveConfigurationButton(){
@@ -98,13 +90,15 @@ public class ConfigurationForm extends Form {
 					if(parents == 0){
 						nextEditForm = new Form();
 					} else if(parents == 1){
+						@SuppressWarnings("unchecked")
 						BeanItem<de.codecentric.ddt.configuration.Application> selectedApplicationBeanItem = (BeanItem<de.codecentric.ddt.configuration.Application>) event.getItemId();
 						nextEditForm = new ApplicationForm(configurationContainer, null, selectedApplicationBeanItem);					
 					} else if(parents == 2){
+						@SuppressWarnings("unchecked")
 						BeanItem<Resource> selectedResourceBeanItem = (BeanItem<Resource>) event.getItemId();
 						nextEditForm = new ResourceForm(configurationContainer, null, selectedResourceBeanItem);
 					}
-					layout.replaceComponent(editorForm, nextEditForm);
+					verticalSplitPanel.replaceComponent(editorForm, nextEditForm);
 					editorForm = nextEditForm;						
 					break;
 				case ItemClickEvent.BUTTON_MIDDLE:
@@ -120,10 +114,8 @@ public class ConfigurationForm extends Form {
 
 		tree.addActionHandler(new Action.Handler() {
 
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 4677483235441889074L;
+
 			final Action CONFIGURATION_CREATE_APPLICATION = new Action("Create new application");  
 			final Action[] CONFIGURATION_ACTIONS = new Action[] { CONFIGURATION_CREATE_APPLICATION};
 			
@@ -153,65 +145,33 @@ public class ConfigurationForm extends Form {
 
 					BeanItem<Resource> newResourceBeanItem = new BeanItem<Resource>(new Resource());
 					ResourceForm resourceForm = new ResourceForm(configurationContainer, target, newResourceBeanItem);
-					layout.replaceComponent(editorForm, resourceForm);
+					verticalSplitPanel.replaceComponent(editorForm, resourceForm);
 					editorForm = resourceForm;
 				
 				} else if(APPLICATION_DELETE.equals(action)){
 					
 					configurationContainer.removeItemRecursively(target);
-					layout.replaceComponent(editorForm, new Form());
+					verticalSplitPanel.replaceComponent(editorForm, new Form());
 
 				} else if(CONFIGURATION_CREATE_APPLICATION.equals(action)){
 
 					BeanItem<de.codecentric.ddt.configuration.Application> newApplicationBeanItem = new BeanItem<Application>(new de.codecentric.ddt.configuration.Application());
 					ApplicationForm applicationForm = new ApplicationForm(configurationContainer, target, newApplicationBeanItem);
-					layout.replaceComponent(editorForm, applicationForm);
+					verticalSplitPanel.replaceComponent(editorForm, applicationForm);
 					editorForm = applicationForm;
 					
 				} else if(RESOURCE_DELETE.equals(action)){
 					
 					Object parentApplication = configurationContainer.getParent(target);
-					
-					//configurationContainer.setParent(target, null);
-					
 					configurationContainer.removeItemRecursively(target);
 					
 					Collection<?> children = configurationContainer.getChildren(parentApplication);
 					if(children == null){
 						configurationContainer.setChildrenAllowed(parentApplication, false);
 					}
-					layout.replaceComponent(editorForm, new Form());
+					verticalSplitPanel.replaceComponent(editorForm, new Form());
 				}
 			}
 		});		
 	}
-
-	/*
-	public HierarchicalContainer getConfigurationContainer(ConfigurationDAO configurationDAO){
-		HierarchicalContainer container = new HierarchicalContainer();
-		container.addContainerProperty("caption", String.class, "");
-
-		Configuration configuration = configurationDAO.load();
-		BeanItem<Configuration> configurationBeanItem = new BeanItem<Configuration>(configuration);
-		Item addedConfigurationBeanItem = container.addItem(configurationBeanItem);
-		addedConfigurationBeanItem.getItemProperty("caption").setValue("Applications");
-
-		for(de.codecentric.ddt.Application currentApplication: configuration.getApplications()){
-			BeanItem<de.codecentric.ddt.Application> currentApplicationBeanItem = new BeanItem<de.codecentric.ddt.Application>(currentApplication);
-			Item addedApplicationBeanItem = container.addItem(currentApplicationBeanItem);
-			addedApplicationBeanItem.getItemProperty("caption").setValue(currentApplication.getName());
-			container.setParent(currentApplicationBeanItem, configurationBeanItem);
-			for(Resource<?> currentResource: currentApplication.getResources()){
-				BeanItem<Resource<?>> currentResourceBeanItem = new BeanItem<Resource<?>>(currentResource);
-				Item addedResourceBeanItem = container.addItem(currentResourceBeanItem);
-				addedResourceBeanItem.getItemProperty("caption").setValue(currentResource.getName());
-				container.setChildrenAllowed(currentResourceBeanItem, false);
-				container.setParent(currentResourceBeanItem, currentApplicationBeanItem);
-			}
-		}
-		return container;
-	}
-	*/
 }
-
-

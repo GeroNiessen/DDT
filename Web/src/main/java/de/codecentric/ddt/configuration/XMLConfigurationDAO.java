@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Set;
 
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
 import javax.enterprise.inject.Alternative;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -45,18 +43,11 @@ public class XMLConfigurationDAO implements ConfigurationDAO{
 	@Override
 	public void save(Configuration configuration) {
 
-		/*
-		File oldConfigurationFile = new File(configurationFile);
-		if(oldConfigurationFile.exists()){
-			oldConfigurationFile.delete();
-		}
-		*/
-
 		try{
 			marshaller.marshal(configuration, new File(configurationFile));
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			//throw new RuntimeException("Failed to marshall");
+			throw new RuntimeException("Failed to marshall configuration");
 		}
 	}
 
@@ -67,7 +58,7 @@ public class XMLConfigurationDAO implements ConfigurationDAO{
 			restoredConfiguration = (Configuration) unmarshaller.unmarshal(new FileReader(configurationFile));
 		} catch (FileNotFoundException|JAXBException e) {
 			e.printStackTrace();
-			throw new RuntimeException("Failed to unmarshall");
+			throw new RuntimeException("Failed to unmarshall configuration");
 		}
 		return restoredConfiguration;
 	}

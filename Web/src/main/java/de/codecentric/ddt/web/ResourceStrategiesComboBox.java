@@ -1,3 +1,4 @@
+/*
 package de.codecentric.ddt.web;
 
 import java.util.HashSet;
@@ -37,3 +38,4 @@ public class ResourceStrategiesComboBox extends ComboBox{
 		}
 	}
 }
+*/

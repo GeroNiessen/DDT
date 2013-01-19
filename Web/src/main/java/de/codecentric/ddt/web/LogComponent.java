@@ -5,8 +5,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import org.apache.derby.impl.sql.compile.SetSchemaNode;
-
 import com.github.wolfie.refresher.Refresher;
 import com.github.wolfie.refresher.Refresher.RefreshListener;
 
@@ -26,9 +24,6 @@ public class LogComponent extends CustomComponent {
 	public LogComponent(){
 		setSizeFull();
 		final Panel logPanel = new Panel("Log");
-		//logPanel.setWidth("50em");
-		//logPanel.setHeight(90, UNITS_PERCENTAGE);
-		//logPanel.setSizeFull();
 				
 		logPanel.setScrollable(true);
 		logPanel.setSizeFull();
@@ -42,13 +37,12 @@ public class LogComponent extends CustomComponent {
 		final Label logView = new Label("", Label.CONTENT_PREFORMATTED);
 		logPanel.addComponent(logView);
 
-		// Needed to hack around problem with panel scroll-to-bottom
 		final Refresher refresher = new Refresher();
 		refresher.addListener(new RefreshListener() {
 			private static final long serialVersionUID = -3059855849829483172L;
 
 			public void refresh(Refresher source) {
-				// Keep it at the end
+
 				logPanel.setScrollTop(1000000);
 				logPanel.requestRepaint();
 				source.setRefreshInterval(0); // Disable
@@ -56,8 +50,6 @@ public class LogComponent extends CustomComponent {
 		});
 		layout.addComponent(refresher);
 
-		// Get the same logger here
-		//final Logger logger = Logger.getLogger(oracle.jpub.Main.class.getName());
 		final Logger logger = Logger.getLogger("");
 		logger.addHandler(new Handler() {
 			@Override
@@ -87,7 +79,6 @@ public class LogComponent extends CustomComponent {
 			}
 		});
 
-		// Button to clear the log
 		layout.addComponent(new Button("Clear Log", new Button.ClickListener() {
 			private static final long serialVersionUID = -7229654113202510280L;
 

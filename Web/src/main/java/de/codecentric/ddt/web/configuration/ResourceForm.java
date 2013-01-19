@@ -21,12 +21,12 @@ import com.vaadin.ui.Window.Notification;
 
 import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.configuration.ResourceStrategy;
-import de.codecentric.ddt.web.DDTException;
 import de.codecentric.ddt.web.MyVaadinApplication;
 
 public class ResourceForm extends Form {
 
 	private static final long serialVersionUID = 300486871594883748L;
+	
 	private static final String[] visibleItemProperties = new String[]{"name","url","username","password","workDirectory","strategy"};
 	private static final Set<String> requiredItemProperties = new HashSet<String>(Arrays.asList(new String[]{"name","url","workDirectory","strategy"}));
 
@@ -81,6 +81,7 @@ public class ResourceForm extends Form {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				@SuppressWarnings("unchecked")
 				Resource resource = ((BeanItem<Resource>) getItemDataSource()).getBean();
 				boolean resourcePassesSmokeTest = resource.passesSmokeTest();
 				if(resourcePassesSmokeTest){
@@ -98,7 +99,7 @@ public class ResourceForm extends Form {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				//try{
+				try{
 					commit();
 					Item item = getItemDataSource();
 					if(parent != null){
@@ -110,9 +111,9 @@ public class ResourceForm extends Form {
 					Item addedItem = configurationContainer.getItem(item);
 					String name = (String) item.getItemProperty("name").getValue();
 					addedItem.getItemProperty("caption").setValue(name);
-				//} catch (Exception ex){
+				} catch (Exception ex){
 					//throw new DDTException("Please fill out the mandatory fields!");
-				//}
+				}
 			}
 		});
 	}
