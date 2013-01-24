@@ -14,10 +14,7 @@ public class Database extends Resource{
 	}
 
 	public Database(Resource otherResource){
-		setName(otherResource.getName());
-		setUrl(otherResource.getUrl());
-		setWorkDirectory(otherResource.getWorkDirectory());
-		setStrategy((DatabaseStrategy) otherResource.getStrategy());
+		super(otherResource);
 	}
 
 	public void generateProxyClasses(String packageName){

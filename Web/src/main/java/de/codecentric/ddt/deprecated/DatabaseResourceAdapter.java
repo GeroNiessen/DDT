@@ -1,3 +1,4 @@
+/*
 package de.codecentric.ddt.deprecated;
 
 import java.io.File;
@@ -68,3 +69,4 @@ public class DatabaseResourceAdapter implements ResourceAdapter{
 		
 	}
 }
+*/

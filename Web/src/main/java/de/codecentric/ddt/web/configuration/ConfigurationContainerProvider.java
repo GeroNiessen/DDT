@@ -4,13 +4,12 @@ import java.util.Collection;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.data.Container.ItemSetChangeEvent;
+import com.vaadin.data.Container.PropertySetChangeEvent;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.data.util.IndexedContainer;
 
 import de.codecentric.ddt.configuration.*;
-import de.codecentric.ddt.web.MyVaadinApplication;
 
 public class ConfigurationContainerProvider {
 
@@ -20,10 +19,9 @@ public class ConfigurationContainerProvider {
 	private static Configuration configuration;
 	private static ConfigurationDAO configurationDAO;
 
-	@SuppressWarnings("static-access")
 	public ConfigurationContainerProvider(){
 		if(configurationDAO == null){
-			configurationDAO = MyVaadinApplication.getInstance().getConfigurationDAO();	
+			configurationDAO = Configuration.getConfigurationDAO();	
 		}
 		
 		if(configuration == null){
@@ -56,12 +54,12 @@ public class ConfigurationContainerProvider {
 		final IndexedContainer filteredApplicationContainer =  new IndexedContainer();
 		filteredApplicationContainer.addContainerProperty("caption", String.class, "");
 		fillApplicationContainer(filteredApplicationContainer, resourceStrategyFilters);
-		configurationContainer.addListener(new Container.ItemSetChangeListener() {
-		
-			private static final long serialVersionUID = -7542690028011567694L;
+		configurationContainer.addListener(new Container.PropertySetChangeListener() {
+			
+			private static final long serialVersionUID = -3522875724100999412L;
 
 			@Override
-			public void containerItemSetChange(ItemSetChangeEvent event) {
+			public void containerPropertySetChange(PropertySetChangeEvent event) {
 				if(isConfigurationContainerInValidState()){ 
 					fillApplicationContainer(filteredApplicationContainer, resourceStrategyFilters);
 				}

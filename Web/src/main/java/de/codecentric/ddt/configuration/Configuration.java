@@ -23,6 +23,7 @@ public class Configuration implements Serializable{
 
 	private static final long serialVersionUID = -2128961018429921607L;
 	private static final String configurationDAOPropertiesFile = "ConfigurationDAO.properties";
+	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(Configuration.class .getName());
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -65,7 +66,7 @@ public class Configuration implements Serializable{
 			configurationDAO = (ConfigurationDAO) c.newInstance();
 		} catch (IOException|ClassNotFoundException|InstantiationException|IllegalAccessException e) {
 			configurationDAO = new XMLConfigurationDAO();
-			// TODO Auto-generated catch block
+			LOGGER.warning("Failed to load ConfigurationDAO implementation from file:" + configurationDAOPropertiesFile + "\n Using XMLConfigurationDAO as default!");
 			e.printStackTrace();
 		}
 		return configurationDAO;

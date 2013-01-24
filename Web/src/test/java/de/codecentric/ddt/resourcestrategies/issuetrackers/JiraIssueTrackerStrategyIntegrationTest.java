@@ -13,7 +13,7 @@ import org.junit.Test;
 import de.codecentric.ddt.resourcestrategies.issuetrackers.IssueTracker;
 import de.codecentric.ddt.resourcestrategies.issuetrackers.JiraIssueTrackerStrategy;
 
-public class JiraIssueTrackerStrategyTest {
+public class JiraIssueTrackerStrategyIntegrationTest {
 	
 	private IssueTracker issueTracker;
         

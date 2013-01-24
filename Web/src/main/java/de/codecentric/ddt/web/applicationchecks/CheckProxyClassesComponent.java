@@ -42,7 +42,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	private Button updateRepositoryButton;
 	private Button updateDatabaseButton;
 	private ProgressIndicator updateDatabaseIndicator;
-	
+
 	private ComboBox repositoriesComboBox;
 	private ComboBox branchesComboBox;
 	private ComboBox packagesComboBox;
@@ -55,22 +55,22 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	public CheckProxyClassesComponent(){
 		super();
 	}
-	
+
 	@Override
 	public void init(){
 		init(new Class<?>[]{RepositoryStrategy.class, DatabaseStrategy.class});
-		
+
 		verticalLayout = new VerticalLayout();
 		verticalLayout.setSizeFull();
-		
+
 		verticalLayout.addComponent(applicationsComboBox);
-		
+
 		this.repositoriesComboBox = generateResourceComboBox("Repository", RepositoryStrategy.class);
 		initRepositoriesComboBoxListeners();
-		
+
 		this.updateRepositoryButton = new Button("Update Repository");
 		initUpdateRepositoryButtonListeners();
-		
+
 		HorizontalLayout horizontalRepositoryLayout = new HorizontalLayout();
 		horizontalRepositoryLayout.addComponent(this.repositoriesComboBox);
 		horizontalRepositoryLayout.addComponent(this.updateRepositoryButton);
@@ -98,16 +98,16 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 		HorizontalLayout horizontalDatabaseLayout = new HorizontalLayout();
 		this.databasesComboBox = generateResourceComboBox("Database", DatabaseStrategy.class); 
 		horizontalDatabaseLayout.addComponent(this.databasesComboBox);
-		
+
 		this.updateDatabaseButton = new Button("Generate Proxy Classes Database (Takes roughly a minute)");
 		initUpdateDatabaseButtonListeners();
 		horizontalDatabaseLayout.addComponent(this.updateDatabaseButton);
-		
+
 		this.updateDatabaseIndicator = new ProgressIndicator(new Float(0.0));
 		this.updateDatabaseIndicator.setPollingInterval(500);
 		this.updateDatabaseIndicator.setVisible(false);
 		horizontalDatabaseLayout.addComponent(updateDatabaseIndicator);
-		
+
 		verticalLayout.addComponent(horizontalDatabaseLayout);
 
 		initGenerateFileComparisonButton();
@@ -119,12 +119,12 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 		setCompositionRoot(verticalLayout);		
 	}
-	
+
 	@Override
 	public String getCheckName() {
 		return "Check Repository against Database";
 	}
-	
+
 	private Repository getSelectedRepository(){
 		Repository selectedRepository = null;
 		if(repositoriesComboBox.getValue() != null){
@@ -134,7 +134,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 		}
 		return selectedRepository;
 	}
-	
+
 	private Database getSelectedDatabase(){
 		Database selectedDatabase = null;
 		if(databasesComboBox.getValue() != null){
@@ -144,7 +144,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 		}
 		return selectedDatabase;		
 	}
-		
+
 	private void initUpdateDatabaseButtonListeners(){
 		this.updateDatabaseButton.addListener(new Button.ClickListener() {
 
@@ -154,8 +154,8 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			public void buttonClick(ClickEvent event) {
 				updateDatabaseIndicator.setVisible(true);
 				final GenerateProxyClassesThread thread = new GenerateProxyClassesThread();
-		        thread.start();
-		        updateDatabaseButton.setVisible(false);
+				thread.start();
+				updateDatabaseButton.setVisible(false);
 			}
 		});
 	}
@@ -167,15 +167,23 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				if(repositoriesComboBox.getValue() != null){
-					fillBranchesComboBox();
+					Repository selectedRepository = getSelectedRepository();
+					if(selectedRepository.getLatestRepositoryRevision() == -1){
+						//Ask to update repo 
+					}
+					if(selectedRepository.getLatestRepositoryRevision() != -1){
+						fillBranchesComboBox();
+					} else {
+						branchesComboBox.select(null);
+					}
 				}
 			}
 		});		
 	}
-	
+
 	private void initUpdateRepositoryButtonListeners(){
 		updateRepositoryButton.addListener(new Button.ClickListener() {		
-			
+
 			private static final long serialVersionUID = -2686145724959162535L;
 
 			@Override
@@ -188,23 +196,29 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			}
 		});
 	}
-	
+
 	private void fillUpdateRepositoryButton(){
 		Repository selectedRepository = getSelectedRepository();
 		if(selectedRepository != null){
 			int repositoryVersion = selectedRepository.getLatestRepositoryRevision();
 			updateRepositoryButton.setCaption("Update Repository (Current Version:" + repositoryVersion + ")");	
+		} else {
+			LOGGER.warning("No repository has been selected!");
 		}
 	}
 
 	private void fillBranchesComboBox(){
 		List<String> allBranchesInSelectedRepository = new ArrayList<String>();
 		Repository selectedRepository = getSelectedRepository();
-		allBranchesInSelectedRepository.addAll(selectedRepository.getBranches());
-		fillComboBox(branchesComboBox, allBranchesInSelectedRepository);
-		String currentBranch = selectedRepository.getCurrentBranch();
-		branchesComboBox.select(currentBranch);
-		LOGGER.info("Detected " + allBranchesInSelectedRepository + " branches");
+		if(selectedRepository != null){
+			allBranchesInSelectedRepository.addAll(selectedRepository.getBranches());
+			fillComboBox(branchesComboBox, allBranchesInSelectedRepository);
+			String currentBranch = selectedRepository.getCurrentBranch();
+			branchesComboBox.select(currentBranch);
+			LOGGER.info("Detected " + allBranchesInSelectedRepository + " branches");
+		} else {
+			branchesComboBox.removeAllItems();
+		}
 	}
 
 	private void initBranchesComboBoxListeners(){
@@ -213,8 +227,8 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				if(branchesComboBox.getValue() != null){
-					Repository selectedRepository = getSelectedRepository();
+				Repository selectedRepository = getSelectedRepository();
+				if(branchesComboBox.getValue() != null && selectedRepository != null){
 					String selectedBranch = (String) branchesComboBox.getValue();
 					if (enableDisableComponentsFeature) packagesComboBox.setEnabled(false);
 					selectedRepository.setBranch(selectedBranch);
@@ -226,6 +240,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 	private void fillPackagesComboBox(){
 		Repository selectedRepository = getSelectedRepository();
+		if(selectedRepository != null){
 		List<String> allPackagesInBranch = Arrays.asList(FileHelper.getAllJavaPackages(selectedRepository.getWorkDirectory()));
 
 		if (enableDisableComponentsFeature) packagesComboBox.setEnabled(true);
@@ -236,6 +251,9 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			selectFirstItem(packagesComboBox, allPackagesInBranch);
 		}
 		LOGGER.info("Detected " + allPackagesInBranch.size() + " Java Packages");
+		} else {
+			LOGGER.warning("No Repository has been selected to read the packages from!");
+		}
 	}
 
 	private void initPackagesComboBoxListeners(){
@@ -257,11 +275,15 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	private void fillPackagesDirectoriesComboBox(){
 		Repository selectedRepository = getSelectedRepository();
 		String selectedPackage = (String) packagesComboBox.getValue();
-		List<File> packageDirectories = Arrays.asList(FileHelper.getPackageDirectories(selectedRepository.getWorkDirectory(), selectedPackage));
-		if (enableDisableComponentsFeature) packagesDirectoriesComboBox.setEnabled(true);
-		fillComboBox(packagesDirectoriesComboBox, packageDirectories);
-		selectFirstItem(packagesDirectoriesComboBox, packageDirectories);
-		LOGGER.info("Detected " + packageDirectories.size() + " folder candidates for Java package: " + selectedPackage);
+		if(selectedPackage != null){
+			List<File> packageDirectories = Arrays.asList(FileHelper.getPackageDirectories(selectedRepository.getWorkDirectory(), selectedPackage));
+			if (enableDisableComponentsFeature) packagesDirectoriesComboBox.setEnabled(true);
+			fillComboBox(packagesDirectoriesComboBox, packageDirectories);
+			selectFirstItem(packagesDirectoriesComboBox, packageDirectories);
+			LOGGER.info("Detected " + packageDirectories.size() + " folder candidates for Java package: " + selectedPackage);
+		} else {
+			packagesDirectoriesComboBox.removeAllItems();
+		}
 	}
 
 	private void initGenerateFileComparisonButton(){
@@ -297,7 +319,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 	private void fillFileComparisonTable(List<FileComparison> comparedFiles){
 		fileComparisonTable.removeAllItems();
-		
+
 		int i = 1;
 		for(FileComparison currentFileComparison: comparedFiles){
 			FileComparisonComponent currentDiffWindowComponent = null;
@@ -312,12 +334,12 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 		}
 		fileComparisonTable.sort(new String[] { "Result", "File" }, new boolean[] { true, true });
 	}
-	
-	private class GenerateProxyClassesThread extends Thread {
-	    public void run () {
-	        double current = 0.0;
 
-	        Database selectedDatabase = getSelectedDatabase();
+	private class GenerateProxyClassesThread extends Thread {
+		public void run () {
+			double current = 0.0;
+
+			Database selectedDatabase = getSelectedDatabase();
 			String selectedPackageName = (String) packagesComboBox.getValue();
 			if(selectedDatabase != null && selectedPackageName !=null){
 				selectedDatabase.generateProxyClasses(selectedPackageName);
@@ -325,39 +347,39 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 				LOGGER.warning("Please select a database and a package name, first!");
 			}
 
-	        while (true) {
-	            // Do some "heavy work"
-	            try {
-	                sleep(50); // Sleep for 50 milliseconds
-	            } catch (InterruptedException e) {}
-	            
-	            // Show that you have made some progress:
-	            // grow the progress value until it reaches 1.0.
-	            current += 0.01;
-	            if (current>1.0)
-	                updateDatabaseIndicator.setValue(new Float(1.0));
-	            else 
-	                updateDatabaseIndicator.setValue(new Float(current));
-	            
-	            // After all the "work" has been done for a while,
-	            // take a break.
-	            if (current > 1.2) {
-	                // Restore the state to initial.
-	                updateDatabaseIndicator.setValue(new Float(0.0));
-	                updateDatabaseButton.setVisible(true);
-	                updateDatabaseIndicator.setVisible(false);
-	                break;
-	            }
-	        }
-	    }
+			while (true) {
+				// Do some "heavy work"
+				try {
+					sleep(50); // Sleep for 50 milliseconds
+				} catch (InterruptedException e) {}
+
+				// Show that you have made some progress:
+				// grow the progress value until it reaches 1.0.
+				current += 0.01;
+				if (current>1.0)
+					updateDatabaseIndicator.setValue(new Float(1.0));
+				else 
+					updateDatabaseIndicator.setValue(new Float(current));
+
+				// After all the "work" has been done for a while,
+				// take a break.
+				if (current > 1.2) {
+					// Restore the state to initial.
+					updateDatabaseIndicator.setValue(new Float(0.0));
+					updateDatabaseButton.setVisible(true);
+					updateDatabaseIndicator.setVisible(false);
+					break;
+				}
+			}
+		}
 	}
-	
+
 	//===============================================
-	
+
 
 	private List<FileComparison> getDifferences(String referenceDirectoryPath, String otherDirectoryPath){
 		LOGGER.info("Comparing files in directory:\n" + referenceDirectoryPath + "\n with files in directory:\n" + otherDirectoryPath);
-		
+
 		List<FileComparison> differences = new ArrayList<FileComparison>();
 
 		File referenceDirectory = new File(referenceDirectoryPath);
@@ -422,7 +444,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 					addDiffs();
 
 					Layout completeFilesPanelLayout = new HorizontalLayout();
-					//completeFilesPanelLayout.setWidth("98%");
+					completeFilesPanelLayout.setSizeFull();
 					Panel completeFilesPanel = new Panel(completeFilesPanelLayout);
 
 					Panel repositoryFilePanel = getFileContentPanel("<<<<<<<<<< REPOSITORY FILE >>>>>>>>>>", fileComparison.getReferenceFile(), repositorySytle);			    	
@@ -442,11 +464,13 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 		private Panel getFileContentPanel(String headLine, File inputFile, String style){
 			Panel fileContentPanel = new Panel(new VerticalLayout());
+			fileContentPanel.setSizeFull();
 			if(headLine != null){
 				fileContentPanel.addComponent(new Label(headLine));
 			}
 			try {
-				Scanner fileScanner = new Scanner(fileComparison.getOtherFile(), "UTF-8");
+				//
+				Scanner fileScanner = new Scanner(inputFile, "UTF-8");
 				while(fileScanner.hasNext()){
 					Label databaseLineLabel = new Label(fileScanner.nextLine());
 					databaseLineLabel.addStyleName(style);

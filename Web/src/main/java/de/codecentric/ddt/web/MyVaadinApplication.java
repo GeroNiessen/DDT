@@ -69,9 +69,9 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 	{	
 		setTheme("DDT-style");
 		
-		Configuration testConfiguration = generateTestConfiguration();
-		configurationDAO = new XMLConfigurationDAO();
-		configurationDAO.save(testConfiguration);
+		//Configuration testConfiguration = generateTestConfiguration();
+		//configurationDAO = new XMLConfigurationDAO();
+		//configurationDAO.save(testConfiguration);
 				
 		mainWindow = new Window("Distributed Dependency Tracker (DDT)");
 		mainWindow.setSizeFull();

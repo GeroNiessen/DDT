@@ -107,6 +107,7 @@ public class ResourceForm extends Form {
 						configurationContainer.setChildrenAllowed(parent, true);
 						configurationContainer.setParent(item, parent);
 						configurationContainer.setChildrenAllowed(item, false);
+						//tree.expandItemsRecursively(parent);
 					}
 					Item addedItem = configurationContainer.getItem(item);
 					String name = (String) item.getItemProperty("name").getValue();

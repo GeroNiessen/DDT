@@ -1,3 +1,4 @@
+/*
 package de.codecentric.ddt.deprecated;
 
 import javax.servlet.ServletContextListener;
@@ -5,7 +6,6 @@ import javax.servlet.ServletContextEvent;
 
 //import org.apache.derby.impl.drda.NetworkServerControlImpl;
 
-/*
 public class DerbyDatabaseControl implements ServletContextListener{
 
 	public static long applicationInitialized =	0L;

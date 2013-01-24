@@ -1,17 +1,17 @@
 Manifest-Version: 1.0
-Class-Path: vaadin-6.8.2.jar jpacontainer-addon-agpl-3.0-2.1.0.jar ref
+Class-Path: vaadin-6.8.7.jar jpacontainer-addon-agpl-3.0-2.1.0.jar ref
  resher-1.1.1.jar eclipselink-2.4.0.jar javax.persistence-2.0.4.v20111
  2161009.jar javax.ejb-3.1.1.jar javax.transaction-3.1.1.jar javax.ann
  otation-3.1.1.jar javax.servlet-3.1.1.jar javax.inject-1.jar cdi-api-
  1.1-PRD.jar el-api-2.2.jar jboss-interceptors-api_1.1_spec-1.0.0.Beta
  1.jar jsr250-api-1.0.jar javax.resource-3.1.2.2.jar javax.transaction
- -3.1.2.2.jar derbynet-10.9.1.0.jar derby-10.9.1.0.jar ojdbc6.jar runt
- ime12.jar translator.jar jira-rest-java-client-1.0.jar joda-time-1.6.
- jar jersey-client-1.5.jar jersey-core-1.5.jar jersey-multipart-1.5.ja
- r mimepull-1.4.jar jersey-apache-client-1.5.jar commons-httpclient-3.
- 1.jar commons-logging-1.0.4.jar commons-codec-1.2.jar jersey-json-1.5
- .jar jettison-1.1.jar stax-api-1.0.1.jar jaxb-impl-2.2.6.jar jackson-
- core-asl-1.5.5.jar jackson-mapper-asl-1.5.5.jar jackson-jaxrs-1.5.5.j
- ar jackson-xc-1.5.5.jar guava-13.0.jar oauth-client-1.5.jar oauth-sig
- nature-1.5.jar javahg-0.5-SNAPSHOT.jar
+ -3.1.2.2.jar derbynet-10.9.1.0.jar derby-10.9.1.0.jar ojdbc6-6.0.jar 
+ runtime12-12.jar translator-1.0.jar jira-rest-java-client-1.0.jar jod
+ a-time-1.6.jar jersey-client-1.5.jar jersey-core-1.5.jar jersey-multi
+ part-1.5.jar mimepull-1.4.jar jersey-apache-client-1.5.jar commons-ht
+ tpclient-3.1.jar commons-logging-1.0.4.jar commons-codec-1.2.jar jers
+ ey-json-1.5.jar jettison-1.1.jar stax-api-1.0.1.jar jaxb-impl-2.2.6.j
+ ar jackson-core-asl-1.5.5.jar jackson-mapper-asl-1.5.5.jar jackson-ja
+ xrs-1.5.5.jar jackson-xc-1.5.5.jar guava-13.0.jar oauth-client-1.5.ja
+ r oauth-signature-1.5.jar javahg-0.5-SNAPSHOT.jar
 

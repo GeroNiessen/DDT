@@ -14,6 +14,14 @@ public class IssueTracker extends Resource implements Serializable{
 	
 	private static final long serialVersionUID = -958706461860413784L;
 	
+	public IssueTracker(){
+		super();
+	}
+	
+	public IssueTracker(Resource otherResource){
+		super(otherResource);
+	}
+	
 	public List<String> getAllProjects() {
 		return getIssueTrackerStrategy().getAllProjects(this);
 	}

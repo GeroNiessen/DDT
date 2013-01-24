@@ -1,5 +1,7 @@
 package de.codecentric.ddt.resourcestrategies.repositories;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,47 +15,83 @@ import de.codecentric.ddt.configuration.Resource;
 public class Repository extends Resource{
 
 	private static final long serialVersionUID = -1820059075191723303L;
-
+	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(Repository.class .getName());
+	
 	public Repository(){
 	}
 
 	public Repository(Resource otherResource){
-		setName(otherResource.getName());
-		setUrl(otherResource.getUrl());
-		setWorkDirectory(otherResource.getWorkDirectory());
-		setStrategy((RepositoryStrategy) otherResource.getStrategy());
+		super(otherResource);
 	}
 	
 	public void getLatestVersion(){
-		getRepositoryStrategy().getLatestVersion(this);
+		try{
+			getRepositoryStrategy().getLatestVersion(this);
+		} catch(Exception ex){
+			LOGGER.warning("Failed to get latest version of repository: " + this.getName());
+		}
 	}
 	
 	public List<String> getBranches(){
-		return getRepositoryStrategy().getBranches(this);
+		try{
+			return getRepositoryStrategy().getBranches(this);
+		} catch(Exception ex){
+			LOGGER.warning("Failed to get branches of repository:" + this.getName());
+		}
+		return new ArrayList<String>();
 	}
 	
 	public void setBranch(String branchName){
-		getRepositoryStrategy().setBranch(branchName, this);
+		try{
+			getRepositoryStrategy().setBranch(branchName, this);
+		} catch (Exception ex) {
+			LOGGER.warning("Failed to switch to branch: " + branchName + " in repository: " + this.getName());
+		}
 	}
 	
 	public String getCurrentBranch(){
-		return getRepositoryStrategy().getCurrentBranch(this);
+		try{
+			return getRepositoryStrategy().getCurrentBranch(this);
+		} catch(Exception ex){
+			LOGGER.warning("Failed to get the current branch of repository: " + this.getName());
+		}
+		return "";
 	}
 	
 	public String getMainBranch(){
-		return getRepositoryStrategy().getMainBranch();
+		try{
+			return getRepositoryStrategy().getMainBranch();
+		} catch (Exception ex){
+			LOGGER.warning("Failed to get the main branch of repository: " + this.getName());
+		}
+		return "";
 	}
 	
 	public Map<String, Integer> getLatestBranchRevisions(){
-		return getRepositoryStrategy().getLatestBranchRevisions(this);
+		try{
+			return getRepositoryStrategy().getLatestBranchRevisions(this);
+		} catch(Exception ex){
+			LOGGER.warning("Failed to get the latest branch revisisons of repository: " + this.getName());
+		}
+		return new HashMap<String, Integer>();
 	}
 	
 	public Map<String, Map<String, Integer>> getLatestBranchMerges(){
-		return getRepositoryStrategy().getLatestBranchMerges(this);
+		try{
+			return getRepositoryStrategy().getLatestBranchMerges(this);
+		} catch(Exception ex){
+			LOGGER.warning("Failed to get the latest branch merges of repository: " + this.getName());
+		}
+		return new HashMap<String, Map<String, Integer>>();
 	}
 
 	public int getLatestRepositoryRevision(){
-		return getRepositoryStrategy().getLatestRepositoryRevision(this);
+		try{
+			return getRepositoryStrategy().getLatestRepositoryRevision(this);
+		} catch(Exception ex){
+			LOGGER.warning("Failed to get latest repository revision!");
+		}
+		return -1;
 	}
 	
 	private RepositoryStrategy getRepositoryStrategy(){

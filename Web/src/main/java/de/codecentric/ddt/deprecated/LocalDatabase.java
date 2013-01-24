@@ -10,6 +10,8 @@ import javax.ejb.Startup;
 
 import org.apache.derby.impl.drda.NetworkServerControlImpl;
 
+import de.codecentric.ddt.configuration.Configuration;
+
 
 @Singleton
 @Startup
@@ -20,9 +22,8 @@ public class LocalDatabase {
 	@PostConstruct
 	public static void init() throws Exception {
 		System.out.println("########### LocalDatabseSingleton init ############");
-		String userHomeDirectoryPath = System.getProperty("user.home"); //"."
-		String fileSeparator = System.getProperty("file.separator");  
-	    String derbySystemPath = userHomeDirectoryPath + ".DDT-DATABASE";
+		String fileSeparator = System.getProperty("file.separator");
+	    String derbySystemPath = Configuration.getBaseWorkDirectory().getPath() + fileSeparator + ".DDT-DATABASE";
 	    File derbySystemDirectory = new File(derbySystemPath);
 	    if(!derbySystemDirectory.exists()){
 	    	derbySystemDirectory.mkdirs();
@@ -38,7 +39,7 @@ public class LocalDatabase {
 	
 	@PreDestroy
 	public static void initShutdown() throws Exception {
-		/*
+		/* 
 		System.out.println("########### LocalDatabseSingleton initShutdown ############");
 		networkServerControlImpl = new NetworkServerControlImpl();
 		if(networkServerControlImpl.isServerStarted()){

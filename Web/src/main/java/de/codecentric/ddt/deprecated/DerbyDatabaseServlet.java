@@ -1,3 +1,4 @@
+/*
 package de.codecentric.ddt.deprecated;
 
 import java.io.File;
@@ -12,9 +13,7 @@ import org.apache.derby.impl.drda.NetworkServerControlImpl;
 
 @WebServlet(loadOnStartup=1)
 public class DerbyDatabaseServlet extends HttpServlet {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	public void init(ServletConfig config) throws ServletException {
@@ -46,5 +45,5 @@ public class DerbyDatabaseServlet extends HttpServlet {
 	public void destroy() {
 		
 	} 
-
 }
+*/

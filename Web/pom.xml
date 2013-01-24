@@ -10,8 +10,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>6.8.7</vaadin.version>
-		<gwt.version>2.3.0</gwt.version>
-		<gwt.plugin.version>2.2.0</gwt.plugin.version>
+		<gwt.version>2.5.0</gwt.version>
+		<gwt.plugin.version>2.5.0</gwt.plugin.version>
 		<eclipselink.version>2.4.0</eclipselink.version>
 	</properties>
 
@@ -24,9 +24,98 @@
 
 	<build>
 		<plugins>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-compiler-plugin</artifactId> 
-				<version>2.5.1</version> <configuration> <source>1.7</source> <target>1.7</target> 
-				</configuration> </plugin> -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.13</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*IntegrationTest.java</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<phase>integration-test</phase>
+						<configuration>
+							<excludes>
+								<exclude>none</exclude>
+							</excludes>
+							<includes>
+								<include>**/*IntegrationTest.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt.plugin.version}</version>
+				<configuration>
+					<!-- if you don't specify any modules, the plugin will find them -->
+					<!-- <modules> <module>com.mycompany.vaadinsample.gwt.ColorPickerWidgetSet</module> 
+						</modules> -->
+					<webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
+					<!-- On Mac running Snow Leopard, add "-d32" -->
+					<!-- This causes error messages (but build works) in phase "package": 
+						two processes would use the same debug port -->
+					<!--extraJvmArgs>-Xmx512M -Xss1024k -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8998</extraJvmArgs -->
+					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<runTarget>Web</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<noServer>true</noServer>
+					<port>8080</port>
+					<compileReport>false</compileReport>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>resources</goal>
+							<!--<goal>compile</goal> -->
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-codeserver</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>1.0.2</version>
+				<executions>
+					<execution>
+						<configuration>
+							<!-- if you don't specify any modules, the plugin will find them -->
+							<!-- <modules> <module>com.mycompany.vaadinsample.gwt.ColorPickerWidgetSet</module> 
+								</modules> -->
+						</configuration>
+						<goals>
+							<goal>update-widgetset</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.glassfish.embedded</groupId>
@@ -126,6 +215,28 @@
 	<dependencies>
 		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
 			<version>4.10</version> <scope>test</scope> </dependency> -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -204,24 +315,24 @@
 			<groupId>Oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>6.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
+			<!-- <scope>system</scope> -->
+			<!-- <systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath> -->
 		</dependency>
 
 		<dependency>
 			<groupId>Oracle</groupId>
 			<artifactId>runtime12</artifactId>
 			<version>12</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/runtime12.jar</systemPath>
+<!-- 			<scope>system</scope>  -->
+<!-- 			<systemPath>${project.basedir}/lib/runtime12.jar</systemPath>  --> 
 		</dependency>
 
 		<dependency>
 			<groupId>Oracle</groupId>
 			<artifactId>translator</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/translator.jar</systemPath>
+			<!--<scope>system</scope> -->
+			<!-- <systemPath>${project.basedir}/lib/translator.jar</systemPath> -->
 		</dependency>
 
 		<dependency>

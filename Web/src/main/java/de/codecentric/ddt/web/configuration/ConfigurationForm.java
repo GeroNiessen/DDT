@@ -19,7 +19,6 @@ public class ConfigurationForm extends Form {
 
 	private static final long serialVersionUID = -1138811604498909722L;
 
-	//private Layout layout;
 	private final Tree tree;
 	private HierarchicalContainer configurationContainer;
 	private ConfigurationContainerProvider configurationContainerProvider;

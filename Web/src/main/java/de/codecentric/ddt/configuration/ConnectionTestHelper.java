@@ -11,16 +11,18 @@ import java.net.URLConnection;
 
 public class ConnectionTestHelper {
 	
+	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(ConnectionTestHelper.class .getName());
+	
 	public static boolean isSocketOpen(String url, int timeOutInMilliSeconds){
 		boolean returnedValue = false;
 		URL aURL;
 		try {
 			aURL = new URL(url);
 			returnedValue = isSocketOpen(aURL.getHost(), aURL.getPort(), timeOutInMilliSeconds);
-			//System.out.println(aURL.);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			return false;
+			LOGGER.info(e.getMessage());
+			returnedValue = false;
 		}	
 		return returnedValue;
 	}
@@ -38,15 +40,13 @@ public class ConnectionTestHelper {
         Socket socket = new Socket(); 
         InetSocketAddress endPoint = new InetSocketAddress( host, port);
         if ( endPoint.isUnresolved() ) {
-            //System.out.println("Failure " + endPoint );
+        	LOGGER.warning("Endpoint is not resolveable!");
         	returnedValue = false;
         } else try { 
             socket.connect(  endPoint , timeOutInMilliSeconds );
-            //System.out.printf("Success:    %s  \n",  endPoint );
             returnedValue = true;
         } catch( IOException ioe ) {
-            //System.out.printf("Failure:    %s message: %s - %s \n", 
-            //    endPoint , ioe.getClass().getSimpleName(),  ioe.getMessage());
+        	LOGGER.warning(ioe.getMessage());
         	returnedValue = false;
         } finally {
             if ( socket != null ) try {
@@ -65,13 +65,8 @@ public class ConnectionTestHelper {
 		    myURLConnection.connect();
 		    returnedValue = true;
 		} 
-		catch (MalformedURLException e) { 
-		    // new URL() failed
-		    // ...
-		} 
-		catch (IOException e) {   
-		    // openConnection() failed
-		    // ...
+		catch (IOException e) { 
+			LOGGER.warning(e.getMessage());
 		}
 		return returnedValue;
 	}

@@ -19,6 +19,7 @@ import de.codecentric.ddt.configuration.Resource;
 public class OracleDatabaseStrategy extends DatabaseStrategy{
 
 	private static final long serialVersionUID = 2889106510128560500L;
+	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(OracleDatabaseStrategy.class .getName());
 	
 	public OracleDatabaseStrategy(){
 		setName("OracleDatabaseStrategy");
@@ -74,7 +75,7 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		try {
 			Class.forName("oracle.jdbc.OracleDriver") ;
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
+			LOGGER.warning("Failed to load Oracle Driver: oracle.jdbc.OracleDriver");
 			e1.printStackTrace();
 		}
 		try {
@@ -88,7 +89,7 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 			}
 			*/
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			LOGGER.warning("Failed to get connection to database: " + databaseContext.getName());
 			e.printStackTrace();
 		}
 		return returnedConnection;
@@ -120,8 +121,8 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		try {
 			Connection conn = getConnection(databaseContext);
 			Statement stmt = conn.createStatement(); 
-			//String storedProcedureQuery = "select OBJECT_NAME from user_objects where object_type='PACKAGE' and OBJECT_NAME like 'WSP!_%' ESCAPE '!'";
-			String storedProcedureQuery = "select OBJECT_NAME, OWNER from SYS.ALL_OBJECTS where object_type='PACKAGE' and owner='ICIS' and OBJECT_NAME like 'WSP!_%' ESCAPE '!' ORDER BY OBJECT_NAME";
+			String storedProcedureQuery = "select OBJECT_NAME from user_objects where object_type='PACKAGE' and OBJECT_NAME like 'WSP!_%' ESCAPE '!'";
+			//String storedProcedureQuery = "select OBJECT_NAME, OWNER from SYS.ALL_OBJECTS where object_type='PACKAGE' and owner='ICIS' and OBJECT_NAME like 'WSP!_%' ESCAPE '!' ORDER BY OBJECT_NAME";
 
 			ResultSet rs = stmt.executeQuery( storedProcedureQuery ) ;
 			if (rs != null && rs.next()) {
@@ -133,6 +134,7 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 			stmt.close();
 			conn.close();
 		} catch(SQLException se){
+			LOGGER.warning("Failed to read stored procedures from database schema: " + databaseContext.getName());
 			/*
 			while( se != null )
 			{

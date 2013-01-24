@@ -37,6 +37,15 @@ public class Resource implements Serializable{
 		this.password = "";
 		this.workDirectory = null;
 	}
+	
+	public Resource(Resource otherResource){
+		this.name=otherResource.getName();
+		this.url=otherResource.getUrl();
+		this.username = otherResource.getUsername();
+		this.password = otherResource.getPassword();
+		this.strategy = otherResource.getStrategy();
+		this.workDirectory = otherResource.getWorkDirectory();		
+	}
 		
 	@Transient
 	public boolean passesSmokeTest(){

@@ -29,10 +29,11 @@ import de.codecentric.ddt.configuration.Resource;
 @XmlRootElement
 @Entity
 public class MercurialRepositoryStrategy extends RepositoryStrategy {
-	
+
 	private static final long serialVersionUID = 34478867951614463L;
 	private static final int commandWaitTimeoutInSeconds = 10;
-	
+	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(MercurialRepositoryStrategy.class .getName());
+
 	public MercurialRepositoryStrategy(){
 		setName("MercurialRepositoryStrategy");
 	}
@@ -41,14 +42,14 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	public String getMainBranch() {
 		return "default";
 	}
-	
+
 	@Override
 	public boolean passesSmokeTest(Resource context) {
 		String urlWithUsernameAndPassword = getUrlWithUsernameAndPassword(context);
 		System.out.println(urlWithUsernameAndPassword);
 		return ConnectionTestHelper.testURLConnection(urlWithUsernameAndPassword, 2000);
 	}
-	
+
 	private String getUrlWithUsernameAndPassword(Resource context){
 		String urlWithUsernameAndPassword = context.getUrl(); 
 		URL url;
@@ -66,7 +67,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		}
 		return urlWithUsernameAndPassword;
 	}
-	
+
 	@Override
 	public List<String> getBranches(Resource repositoryContext) {
 		return getBranches(getMercurialRepository(repositoryContext));
@@ -91,22 +92,32 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		}
 	}
 
-	@Override
-	public void getLatestVersion(Resource repositoryContext) {
+	private boolean isRepositoryAlreadyDownloaded(Resource repositoryContext){
 		String fileSeparator = System.getProperty("file.separator");
 		String mercurialFolderPath = repositoryContext.getWorkDirectory().getPath() + fileSeparator + ".hg";
-
 		File mercurialFolder = new File(mercurialFolderPath);
-		BaseRepository mercurialRepository = BaseRepository.open(repositoryContext.getWorkDirectory());
-		if (!mercurialFolder.exists()){
-			Repository.clone(repositoryContext.getWorkDirectory(), repositoryContext.getUrl());
+		return mercurialFolder.exists();
+	}
+
+	@Override
+	public void getLatestVersion(Resource repositoryContext) {
+
+		if (!isRepositoryAlreadyDownloaded(repositoryContext)){
+			try{
+				Repository.clone(repositoryContext.getWorkDirectory(), repositoryContext.getUrl());
+			} catch(Exception ex){
+				LOGGER.warning("Failed to clone repository: " + repositoryContext.getName());
+			}
 		}
-		try {
-			PullCommand.on(mercurialRepository).execute();
-			UpdateCommand.on(mercurialRepository).execute();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(isRepositoryAlreadyDownloaded(repositoryContext)){
+			try {
+				BaseRepository mercurialRepository = BaseRepository.open(repositoryContext.getWorkDirectory());
+				PullCommand.on(mercurialRepository).execute();
+				UpdateCommand.on(mercurialRepository).execute();
+			} catch (IOException e) {
+				LOGGER.warning("Failed to pull and update repository: " + repositoryContext.getName());
+				//e.printStackTrace();
+			}
 		}
 	}
 
@@ -145,18 +156,27 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration();
 		repositoryConfiguration.setCommandWaitTimeout(commandWaitTimeoutInSeconds);
 		repositoryConfiguration.setServerIdleTime(commandWaitTimeoutInSeconds);
-		return BaseRepository.open(repositoryConfiguration, repositoryContext.getWorkDirectory());
+		if(!isRepositoryAlreadyDownloaded(repositoryContext)){
+			getLatestVersion(repositoryContext);
+		}
+		BaseRepository returnedBaseRepository = null;
+		try{
+			returnedBaseRepository = BaseRepository.open(repositoryConfiguration, repositoryContext.getWorkDirectory());
+		} catch (Exception ex){
+			LOGGER.warning(ex.getMessage());
+		}
+		return returnedBaseRepository; 
 	}
 
 	public Map<String, Map<String, Integer>> getLatestBranchMerges(Resource repositoryContext){
 		return getLatestBranchMerges(getMercurialRepository(repositoryContext));
 	}
-	
+
 	private Map<String, Map<String, Integer>> getLatestBranchMerges(BaseRepository mercurialRepository){
 
 		List<Changeset> allChangesets = getAllChangesets(mercurialRepository);
 		List<Changeset> headChangesets = getHeadChangesets(mercurialRepository);
-		
+
 		Map<String, Set<Changeset>> allBranchAncestorChangesets = getAllBranchAncestorChangesets(headChangesets, allChangesets);
 		Map<String, Set<Changeset>> allBranchChangesets = getAllBranchChangesets(headChangesets, allChangesets);
 
@@ -183,7 +203,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 
 	private Map<String, Set<Changeset>> getAllBranchChangesets(List<Changeset> headChangesets, List<Changeset> allChangesets){
-		
+
 		Map<String, Set<Changeset>> allBranchChangesets = new HashMap<String, Set<Changeset>>();
 		List<String> allBranches = getBranches(headChangesets);
 
@@ -251,7 +271,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		}
 		return revisions;
 	}
-	*/
+	 */
 
 	private int getLatestRevision(List<Changeset> changesets){
 		int latestRevision = -1;
