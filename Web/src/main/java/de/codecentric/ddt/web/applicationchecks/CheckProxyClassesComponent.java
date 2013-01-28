@@ -310,11 +310,11 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	private void initFileComparisonTable(){
 		fileComparisonTable = new Table("Generated Diff:");
 		fileComparisonTable.setSizeFull();
+		fileComparisonTable.setLazyLoading(false);
 		fileComparisonTable.addContainerProperty("File", String.class, null);
 		fileComparisonTable.addContainerProperty("Result", String.class, null);
 		fileComparisonTable.addContainerProperty("Difference", FileComparisonComponent.class, null);
 		fileComparisonTable.setColumnExpandRatio("Difference", 1);
-		verticalLayout.addComponent(fileComparisonTable);
 	}
 
 	private void fillFileComparisonTable(List<FileComparison> comparedFiles){
@@ -427,9 +427,9 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 				@Override
 				public void buttonClick(ClickEvent event) {
 					diffWindow = new Window("Diff: " + fileComparison.getReferenceFile().getName());
-					//diffWindow.setSizeFull();
-					diffWindow.setWidth("70%");
-					diffWindow.setHeight("70%");
+					
+					diffWindow.setWidth(70, UNITS_PERCENTAGE);
+					diffWindow.setHeight(70, UNITS_PERCENTAGE);
 
 					Label repositoryLabel = new Label("Repository");
 					repositoryLabel.addStyleName(repositorySytle);
@@ -493,7 +493,8 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 				} else if(diffLine.startsWith(">")){
 					diffLineLabel.addStyleName(databaseSytle);
 				}
-				diffLineLabel.setSizeUndefined();
+				//diffLineLabel.setSizeUndefined();
+				diffLineLabel.setSizeFull();
 				diffWindow.addComponent(diffLineLabel);
 			}
 		}

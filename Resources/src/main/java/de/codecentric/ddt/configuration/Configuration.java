@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.codecentric.ddt.configuration.logincredentials.LoginCredential;
 
 @XmlRootElement
 @Entity
@@ -60,7 +58,7 @@ public class Configuration implements Serializable{
 		ConfigurationDAO configurationDAO;
 		Properties configurationDAOConfiguration = new Properties();
 		try {
-			configurationDAOConfiguration.load(LoginCredential.class.getClassLoader().getResourceAsStream(configurationDAOPropertiesFile));
+			configurationDAOConfiguration.load(Configuration.class.getClassLoader().getResourceAsStream(configurationDAOPropertiesFile));
 			String configurationDAOClass = configurationDAOConfiguration.getProperty("ConfigurationDAOImplementation");
 			Class<?> c = Class.forName(configurationDAOClass);
 			configurationDAO = (ConfigurationDAO) c.newInstance();

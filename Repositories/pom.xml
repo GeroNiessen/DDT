@@ -5,7 +5,7 @@
 	<groupId>de.codecentric.ddt</groupId>
 	<artifactId>Repositories</artifactId>
 	<packaging>jar</packaging>
-	<name>Repositories for DDT</name>
+	<name>DDT Repositories</name>
 	<url>https://github.com/GeroNiessen/DDT</url>
 
 	<parent>

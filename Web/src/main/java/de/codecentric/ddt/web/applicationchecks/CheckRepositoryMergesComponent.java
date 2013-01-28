@@ -38,11 +38,11 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 	@Override
 	public void init() {
 		init(new Class<?>[]{RepositoryStrategy.class});
+		setSizeFull();
 		
 		horizontalLayout = new HorizontalLayout();
-		mainLayout = new VerticalLayout();
-		mainLayout.setSizeFull();
-		
+		horizontalLayout.setSizeUndefined();
+				
 		horizontalLayout.addComponent(applicationsComboBox);
 		
 		this.repositoriesComboBox = generateResourceComboBox("Repository", RepositoryStrategy.class);
@@ -54,11 +54,14 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 		initializeRefreshRepositoryButton();
 		horizontalLayout.addComponent(refreshRepositoryButton);
 
-		horizontalLayout.setSizeUndefined();
-
+		mainLayout = new VerticalLayout();
+		mainLayout.setSizeFull();
 		mainLayout.addComponent(horizontalLayout);
 		
-		setSizeFull();
+		initializeBranchMergeTable();
+		mainLayout.addComponent(branchMergeTable);
+		
+		mainLayout.setExpandRatio(branchMergeTable, 1.0f);
 		setCompositionRoot(mainLayout);		
 	}
 
@@ -77,53 +80,14 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 		}
 		return selectedRepository;
 	}
-	
-	/*	
-	private Set<Repository> getRepositories(){
-		Set<Repository> repositories = new HashSet<Repository>();
-		for(de.codecentric.ddt.configuration.Resource currentResource: selectedApplication.getResources()){
-			if(currentResource.isStrategyExtending(RepositoryStrategy.class)){
-				Repository detectedRepository = new Repository(currentResource);
-				repositories.add(detectedRepository);
-			}
-		}
-		return repositories;
-	}
-	*/
-
-	/*
-	private void initializeRepositoriesComboBox(de.codecentric.ddt.configuration.Application selectedApplication){
 		
-		Set<Repository> repositories = getRepositories();
-		repositoriesComboBox = new ComboBox("Repository",repositories);
-		repositoriesComboBox.setNullSelectionAllowed(false);
-		repositoriesComboBox.setImmediate(true);
-		selectFirstItem(repositoriesComboBox, repositories);
-		selectedRepository = (Repository) repositoriesComboBox.getValue();
-		repositoriesComboBox.addListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = -5893266547401238457L;
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				selectedRepository = (Repository) repositoriesComboBox.getValue();
-			}
-		});
-	}
-	*/
-	
 	private void initializeShowMergesButton(){
 		showMergesButton = new Button("Show Merges");		
 		showMergesButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 3426574344359999269L;
 
 			public void buttonClick(ClickEvent event) {
-				if(branchMergeTable != null){
-					mainLayout.removeComponent(branchMergeTable);
-				}
-				initializeBranchMergeTable();
 				fillBranchMergesTable();
-				mainLayout.addComponent(branchMergeTable);
-				mainLayout.setExpandRatio(branchMergeTable, 1.0f);
 			}
 		});
 	}
@@ -143,9 +107,6 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 	}
 		
 	private void initializeBranchMergeTable(){
-		if(this.branchMergeTable != null){
-			mainLayout.removeComponent(this.branchMergeTable);
-		}
 		this.branchMergeTable = new Table("All Branches");
 		this.branchMergeTable.setSizeFull();
 		this.branchMergeTable.addContainerProperty("Branch", String.class, null);
@@ -189,6 +150,8 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 	}
 
 	private void fillBranchMergesTable(){
+		branchMergeTable.removeAllItems();
+		
 		Repository selectedRepository = getSelectedRepository();
 		Map<String, Integer> latestBranchRevisions = selectedRepository.getLatestBranchRevisions();
 		Map<String, Map<String, Integer>> latestBranchMerges = selectedRepository.getLatestBranchMerges();

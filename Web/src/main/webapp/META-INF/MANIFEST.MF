@@ -13,5 +13,6 @@ Class-Path: vaadin-6.8.7.jar jpacontainer-addon-agpl-3.0-2.1.0.jar ref
  ey-json-1.5.jar jettison-1.1.jar stax-api-1.0.1.jar jaxb-impl-2.2.6.j
  ar jackson-core-asl-1.5.5.jar jackson-mapper-asl-1.5.5.jar jackson-ja
  xrs-1.5.5.jar jackson-xc-1.5.5.jar guava-13.0.jar oauth-client-1.5.ja
- r oauth-signature-1.5.jar javahg-0.5-SNAPSHOT.jar
+ r oauth-signature-1.5.jar javahg-0.5-SNAPSHOT.jar Resources.jar persi
+ stence-api-1.0.2.jar
 

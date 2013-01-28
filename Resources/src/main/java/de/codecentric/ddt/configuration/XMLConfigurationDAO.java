@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Set;
-
 import javax.enterprise.inject.Alternative;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

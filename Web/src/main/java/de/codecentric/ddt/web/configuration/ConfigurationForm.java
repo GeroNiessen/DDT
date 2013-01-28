@@ -150,7 +150,9 @@ public class ConfigurationForm extends Form {
 				} else if(APPLICATION_DELETE.equals(action)){
 					
 					configurationContainer.removeItemRecursively(target);
-					verticalSplitPanel.replaceComponent(editorForm, new Form());
+					Form emptyForm = new Form();
+					verticalSplitPanel.replaceComponent(editorForm, emptyForm);
+					editorForm = emptyForm;
 
 				} else if(CONFIGURATION_CREATE_APPLICATION.equals(action)){
 
@@ -168,7 +170,9 @@ public class ConfigurationForm extends Form {
 					if(children == null){
 						configurationContainer.setChildrenAllowed(parentApplication, false);
 					}
-					verticalSplitPanel.replaceComponent(editorForm, new Form());
+					Form emptyForm = new Form();
+					verticalSplitPanel.replaceComponent(editorForm, emptyForm);
+					editorForm = emptyForm;
 				}
 			}
 		});		

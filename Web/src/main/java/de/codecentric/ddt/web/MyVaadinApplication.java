@@ -86,6 +86,7 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 		horizontalSplitPanel.setSplitPosition(10, Sizeable.UNITS_PERCENTAGE);
 		
 		TabSheet tabSheet = new TabSheet();
+		tabSheet.setSizeFull();
 		DDTMenuBar menuBar = new DDTMenuBar(tabSheet);
 		superLayout.addComponent(menuBar);
 	
