@@ -69,4 +69,59 @@ public class Configuration implements Serializable{
 		}
 		return configurationDAO;
 	}
+	
+	/*
+	public Configuration generateTestConfiguration(){
+
+		Configuration configuration = new Configuration();
+
+		de.codecentric.ddt.configuration.Application icisPlusApplication = new de.codecentric.ddt.configuration.Application();
+		icisPlusApplication.setName("ICIS_PLUS");
+
+		//Repository
+		Resource icisPlusRepository = new Resource(); 
+		icisPlusRepository.setName("ICIS_Mercurial_Repository");
+		icisPlusRepository.setUrl("http://wgvli39.swlabor.local:8282");
+		icisPlusRepository.setStrategy(new MercurialRepositoryStrategy());
+
+		Resource icisPlusIssueTracker = new Resource();
+		icisPlusIssueTracker.setName("ICIS_Jira_IssueTracker");
+		icisPlusIssueTracker.setUrl("http://wgvli39.swlabor.local:8181");
+		icisPlusIssueTracker.setStrategy(new JiraIssueTrackerStrategy());
+
+		Resource icisDatabase = new Resource();
+		icisDatabase.setName("ICIS_Oracle_Database");
+		icisDatabase.setUrl("jdbc:oracle:thin:@wgvli36.swlabor.local:1522:ICISPLUS");
+		icisDatabase.setStrategy(new OracleDatabaseStrategy());
+
+		//---------------------             
+		icisPlusApplication.setResources(new HashSet<Resource>());
+		icisPlusApplication.getResources().add(icisPlusIssueTracker);
+		icisPlusApplication.getResources().add(icisPlusRepository);
+		icisPlusApplication.getResources().add(icisDatabase);
+
+		//---------------------
+
+		//---------------------
+		de.codecentric.ddt.configuration.Application secondTestApplication = new de.codecentric.ddt.configuration.Application();
+		secondTestApplication.setName("SecondTestApplication");
+		//---------------------
+		Resource firstIssueTracker = new Resource();
+		firstIssueTracker.setName("FirstJiraIssueTrackerForFirstProject");
+		firstIssueTracker.setStrategy(new JiraIssueTrackerStrategy());
+		firstIssueTracker.setUrl("http://www.example.org");
+
+		Resource secondIssueTracker = new Resource();
+		secondIssueTracker.setName("FirstJiraIssueTrackerForSecondApplication");
+		secondIssueTracker.setUrl("http://www.beispiel.de");
+		secondIssueTracker.setStrategy(new JiraIssueTrackerStrategy());
+		secondTestApplication.setResources(new HashSet<Resource>());
+		secondTestApplication.getResources().add(firstIssueTracker);
+		secondTestApplication.getResources().add(secondIssueTracker);
+
+		configuration.getApplications().add(secondTestApplication);
+		configuration.getApplications().add(icisPlusApplication);
+		return configuration;
+	}
+	 */
 }

@@ -1,7 +1,6 @@
 package de.codecentric.ddt.resourcestrategies.repositories;
 import static org.junit.Assert.*;
 
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,7 +13,6 @@ import de.codecentric.ddt.resourcestrategies.repositories.Repository;
 public class MercurialRepositoryStrategyIntegrationTest {
 	
 	private static de.codecentric.ddt.resourcestrategies.repositories.Repository repository;
-
 	
 	@Before
 	public void setUp() throws Exception {
@@ -25,15 +23,7 @@ public class MercurialRepositoryStrategyIntegrationTest {
 		repository = new Repository();
 		repository.setName("ICIS_Mercurial_Repository");
 		repository.setUrl("http://wgvli39.swlabor.local:8282");
-		//repository.setName("javaHG");
-		//repository.setUrl("https://:@bitbucket.org/aragost/javahg/src");		
 		repository.setStrategy(new MercurialRepositoryStrategy());
-		//repository.testMe();
-		//System.out.println(MercurialRepositoryStrategy.class.getInterfaces()[0]);
-		//for(String currentRepositoryStrategy: Repository.getRepositoryStrategies()){
-		//	System.out.println(currentRepositoryStrategy);
-		//}
-		//System.out.println(repository.getLoginCredential().getUsername());
 	}
 
 	@AfterClass

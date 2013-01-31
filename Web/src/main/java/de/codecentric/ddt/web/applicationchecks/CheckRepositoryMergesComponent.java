@@ -65,7 +65,6 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 		setCompositionRoot(mainLayout);		
 	}
 
-
 	@Override
 	public String getCheckName() {
 		return "Check Transitive Repository Merges";

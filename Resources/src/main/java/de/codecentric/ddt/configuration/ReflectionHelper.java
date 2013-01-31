@@ -65,34 +65,6 @@ public class ReflectionHelper {
 		}
 	}
 
-	/*
-	public static Set<Class<?>> getAllClassesImplementingInterface(String packageName, Class<?> interfaceClass){
-		Set<Class<?>> returnedRepositoryStrategies = new HashSet<Class<?>>();
-
-		Set<Class<?>> allClassesInPackage;
-		try {
-			allClassesInPackage = getClasses(packageName);
-			for(Class<?> currentClass: allClassesInPackage){
-
-				for(int j=0; j<currentClass.getInterfaces().length; j++){
-				//for(int j=0; j<currentClass.getSuperclass().length; j++){
-					Class<?> currentInterface = currentClass.getInterfaces()[j];
-					if(currentInterface.equals(interfaceClass)){
-						returnedRepositoryStrategies.add(currentClass);
-					}
-				}
-			}
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return returnedRepositoryStrategies;
-	}
-	 */
-
 	public static Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException, URISyntaxException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		assert classLoader != null;

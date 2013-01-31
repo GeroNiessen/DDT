@@ -106,12 +106,6 @@ public abstract class AbstractApplicationCheckComponent extends CustomComponent 
 				combobox.select(getFirstItem(container));
 			}
 		}
-/*
-		if(combobox.getValue() == null 
-				&& ){
-			
-		}
-		*/
 	}
 	
 	protected Object getFirstItem(Container container){

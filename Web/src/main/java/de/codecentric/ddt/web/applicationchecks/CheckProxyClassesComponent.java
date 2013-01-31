@@ -59,7 +59,8 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	@Override
 	public void init(){
 		init(new Class<?>[]{RepositoryStrategy.class, DatabaseStrategy.class});
-
+		setSizeFull();
+		
 		verticalLayout = new VerticalLayout();
 		verticalLayout.setSizeFull();
 
@@ -469,7 +470,6 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 				fileContentPanel.addComponent(new Label(headLine));
 			}
 			try {
-				//
 				Scanner fileScanner = new Scanner(inputFile, "UTF-8");
 				while(fileScanner.hasNext()){
 					Label databaseLineLabel = new Label(fileScanner.nextLine());
