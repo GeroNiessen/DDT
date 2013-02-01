@@ -3,9 +3,12 @@
   <persistence-unit name="DDTPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/__default</jta-data-source>
+    <class>de.codecentric.ddt.configuration.Application</class>
+    <class>de.codecentric.ddt.configuration.Configuration</class>
+    <class>de.codecentric.ddt.configuration.Resource</class>
+    <class>de.codecentric.ddt.configuration.ResourceStrategy</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
       <property name="eclipselink.ddl-generation.output-mode" value="database"/>
       <property name="eclipselink.target-database" value="DERBY"/>
       <property name="eclipelink.logging.level" value="FINEST"/>
@@ -16,10 +19,7 @@
        
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/chapter02DB;create=true"/> -->
-      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby:DDT-DATABASE;create=true"/>
-      <property name="javax.persistence.jdbc.user" value="APP"/>
-      <property name="javax.persistence.jdbc.password" value="APP"/>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
     </properties>
   </persistence-unit>
 </persistence>

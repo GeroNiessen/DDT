@@ -15,7 +15,7 @@ import java.util.Set;
 public class ReflectionHelper {
 
 	public static Set<Class<?>> getAllInstanciableImplementations(String packageName, Class<?> superClass){
-		Set<Class<?>> allInstantiableClasses = new HashSet<Class<?>>();
+		Set<Class<?>> allInstantiableClasses = new HashSet<>();
 		for(Class<?> currentClass: getAllImplementations(packageName, superClass)){
 			if(!(currentClass.isInterface() || isClassAbstract(currentClass))){
 				allInstantiableClasses.add(currentClass);
@@ -25,7 +25,7 @@ public class ReflectionHelper {
 	}
 
 	public static Set<Class<?>> getAllImplementations(String packageName, Class<?> superClass){
-		Set<Class<?>> allImplementations = new HashSet<Class<?>>();
+		Set<Class<?>> allImplementations = new HashSet<>();
 		Set<Class<?>> allClassesInPackage;
 		try {
 			allClassesInPackage = getClasses(packageName);
@@ -71,7 +71,7 @@ public class ReflectionHelper {
 		String fileSeparator = System.getProperty("file.separator");
 		String path = packageName.replace(".", fileSeparator);
 		Enumeration<URL> resources = classLoader.getResources(path);
-		List<File> dirs = new ArrayList<File>();
+		List<File> dirs = new ArrayList<>();
 		while (resources.hasMoreElements()) {
 			URL resource = resources.nextElement();
 			dirs.add(new File(resource.getFile())); //Not Whitespace save
@@ -81,7 +81,7 @@ public class ReflectionHelper {
 			
 			//dirs.add(new File(resource.toURI())); //Whitespace safe
 		}
-		Set<Class<?>> classes = new HashSet<Class<?>>();
+		Set<Class<?>> classes = new HashSet<>();
 		for (File directory : dirs) {
 			classes.addAll(findClasses(directory, packageName));
 		}
@@ -89,7 +89,7 @@ public class ReflectionHelper {
 	}
 
 	private static Set<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
-		Set<Class<?>> classes = new HashSet<Class<?>>();
+		Set<Class<?>> classes = new HashSet<>();
 		if (!directory.exists()) {
 			return classes;
 		}

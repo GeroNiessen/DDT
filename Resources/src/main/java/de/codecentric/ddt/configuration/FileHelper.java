@@ -12,7 +12,7 @@ import java.util.Set;
 public class FileHelper {
 
 	public static File[] getNestedSubDirectories(File directory){
-		List<File> allSubDirectories = new ArrayList<File>();
+		List<File> allSubDirectories = new ArrayList<>();
 		return getNestedSubfolders(directory, allSubDirectories).toArray(new File[]{});
 	}
 
@@ -31,7 +31,7 @@ public class FileHelper {
 	}
 	
 	public static String[] getAllJavaPackages(File startFolder){
-		Set<String> allJavaPackages = new HashSet<String>();
+		Set<String> allJavaPackages = new HashSet<>();
 		File[] allSubDirectories = getNestedSubDirectories(startFolder);
 		for(File currentFolder: allSubDirectories){
 			File[] javaFilesInCurrentFolder = javaFilesInDirectory(currentFolder);
@@ -81,7 +81,7 @@ public class FileHelper {
 	public static File[] getPackageDirectories(File startFolder, String packageName){
 		String fileSeparator = System.getProperty("file.separator");
 		String packagePath = packageName.replace(".", fileSeparator).toLowerCase();
-		List<File> returnedFolders = new ArrayList<File>();
+		List<File> returnedFolders = new ArrayList<>();
 		for(File currentFolder: FileHelper.getNestedSubDirectories(startFolder)){
 			if(currentFolder.getPath().toLowerCase().endsWith(packagePath) ){
 				if(javaFilesInDirectory(currentFolder).length > 0){

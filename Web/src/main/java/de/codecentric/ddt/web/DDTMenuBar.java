@@ -1,13 +1,11 @@
 package de.codecentric.ddt.web;
 
-import java.util.Set;
-
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
-
 import de.codecentric.ddt.configuration.ReflectionHelper;
 import de.codecentric.ddt.web.applicationchecks.AbstractApplicationCheckComponent;
+import java.util.Set;
 
 public class DDTMenuBar extends MenuBar {
 	

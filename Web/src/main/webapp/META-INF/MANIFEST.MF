@@ -13,6 +13,22 @@ Class-Path: vaadin-6.8.7.jar jpacontainer-addon-agpl-3.0-2.1.0.jar ref
  ey-json-1.5.jar jettison-1.1.jar stax-api-1.0.1.jar jaxb-impl-2.2.6.j
  ar jackson-core-asl-1.5.5.jar jackson-mapper-asl-1.5.5.jar jackson-ja
  xrs-1.5.5.jar jackson-xc-1.5.5.jar guava-13.0.jar oauth-client-1.5.ja
- r oauth-signature-1.5.jar javahg-0.5-SNAPSHOT.jar Resources.jar persi
- stence-api-1.0.2.jar
+ r oauth-signature-1.5.jar Resources.jar persistence-api-1.0.2.jar Dat
+ abases.jar maven-jar-plugin-2.4.jar maven-plugin-api-2.0.6.jar maven-
+ project-2.0.6.jar maven-settings-2.0.6.jar maven-model-2.0.6.jar plex
+ us-utils-3.0.jar plexus-container-default-1.0-alpha-9-stable-1.jar cl
+ assworlds-1.1-alpha-2.jar maven-profile-2.0.6.jar maven-artifact-mana
+ ger-2.0.6.jar maven-repository-metadata-2.0.6.jar maven-artifact-2.0.
+ 6.jar wagon-provider-api-1.0-beta-2.jar maven-plugin-registry-2.0.6.j
+ ar maven-archiver-2.5.jar maven-core-2.0.6.jar wagon-file-1.0-beta-2.
+ jar maven-plugin-parameter-documenter-2.0.6.jar wagon-http-lightweigh
+ t-1.0-beta-2.jar wagon-http-shared-1.0-beta-2.jar jtidy-4aug2000r7-de
+ v.jar xml-apis-1.0.b2.jar maven-reporting-api-2.0.6.jar doxia-sink-ap
+ i-1.0-alpha-7.jar maven-error-diagnostics-2.0.6.jar commons-cli-1.0.j
+ ar wagon-ssh-external-1.0-beta-2.jar wagon-ssh-common-1.0-beta-2.jar 
+ plexus-interactivity-api-1.0-alpha-4.jar maven-plugin-descriptor-2.0.
+ 6.jar maven-monitor-2.0.6.jar wagon-ssh-1.0-beta-2.jar jsch-0.1.27.ja
+ r plexus-archiver-2.1.jar plexus-io-2.0.2.jar plexus-interpolation-1.
+ 15.jar commons-lang-2.1.jar Repositories.jar javahg-0.5-SNAPSHOT.jar 
+ IssueTrackers.jar
 

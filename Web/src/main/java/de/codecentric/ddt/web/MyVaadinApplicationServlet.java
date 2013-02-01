@@ -2,9 +2,7 @@ package de.codecentric.ddt.web;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.AbstractApplicationServlet;
-
 import de.codecentric.ddt.deprecated.LocalDatabase;
-
 import javax.ejb.DependsOn;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

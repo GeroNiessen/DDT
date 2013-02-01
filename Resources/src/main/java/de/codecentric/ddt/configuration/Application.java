@@ -16,16 +16,15 @@ public class Application implements Serializable{
 	
 	private static final long serialVersionUID = 5725877857494839617L;
 
-	@Id
-	private String name;
+		private String name;
 	
-	@OneToMany
-	private Set<Resource> resources;
+		private Set<Resource> resources;
 	
 	public Application(){
-		resources = new HashSet<Resource>();
+		resources = new HashSet<>();
 	}
 	
+        @OneToMany(targetEntity=de.codecentric.ddt.configuration.Resource.class)
 	public Set<Resource> getResources() {
 		return resources;
 	}
@@ -34,6 +33,7 @@ public class Application implements Serializable{
 		this.resources = resources;
 	}
 	
+        @Id
 	public String getName() {
 		return name;
 	}
@@ -44,7 +44,7 @@ public class Application implements Serializable{
 	
 	@Transient
 	public Set<Resource> getRessourcesExtending(Class<?> strategyInterface){
-		Set<Resource> resourcesImpementingStrategy = new HashSet<Resource>();
+		Set<Resource> resourcesImpementingStrategy = new HashSet<>();
 		for(Resource currentResource: resources){
 			if(currentResource.isStrategyExtending(strategyInterface)){
 				resourcesImpementingStrategy.add(currentResource);

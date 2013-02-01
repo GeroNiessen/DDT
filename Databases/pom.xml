@@ -21,30 +21,6 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>Oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>6.0</version>
-			<!--<scope>system</scope>-->
-			<!--<systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>-->
-		</dependency>
-
-		<dependency>
-			<groupId>Oracle</groupId>
-			<artifactId>runtime12</artifactId>
-			<version>12</version>
-			<!--<scope>system</scope>-->
-			<!--<systemPath>${project.basedir}/lib/runtime12.jar</systemPath>-->
-		</dependency>
-
-		<dependency>
-			<groupId>Oracle</groupId>
-			<artifactId>translator</artifactId>
-			<version>1.0</version>
-			<!--<scope>system</scope>-->
-			<!--<systemPath>${project.basedir}/lib/translator.jar</systemPath>-->
-		</dependency>
-
-		<dependency>
 			<groupId>de.codecentric.ddt</groupId>
 			<artifactId>Resources</artifactId>
 			<version>1.0</version>

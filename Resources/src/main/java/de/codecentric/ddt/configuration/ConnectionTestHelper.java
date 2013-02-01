@@ -3,9 +3,9 @@ package de.codecentric.ddt.configuration;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -14,7 +14,7 @@ public class ConnectionTestHelper {
 	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(ConnectionTestHelper.class .getName());
 	
 	public static boolean isSocketOpen(String url, int timeOutInMilliSeconds){
-		boolean returnedValue = false;
+		boolean returnedValue;
 		URL aURL;
 		try {
 			aURL = new URL(url);
@@ -74,12 +74,12 @@ public class ConnectionTestHelper {
 	public static void readWebPage() throws Exception {
 
         URL oracle = new URL("http://www.oracle.com/");
-        BufferedReader in = new BufferedReader(
-        new InputStreamReader(oracle.openStream()));
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-            System.out.println(inputLine);
-        in.close();
+        try (BufferedReader in = new BufferedReader(
+             new InputStreamReader(oracle.openStream()))) {
+            String inputLine;
+            while ((inputLine = in.readLine()) != null){
+                System.out.println(inputLine);
+            }
+        }
     }
 }

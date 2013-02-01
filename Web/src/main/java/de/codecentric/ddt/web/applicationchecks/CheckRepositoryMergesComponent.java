@@ -1,21 +1,18 @@
 package de.codecentric.ddt.web.applicationchecks;
 
-import java.util.Map;
-
-import javax.enterprise.context.SessionScoped;
-
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
-
 import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.resourcestrategies.repositories.Repository;
 import de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy;
+import java.util.Map;
+import javax.enterprise.context.SessionScoped;
 
 @SessionScoped
 public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComponent{
@@ -85,6 +82,7 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 		showMergesButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 3426574344359999269L;
 
+                        @Override
 			public void buttonClick(ClickEvent event) {
 				fillBranchMergesTable();
 			}
@@ -96,6 +94,7 @@ public class CheckRepositoryMergesComponent extends AbstractApplicationCheckComp
 		refreshRepositoryButton.addListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 2387899027450222221L;
 
+                        @Override
 			public void buttonClick(ClickEvent event) {
 				Repository selectedRepository = getSelectedRepository();
 				if(selectedRepository != null){

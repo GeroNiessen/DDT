@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FileComparison{
 		
 	private File referenceFile;
@@ -63,7 +62,7 @@ public class FileComparison{
 	}
 	
 	private String[] getFileContent(File file){
-		List<String> fileContent = new ArrayList<String>();		
+		List<String> fileContent = new ArrayList<>();		
 		BufferedReader fileReader = null;
 		try {
 			fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
@@ -85,7 +84,7 @@ public class FileComparison{
 	}
 			
 	private String getDiff(String[] referenceFileContent, String[] otherFileContent){
-		List<String> returnedDiff = new ArrayList<String>();
+		List<String> returnedDiff = new ArrayList<>();
 		
         String[] x = referenceFileContent;
         String[] y = otherFileContent;
@@ -100,10 +99,11 @@ public class FileComparison{
         // compute length of LCS and all subproblems via dynamic programming
         for (int i = M-1; i >= 0; i--) {
             for (int j = N-1; j >= 0; j--) {
-                if (x[i].equals(y[j]))
+                if (x[i].equals(y[j])) {
                     opt[i][j] = opt[i+1][j+1] + 1;
-                else 
+                } else {
                     opt[i][j] = Math.max(opt[i+1][j], opt[i][j+1]);
+                }
             }
         }
 
@@ -113,15 +113,20 @@ public class FileComparison{
             if (x[i].equals(y[j])) {
                 i++;
                 j++;
+            } else if (opt[i+1][j] >= opt[i][j+1]) {
+                returnedDiff.add("< " + x[i++]);    
+            } else {
+                returnedDiff.add("> " + y[j++]);
             }
-            else if (opt[i+1][j] >= opt[i][j+1]) returnedDiff.add("< " + x[i++]);
-            else                                 returnedDiff.add("> " + y[j++]);
         }
 
         // dump out one remainder of one string if the other is exhausted
         while(i < M || j < N) {
-            if      (i == M) returnedDiff.add("> " + y[j++]);
-            else if (j == N) returnedDiff.add("< " + x[i++]);
+            if      (i == M) {
+                returnedDiff.add("> " + y[j++]);
+            } else if (j == N) {
+                returnedDiff.add("< " + x[i++]);
+            }
         }
         
         //Join Lines
@@ -142,6 +147,7 @@ public class FileComparison{
 		return otherFile;
 	}
 	
+        @Override
 	public String toString(){
 		String retunedValue = new String();
 		retunedValue = retunedValue

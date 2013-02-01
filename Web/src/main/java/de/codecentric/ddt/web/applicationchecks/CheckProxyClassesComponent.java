@@ -469,14 +469,14 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			if(headLine != null){
 				fileContentPanel.addComponent(new Label(headLine));
 			}
-			try {
-				Scanner fileScanner = new Scanner(inputFile, "UTF-8");
-				while(fileScanner.hasNext()){
-					Label databaseLineLabel = new Label(fileScanner.nextLine());
-					databaseLineLabel.addStyleName(style);
-					fileContentPanel.addComponent(databaseLineLabel);
-				}
-				fileScanner.close();
+			//try {
+                        try (Scanner fileScanner = new Scanner(inputFile, "UTF-8")) {
+                            while(fileScanner.hasNext()){
+                                    Label databaseLineLabel = new Label(fileScanner.nextLine());
+                                    databaseLineLabel.addStyleName(style);
+                                    fileContentPanel.addComponent(databaseLineLabel);
+                            }
+                        //}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,20 +1,17 @@
 package de.codecentric.ddt.web;
 
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
 import com.github.wolfie.refresher.Refresher;
 import com.github.wolfie.refresher.Refresher.RefreshListener;
-
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
-
 import com.vaadin.ui.VerticalLayout;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 
 public class LogComponent extends CustomComponent {
@@ -41,6 +38,7 @@ public class LogComponent extends CustomComponent {
 		refresher.addListener(new RefreshListener() {
 			private static final long serialVersionUID = -3059855849829483172L;
 
+                        @Override
 			public void refresh(Refresher source) {
 
 				logPanel.setScrollTop(1000000);
@@ -54,11 +52,13 @@ public class LogComponent extends CustomComponent {
 		logger.addHandler(new Handler() {
 			@Override
 			public void publish(LogRecord record) {
-				if (! isLoggable(record))
+				if (! isLoggable(record)){
 					return;
+                                }
 
-				if (getFormatter() == null)
+				if (getFormatter() == null) {
 					setFormatter(new SimpleFormatter());
+                                }
 
 				String content = (String) logView.getValue();
 				String entry = getFormatter().format(record);
@@ -82,6 +82,7 @@ public class LogComponent extends CustomComponent {
 		layout.addComponent(new Button("Clear Log", new Button.ClickListener() {
 			private static final long serialVersionUID = -7229654113202510280L;
 
+                        @Override
 			public void buttonClick(ClickEvent event) {
 				logView.setValue("");
 			}

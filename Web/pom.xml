@@ -213,8 +213,7 @@
 	</pluginRepositories>
 
 	<dependencies>
-		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
-			<version>4.10</version> <scope>test</scope> </dependency> -->
+
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
@@ -237,19 +236,18 @@
 			<scope>provided</scope>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-
+<!--
 		<dependency>
 			<groupId>com.vaadin.addon</groupId>
 			<artifactId>jpacontainer-addon-agpl-3.0</artifactId>
 			<version>2.1.0</version>
 		</dependency>
-
+-->
 		<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>refresher</artifactId>
@@ -267,7 +265,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+<!--
 		<dependency>
 			<groupId>org.glassfish.extras</groupId>
 			<artifactId>glassfish-embedded-all</artifactId>
@@ -305,6 +303,7 @@
 			<version>3.1.2.2</version>
 		</dependency>
 
+-->
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbynet</artifactId>
@@ -312,55 +311,29 @@
 		</dependency>
 
 		<dependency>
-			<groupId>Oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>6.0</version>
-			<!-- <scope>system</scope> -->
-			<!-- <systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath> -->
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Resources</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>Oracle</groupId>
-			<artifactId>runtime12</artifactId>
-			<version>12</version>
-<!-- 			<scope>system</scope>  -->
-<!-- 			<systemPath>${project.basedir}/lib/runtime12.jar</systemPath>  --> 
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Databases</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>Oracle</groupId>
-			<artifactId>translator</artifactId>
-			<version>1.0</version>
-			<!--<scope>system</scope> -->
-			<!-- <systemPath>${project.basedir}/lib/translator.jar</systemPath> -->
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Repositories</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.atlassian.jira</groupId>
-			<artifactId>jira-rest-java-client</artifactId>
-			<version>1.0</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>IssueTrackers</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.aragost.javahg</groupId>
-			<artifactId>javahg</artifactId>
-			<version>0.5-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.6</version>
-		</dependency>
-
-		<!-- <dependency> <groupId>org.apache.derby</groupId> <artifactId>derby</artifactId> 
-			<version>10.9.1.0</version> </dependency> <dependency> <groupId>org.apache.derby</groupId> 
-			<artifactId>derbytools</artifactId> <version>10.9.1.0</version> </dependency> -->
-	 <dependency>
-	  <groupId>${project.groupId}</groupId>
-	  <artifactId>Resources</artifactId>
-	  <version>${project.version}</version>
-	 </dependency>
 	</dependencies>
 
 </project>

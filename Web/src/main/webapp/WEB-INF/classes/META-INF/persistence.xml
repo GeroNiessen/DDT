@@ -3,7 +3,18 @@
   <persistence-unit name="DDTPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/__default</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <class>de.codecentric.ddt.configuration.Application</class>
+    <class>de.codecentric.ddt.configuration.Configuration</class>
+    <class>de.codecentric.ddt.configuration.Resource</class>
+    <class>de.codecentric.ddt.configuration.ResourceStrategy</class>
+    <class>de.codecentric.ddt.resourcestrategies.databases.Database</class>
+    <class>de.codecentric.ddt.resourcestrategies.databases.DatabaseStrategy</class>
+    <class>de.codecentric.ddt.resourcestrategies.issuetrackers.IssueTracker</class>
+    <class>de.codecentric.ddt.resourcestrategies.issuetrackers.IssueTrackerStrategy</class>
+    <class>de.codecentric.ddt.resourcestrategies.issuetrackers.JiraIssueTrackerStrategy</class>
+    <class>de.codecentric.ddt.resourcestrategies.repositories.Repository</class>
+    <class>de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
       <property name="eclipselink.ddl-generation.output-mode" value="database"/>

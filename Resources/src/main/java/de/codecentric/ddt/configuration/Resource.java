@@ -3,7 +3,6 @@ import java.beans.Transient;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -11,7 +10,7 @@ import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-@MappedSuperclass
+//@MappedSuperclass
 @XmlRootElement
 @Entity
 public class Resource implements Serializable{
@@ -19,8 +18,8 @@ public class Resource implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static final String reflectionPackageSearchPath = "de.codecentric.ddt";
 	
-	@Id
-	private String name;
+	
+	protected String name;
 	private String url;
 	private String username;
 	private String password;
@@ -58,6 +57,7 @@ public class Resource implements Serializable{
 		return suggestedWorkDirectoryPath;
 	}
 
+        @Id
 	public String getName() {
 		return name;
 	}
@@ -87,8 +87,9 @@ public class Resource implements Serializable{
 	private void delete(File f){
 		if((f != null) && (f.exists()==true) ){
 			if (f.isDirectory()) {
-				for (File c : f.listFiles())
+				for (File c : f.listFiles()){
 					delete(c);
+                                }
 			}
 			f.delete();
 		}
@@ -172,12 +173,15 @@ public class Resource implements Serializable{
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null)
+		if(obj == null){
 			return false;
-		if (obj == this)
+                }
+		if (obj == this) {
 			return true;
-		if (obj.getClass() != getClass())
+                }
+		if (obj.getClass() != getClass()) {
 			return false;
+                }
 		Resource otherResource = (Resource) obj;
 		if(getName().equals(otherResource.getName())){
 			return true;

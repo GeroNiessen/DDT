@@ -31,7 +31,7 @@ public class Configuration implements Serializable{
 	private Set<de.codecentric.ddt.configuration.Application> applications;
 	
 	public Configuration(){
-		this.applications = new HashSet<de.codecentric.ddt.configuration.Application>();
+		this.applications = new HashSet<>();
 	}
 
 	public Set<de.codecentric.ddt.configuration.Application> getApplications() {

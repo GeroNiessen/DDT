@@ -1,13 +1,10 @@
 package de.codecentric.ddt.web.configuration;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
@@ -15,14 +12,16 @@ import com.vaadin.ui.Form;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ApplicationForm extends Form {
 
 	private static final long serialVersionUID = -3460160607133243773L;
 	
 	private static final String[] visibleItemProperties = new String[]{"name"};
-	private static final Set<String> requiredItemProperties = new HashSet<String>(Arrays.asList(new String[]{"name"}));
+	private static final Set<String> requiredItemProperties = new HashSet<>(Arrays.asList(new String[]{"name"}));
 	
 	private Button commitButton;
 	private Button cancelButton;

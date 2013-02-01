@@ -7,15 +7,15 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-@MappedSuperclass
+//@MappedSuperclass
 @XmlRootElement
 @Entity
 public abstract class ResourceStrategy implements Serializable{
 	private static final long serialVersionUID = 1125593675301859839L;
-
-	@Id
+        
 	private String name;
 	
+        @Id
 	public String getName(){
 		return this.name; 
 	}

@@ -1,11 +1,5 @@
 package de.codecentric.ddt.web;
 
-import javax.ejb.DependsOn;
-import javax.enterprise.context.SessionScoped;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.vaadin.Application;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.Terminal;
@@ -18,8 +12,12 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
-
 import de.codecentric.ddt.web.configuration.ConfigurationForm;
+import javax.ejb.DependsOn;
+import javax.enterprise.context.SessionScoped;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * The Application's "main" class
@@ -29,7 +27,7 @@ import de.codecentric.ddt.web.configuration.ConfigurationForm;
 @DependsOn("LocalDatabase")
 public class MyVaadinApplication extends Application implements HttpServletRequestListener
 {
-	private static ThreadLocal<MyVaadinApplication> threadLocal = new ThreadLocal<MyVaadinApplication>(); 
+	private static ThreadLocal<MyVaadinApplication> threadLocal = new ThreadLocal<>(); 
 	private static final long serialVersionUID = 5079596946272499850L;
 
 	private Window mainWindow;

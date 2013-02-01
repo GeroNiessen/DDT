@@ -1,34 +1,32 @@
 package de.codecentric.ddt.web.configuration;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
-
 import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.configuration.ResourceStrategy;
 import de.codecentric.ddt.web.MyVaadinApplication;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ResourceForm extends Form {
 
 	private static final long serialVersionUID = 300486871594883748L;
 	
 	private static final String[] visibleItemProperties = new String[]{"name","url","username","password","workDirectory","strategy"};
-	private static final Set<String> requiredItemProperties = new HashSet<String>(Arrays.asList(new String[]{"name","url","workDirectory","strategy"}));
+	private static final Set<String> requiredItemProperties = new HashSet<>(Arrays.asList(new String[]{"name","url","workDirectory","strategy"}));
 
 	private Button commitButton;
 	private Button cancelButton;
@@ -164,7 +162,7 @@ public class ResourceForm extends Form {
 			setCaption("Strategy");
 
 			Set<Class<?>> resourceStrategyClasses = Resource.getAllInstanciableRessourceStrategies();
-			Set<ResourceStrategy> resourceStrategyInstances = new HashSet<ResourceStrategy>();
+			Set<ResourceStrategy> resourceStrategyInstances = new HashSet<>();
 			for(Class<?> currentResourceStrategyClass: resourceStrategyClasses){
 				ResourceStrategy currentResourceStategyInstance;
 				try {

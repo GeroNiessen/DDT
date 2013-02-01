@@ -1,15 +1,13 @@
 package de.codecentric.ddt.web.configuration;
 
-import java.util.Collection;
-
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
 import com.vaadin.data.Container.PropertySetChangeEvent;
+import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.data.util.IndexedContainer;
-
 import de.codecentric.ddt.configuration.*;
+import java.util.Collection;
 
 public class ConfigurationContainerProvider {
 
@@ -157,17 +155,17 @@ public class ConfigurationContainerProvider {
 		HierarchicalContainer container = new HierarchicalContainer();
 		container.addContainerProperty("caption", String.class, "");
 
-		BeanItem<Configuration> configurationBeanItem = new BeanItem<Configuration>(configuration);
+		BeanItem<Configuration> configurationBeanItem = new BeanItem<>(configuration);
 		Item addedConfigurationBeanItem = container.addItem(configurationBeanItem);
 		addedConfigurationBeanItem.getItemProperty("caption").setValue("Applications");
 
 		for(de.codecentric.ddt.configuration.Application currentApplication: configuration.getApplications()){
-			BeanItem<de.codecentric.ddt.configuration.Application> currentApplicationBeanItem = new BeanItem<de.codecentric.ddt.configuration.Application>(currentApplication);
+			BeanItem<de.codecentric.ddt.configuration.Application> currentApplicationBeanItem = new BeanItem<>(currentApplication);
 			Item addedApplicationBeanItem = container.addItem(currentApplicationBeanItem);
 			addedApplicationBeanItem.getItemProperty("caption").setValue(currentApplication.getName());
 			container.setParent(currentApplicationBeanItem, configurationBeanItem);
 			for(Resource currentResource: currentApplication.getResources()){
-				BeanItem<Resource> currentResourceBeanItem = new BeanItem<Resource>(currentResource);
+				BeanItem<Resource> currentResourceBeanItem = new BeanItem<>(currentResource);
 				Item addedResourceBeanItem = container.addItem(currentResourceBeanItem);
 				addedResourceBeanItem.getItemProperty("caption").setValue(currentResource.getName());
 				container.setChildrenAllowed(currentResourceBeanItem, false);

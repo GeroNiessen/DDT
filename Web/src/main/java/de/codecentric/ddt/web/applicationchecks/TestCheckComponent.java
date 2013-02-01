@@ -2,7 +2,6 @@ package de.codecentric.ddt.web.applicationchecks;
 
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.VerticalLayout;
-
 import de.codecentric.ddt.resourcestrategies.databases.DatabaseStrategy;
 import de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy;
 
