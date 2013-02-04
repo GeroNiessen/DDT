@@ -15,28 +15,12 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<repositories>
-
-		<repository>
-			<id>sonatype-ossrh</id>
-			<name>Sonatype Open Source Software Repository Hosting</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</repository>
-
-	</repositories>
-
 	<dependencies>
 
 		<dependency>
 			<groupId>de.codecentric.ddt</groupId>
 			<artifactId>Resources</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.aragost.javahg</groupId>
-			<artifactId>javahg</artifactId>
-			<version>0.5-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 
 	</dependencies>

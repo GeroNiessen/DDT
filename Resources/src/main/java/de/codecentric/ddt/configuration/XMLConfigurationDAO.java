@@ -56,8 +56,9 @@ public class XMLConfigurationDAO implements ConfigurationDAO{
 		try {
 			restoredConfiguration = (Configuration) unmarshaller.unmarshal(new FileReader(configurationFile));
 		} catch (FileNotFoundException|JAXBException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Failed to unmarshall configuration");
+                        
+			//e.printStackTrace();
+			//throw new RuntimeException("Failed to unmarshall configuration");
 		}
 		return restoredConfiguration;
 	}

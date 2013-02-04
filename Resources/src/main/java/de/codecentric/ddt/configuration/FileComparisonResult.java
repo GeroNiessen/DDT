@@ -1,4 +1,4 @@
-package de.codecentric.ddt.web.applicationchecks;
+package de.codecentric.ddt.configuration;
 
 public enum FileComparisonResult {
 	EQUAL {

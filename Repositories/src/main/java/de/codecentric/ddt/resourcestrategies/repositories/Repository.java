@@ -36,7 +36,7 @@ public class Repository extends Resource {
         } catch (Exception ex) {
             LOGGER.warning("Failed to get branches of repository:" + this.getName());
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
     public void setBranch(String branchName) {
@@ -71,7 +71,7 @@ public class Repository extends Resource {
         } catch (Exception ex) {
             LOGGER.warning("Failed to get the latest branch revisisons of repository: " + this.getName());
         }
-        return new HashMap<String, Integer>();
+        return new HashMap<>();
     }
 
     public Map<String, Map<String, Integer>> getLatestBranchMerges() {
@@ -80,7 +80,7 @@ public class Repository extends Resource {
         } catch (Exception ex) {
             LOGGER.warning("Failed to get the latest branch merges of repository: " + this.getName());
         }
-        return new HashMap<String, Map<String, Integer>>();
+        return new HashMap<>();
     }
 
     public int getLatestRepositoryRevision() {

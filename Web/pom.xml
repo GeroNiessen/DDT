@@ -193,13 +193,6 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</repository>
 
-		<repository>
-			<id>atlassian.com</id>
-			<name>Atlassian</name>
-			<url>http://maven.atlassian.com/public</url>
-			<layout>default</layout>
-		</repository>
-
 	</repositories>
 
 	<pluginRepositories>
@@ -221,6 +214,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+<!--
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -235,7 +229,7 @@
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
-
+-->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin</artifactId>

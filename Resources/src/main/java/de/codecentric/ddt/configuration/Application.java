@@ -3,11 +3,9 @@ package de.codecentric.ddt.configuration;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -42,7 +40,6 @@ public class Application implements Serializable{
 		this.name = name;
 	}
 	
-	@Transient
 	public Set<Resource> getRessourcesExtending(Class<?> strategyInterface){
 		Set<Resource> resourcesImpementingStrategy = new HashSet<>();
 		for(Resource currentResource: resources){

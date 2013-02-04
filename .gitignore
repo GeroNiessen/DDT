@@ -52,3 +52,6 @@ local.properties
 target/
 Servers/
 
+/CommandLineClient/CodecentricTest.sh
+/CommandLineClient/CodecentricTest.bat.sh
+/CommandLineClient/CodecentricTest.cmd

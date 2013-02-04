@@ -17,8 +17,8 @@ public class Resource implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private static final String reflectionPackageSearchPath = "de.codecentric.ddt";
-	
-	
+		
+        @Id
 	protected String name;
 	private String url;
 	private String username;
@@ -57,8 +57,7 @@ public class Resource implements Serializable{
 		return suggestedWorkDirectoryPath;
 	}
 
-        @Id
-	public String getName() {
+        	public String getName() {
 		return name;
 	}
 	
@@ -79,9 +78,11 @@ public class Resource implements Serializable{
 	}
 
 	public void purgeWorkDirectory(){
+            if(!getWorkDirectory().getPath().equals(suggestWorkDirectoryPath())){
 		for(File currentFile: getWorkDirectory().listFiles()){
 			delete(currentFile);
 		}
+            }
 	}
 
 	private void delete(File f){

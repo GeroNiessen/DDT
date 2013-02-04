@@ -32,7 +32,7 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 
 	@Override
 	public void generateProxyClasses(Resource databaseContext, String packageName) {
-		databaseContext.purgeWorkDirectory();
+		
 		String fileSeparator = System.getProperty("file.separator");
 		
 		String[] jpubArguments = new String[]{
@@ -65,7 +65,12 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 	private String getConnectionString(Resource databaseContext){
 		String userName = databaseContext.getUsername();
 		String password = databaseContext.getPassword();
-		String connectionString = databaseContext.getUrl().replace("@", userName + "/" + password + "@");
+                String connectionString;
+                if(!("".equals(userName) || "".equals(password))){
+                    connectionString = databaseContext.getUrl().replace("@", userName + "/" + password + "@");
+                } else {
+                    connectionString = databaseContext.getUrl();
+                }
 		return connectionString;
 	}
 	

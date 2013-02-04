@@ -16,6 +16,7 @@
 		<module>Databases</module>
                  <module>OracleDatabaseStrategy</module>
                 <module>MercurialRepositoryStrategy</module>
+    <module>CommandLineClient</module>
   </modules>
 
 	<build>

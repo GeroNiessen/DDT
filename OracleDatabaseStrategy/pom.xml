@@ -41,9 +41,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>de.codecentric.ddt</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>Databases</artifactId>
-			<version>1.0</version>
+			<version>${project.version}</version>
 		</dependency>
 
   </dependencies>

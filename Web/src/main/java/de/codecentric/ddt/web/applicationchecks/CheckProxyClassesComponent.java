@@ -1,5 +1,6 @@
 package de.codecentric.ddt.web.applicationchecks;
 
+import de.codecentric.ddt.configuration.FileComparison;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
@@ -25,7 +26,6 @@ import de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy;
 import de.codecentric.ddt.web.MyVaadinApplication;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -209,7 +209,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	}
 
 	private void fillBranchesComboBox(){
-		List<String> allBranchesInSelectedRepository = new ArrayList<String>();
+		List<String> allBranchesInSelectedRepository = new ArrayList<>();
 		Repository selectedRepository = getSelectedRepository();
 		if(selectedRepository != null){
 			allBranchesInSelectedRepository.addAll(selectedRepository.getBranches());
@@ -265,7 +265,9 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				if (enableDisableComponentsFeature) packagesDirectoriesComboBox.setEnabled(false);
+				if (enableDisableComponentsFeature) { 
+                                    packagesDirectoriesComboBox.setEnabled(false);
+                                }
 				if(packagesComboBox.getValue() != null){
 					fillPackagesDirectoriesComboBox();
 				}
@@ -278,7 +280,9 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 		String selectedPackage = (String) packagesComboBox.getValue();
 		if(selectedPackage != null){
 			List<File> packageDirectories = Arrays.asList(FileHelper.getPackageDirectories(selectedRepository.getWorkDirectory(), selectedPackage));
-			if (enableDisableComponentsFeature) packagesDirectoriesComboBox.setEnabled(true);
+			if (enableDisableComponentsFeature) {
+                            packagesDirectoriesComboBox.setEnabled(true);
+                        }
 			fillComboBox(packagesDirectoriesComboBox, packageDirectories);
 			selectFirstItem(packagesDirectoriesComboBox, packageDirectories);
 			LOGGER.info("Detected " + packageDirectories.size() + " folder candidates for Java package: " + selectedPackage);
@@ -301,7 +305,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 				if(existingProxyClassesFolder != null && packageName != null && selectedDatabase != null){
 					String fileSeparator = java.io.File.separator;
 					String generatedProxyClassesPath = selectedDatabase.getWorkDirectory() + fileSeparator + packageName.replace(".", fileSeparator);
-					List<FileComparison> comparedFiles = getDifferences(existingProxyClassesFolder.getPath(), generatedProxyClassesPath);
+					List<FileComparison> comparedFiles = FileHelper.getDifferences(existingProxyClassesFolder.getPath(), generatedProxyClassesPath);
 					fillFileComparisonTable(comparedFiles);
 				}
 			}
@@ -337,6 +341,8 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	}
 
 	private class GenerateProxyClassesThread extends Thread {
+            @SuppressWarnings("SleepWhileInLoop")
+            @Override
 		public void run () {
 			double current = 0.0;
 
@@ -356,14 +362,12 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 				// Show that you have made some progress:
 				// grow the progress value until it reaches 1.0.
-				current += 0.01;
-				if (current>1.0)
+				current += 0.10;
+				if (current>1.0) {
 					updateDatabaseIndicator.setValue(new Float(1.0));
-				else 
+                                } else {
 					updateDatabaseIndicator.setValue(new Float(current));
-
-				// After all the "work" has been done for a while,
-				// take a break.
+                                }
 				if (current > 1.2) {
 					// Restore the state to initial.
 					updateDatabaseIndicator.setValue(new Float(0.0));
@@ -376,31 +380,6 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	}
 
 	//===============================================
-
-
-	private List<FileComparison> getDifferences(String referenceDirectoryPath, String otherDirectoryPath){
-		LOGGER.info("Comparing files in directory:\n" + referenceDirectoryPath + "\n with files in directory:\n" + otherDirectoryPath);
-
-		List<FileComparison> differences = new ArrayList<FileComparison>();
-
-		File referenceDirectory = new File(referenceDirectoryPath);
-		File otherDirectory = new File(otherDirectoryPath);
-
-		File[] referenceDiretoryFiles = referenceDirectory.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.toLowerCase().endsWith(".java");
-			}
-		});
-
-		String fileSeparator = System.getProperty("file.separator");
-		for(File currentFile: referenceDiretoryFiles){
-			String otherFilePath = otherDirectory.getPath() + fileSeparator + currentFile.getName();
-			File otherFile = new File(otherFilePath);
-			differences.add(new FileComparison(currentFile, otherFile));
-		}
-		return differences;
-	}
 
 	private class FileComparisonComponent extends CustomComponent {
 
@@ -418,7 +397,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			init();
 		}
 
-		public void init() {
+		public final void init() {
 
 			buttonPanel = new Panel(new HorizontalLayout());    	
 			buttonPanel.addComponent(new Button("Compare Files", new Button.ClickListener(){
@@ -469,16 +448,14 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			if(headLine != null){
 				fileContentPanel.addComponent(new Label(headLine));
 			}
-			//try {
                         try (Scanner fileScanner = new Scanner(inputFile, "UTF-8")) {
                             while(fileScanner.hasNext()){
                                     Label databaseLineLabel = new Label(fileScanner.nextLine());
                                     databaseLineLabel.addStyleName(style);
                                     fileContentPanel.addComponent(databaseLineLabel);
                             }
-                        //}
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+				LOGGER.warning("Failed to read file: " + inputFile);
 				e.printStackTrace();
 			}
 			return fileContentPanel;
@@ -493,7 +470,6 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 				} else if(diffLine.startsWith(">")){
 					diffLineLabel.addStyleName(databaseSytle);
 				}
-				//diffLineLabel.setSizeUndefined();
 				diffLineLabel.setSizeFull();
 				diffWindow.addComponent(diffLineLabel);
 			}
