@@ -22,7 +22,7 @@ public enum FileComparisonResult {
 	MISSING_OTHER_FILE {
 		@Override
 		public String toString() {
-			return "MISSING OTHER FILE";
+			return "Missing other file";
 		}
 	},
 	MISSING_BOTH_FILES {
