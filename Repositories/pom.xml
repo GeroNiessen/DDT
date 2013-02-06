@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>de.codecentric.ddt</groupId>
 			<artifactId>Resources</artifactId>
-			<version>${project.version}</version>
+			<version>1.0</version>
 		</dependency>
 
 	</dependencies>

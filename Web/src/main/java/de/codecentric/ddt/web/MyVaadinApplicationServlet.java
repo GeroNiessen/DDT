@@ -2,7 +2,7 @@ package de.codecentric.ddt.web;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.AbstractApplicationServlet;
-import de.codecentric.ddt.deprecated.LocalDatabase;
+import de.codecentric.ddt.configuration.LocalDatabase;
 import javax.ejb.DependsOn;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,14 +27,6 @@ public class MyVaadinApplicationServlet extends AbstractApplicationServlet {
 
     @Override
     protected Application getNewApplication(HttpServletRequest request) throws ServletException {
-    	try {
-    		System.out.println("########### Vaadin Servlet ##############");
-			LocalDatabase.init();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	//return application.get();
     	return new MyVaadinApplication();
     }
  }

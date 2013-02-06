@@ -34,11 +34,15 @@ public class FileHelper {
         }
         return allSubDirectories;
     }
+    
+    public static FolderComparison getFolderComparison(String referenceDirectoryPath, String otherDirectoryPath){
+        return new FolderComparison(getDifferences(referenceDirectoryPath, otherDirectoryPath));
+    }
 
-    public static List<FileComparison> getDifferences(String referenceDirectoryPath, String otherDirectoryPath) {
+    public static Set<FileComparison> getDifferences(String referenceDirectoryPath, String otherDirectoryPath) {
         LOGGER.info("Comparing files in directory:\n" + referenceDirectoryPath + "\n with files in directory:\n" + otherDirectoryPath);
 
-        List<FileComparison> differences = new ArrayList<>();
+        Set<FileComparison> differences = new HashSet<>();
 
         File referenceDirectory = new File(referenceDirectoryPath);
         File otherDirectory = new File(otherDirectoryPath);

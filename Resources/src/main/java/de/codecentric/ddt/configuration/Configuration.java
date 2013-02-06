@@ -123,5 +123,5 @@ public class Configuration implements Serializable{
 		configuration.getApplications().add(icisPlusApplication);
 		return configuration;
 	}
-	 */
+	*/
 }

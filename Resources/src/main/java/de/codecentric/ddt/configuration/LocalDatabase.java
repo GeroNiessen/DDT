@@ -1,4 +1,4 @@
-package de.codecentric.ddt.deprecated;
+package de.codecentric.ddt.configuration;
 
 import java.io.File;
 import java.io.PrintWriter;

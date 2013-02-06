@@ -1,34 +1,32 @@
 Manifest-Version: 1.0
-Class-Path: vaadin-6.8.7.jar jpacontainer-addon-agpl-3.0-2.1.0.jar ref
- resher-1.1.1.jar eclipselink-2.4.0.jar javax.persistence-2.0.4.v20111
- 2161009.jar javax.ejb-3.1.1.jar javax.transaction-3.1.1.jar javax.ann
- otation-3.1.1.jar javax.servlet-3.1.1.jar javax.inject-1.jar cdi-api-
- 1.1-PRD.jar el-api-2.2.jar jboss-interceptors-api_1.1_spec-1.0.0.Beta
- 1.jar jsr250-api-1.0.jar javax.resource-3.1.2.2.jar javax.transaction
- -3.1.2.2.jar derbynet-10.9.1.0.jar derby-10.9.1.0.jar ojdbc6-6.0.jar 
- runtime12-12.jar translator-1.0.jar jira-rest-java-client-1.0.jar jod
- a-time-1.6.jar jersey-client-1.5.jar jersey-core-1.5.jar jersey-multi
- part-1.5.jar mimepull-1.4.jar jersey-apache-client-1.5.jar commons-ht
- tpclient-3.1.jar commons-logging-1.0.4.jar commons-codec-1.2.jar jers
- ey-json-1.5.jar jettison-1.1.jar stax-api-1.0.1.jar jaxb-impl-2.2.6.j
- ar jackson-core-asl-1.5.5.jar jackson-mapper-asl-1.5.5.jar jackson-ja
- xrs-1.5.5.jar jackson-xc-1.5.5.jar guava-13.0.jar oauth-client-1.5.ja
- r oauth-signature-1.5.jar Resources.jar persistence-api-1.0.2.jar Dat
- abases.jar maven-jar-plugin-2.4.jar maven-plugin-api-2.0.6.jar maven-
- project-2.0.6.jar maven-settings-2.0.6.jar maven-model-2.0.6.jar plex
- us-utils-3.0.jar plexus-container-default-1.0-alpha-9-stable-1.jar cl
- assworlds-1.1-alpha-2.jar maven-profile-2.0.6.jar maven-artifact-mana
- ger-2.0.6.jar maven-repository-metadata-2.0.6.jar maven-artifact-2.0.
- 6.jar wagon-provider-api-1.0-beta-2.jar maven-plugin-registry-2.0.6.j
- ar maven-archiver-2.5.jar maven-core-2.0.6.jar wagon-file-1.0-beta-2.
- jar maven-plugin-parameter-documenter-2.0.6.jar wagon-http-lightweigh
- t-1.0-beta-2.jar wagon-http-shared-1.0-beta-2.jar jtidy-4aug2000r7-de
- v.jar xml-apis-1.0.b2.jar maven-reporting-api-2.0.6.jar doxia-sink-ap
- i-1.0-alpha-7.jar maven-error-diagnostics-2.0.6.jar commons-cli-1.0.j
- ar wagon-ssh-external-1.0-beta-2.jar wagon-ssh-common-1.0-beta-2.jar 
- plexus-interactivity-api-1.0-alpha-4.jar maven-plugin-descriptor-2.0.
- 6.jar maven-monitor-2.0.6.jar wagon-ssh-1.0-beta-2.jar jsch-0.1.27.ja
- r plexus-archiver-2.1.jar plexus-io-2.0.2.jar plexus-interpolation-1.
- 15.jar commons-lang-2.1.jar Repositories.jar javahg-0.5-SNAPSHOT.jar 
- IssueTrackers.jar
+Class-Path: vaadin-6.8.7.jar refresher-1.1.1.jar eclipselink-2.4.0.jar
+  javax.persistence-2.0.4.v201112161009.jar derbynet-10.9.1.0.jar derb
+ y-10.9.1.0.jar Resources.jar jaxb-impl-2.2.6.jar cdi-api-1.1-PRD.jar 
+ el-api-2.2.jar jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar jsr250
+ -api-1.0.jar javax.inject-1.jar javax.ejb-3.1.1.jar javax.transaction
+ -3.1.1.jar javax.annotation-3.1.1.jar Databases.jar maven-jar-plugin-
+ 2.4.jar maven-plugin-api-2.0.6.jar maven-project-2.0.6.jar maven-sett
+ ings-2.0.6.jar maven-model-2.0.6.jar plexus-utils-3.0.jar plexus-cont
+ ainer-default-1.0-alpha-9-stable-1.jar classworlds-1.1-alpha-2.jar ma
+ ven-profile-2.0.6.jar maven-artifact-manager-2.0.6.jar maven-reposito
+ ry-metadata-2.0.6.jar maven-artifact-2.0.6.jar wagon-provider-api-1.0
+ -beta-2.jar maven-plugin-registry-2.0.6.jar maven-archiver-2.5.jar ma
+ ven-core-2.0.6.jar wagon-file-1.0-beta-2.jar maven-plugin-parameter-d
+ ocumenter-2.0.6.jar wagon-http-lightweight-1.0-beta-2.jar wagon-http-
+ shared-1.0-beta-2.jar jtidy-4aug2000r7-dev.jar xml-apis-1.0.b2.jar ma
+ ven-reporting-api-2.0.6.jar doxia-sink-api-1.0-alpha-7.jar maven-erro
+ r-diagnostics-2.0.6.jar commons-cli-1.0.jar wagon-ssh-external-1.0-be
+ ta-2.jar wagon-ssh-common-1.0-beta-2.jar plexus-interactivity-api-1.0
+ -alpha-4.jar maven-plugin-descriptor-2.0.6.jar maven-monitor-2.0.6.ja
+ r wagon-ssh-1.0-beta-2.jar jsch-0.1.27.jar plexus-archiver-2.1.jar pl
+ exus-io-2.0.2.jar plexus-interpolation-1.15.jar commons-lang-2.1.jar 
+ Repositories.jar IssueTrackers.jar jira-rest-java-client-1.0.jar joda
+ -time-1.6.jar jersey-client-1.5.jar jersey-core-1.5.jar jersey-multip
+ art-1.5.jar mimepull-1.4.jar jersey-apache-client-1.5.jar commons-htt
+ pclient-3.1.jar commons-logging-1.0.4.jar commons-codec-1.2.jar jerse
+ y-json-1.5.jar jettison-1.1.jar stax-api-1.0.1.jar jackson-core-asl-1
+ .5.5.jar jackson-mapper-asl-1.5.5.jar jackson-jaxrs-1.5.5.jar jackson
+ -xc-1.5.5.jar guava-13.0.jar oauth-client-1.5.jar oauth-signature-1.5
+ .jar OracleDatabaseStrategy.jar ojdbc6-6.0.jar runtime12-12.jar trans
+ lator-1.0.jar MercurialRepositoryStrategy.jar javahg-0.5-SNAPSHOT.jar
 

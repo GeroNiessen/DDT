@@ -12,9 +12,11 @@
 
 	<groupId>de.codecentric.ddt</groupId>
 	<artifactId>Resources</artifactId>
+        <version>1.0</version>
 	<name>DDT Resources</name>
 	<packaging>jar</packaging>
-	<url>http://maven.apache.org</url>
+	
+        <!--<url>http://maven.apache.org</url>-->
 
 	<repositories>
 		<repository>
@@ -37,6 +39,13 @@
 			<artifactId>jaxb-impl</artifactId>
 			<version>2.2.6</version>
 		</dependency>
+                
+                <dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbynet</artifactId>
+			<version>10.9.1.0</version>
+		</dependency>
+          
                 
                 <!--
                 <dependency>
@@ -62,12 +71,13 @@
 			<type>jar</type>
 		</dependency>
            
+           
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.ejb</artifactId>
 			<version>3.1.1</version>
 		</dependency>
-
+                
 <!--
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -103,6 +113,12 @@
             <scope>provided</scope>
         </dependency>
         -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.8</version>
+        </dependency>
+     
     </dependencies>
 
 </project>

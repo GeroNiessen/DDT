@@ -28,8 +28,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class CheckProxyClassesComponent extends AbstractApplicationCheckComponent {
 
@@ -305,7 +307,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 				if(existingProxyClassesFolder != null && packageName != null && selectedDatabase != null){
 					String fileSeparator = java.io.File.separator;
 					String generatedProxyClassesPath = selectedDatabase.getWorkDirectory() + fileSeparator + packageName.replace(".", fileSeparator);
-					List<FileComparison> comparedFiles = FileHelper.getDifferences(existingProxyClassesFolder.getPath(), generatedProxyClassesPath);
+					Set<FileComparison> comparedFiles = FileHelper.getDifferences(existingProxyClassesFolder.getPath(), generatedProxyClassesPath);
 					fillFileComparisonTable(comparedFiles);
 				}
 			}
@@ -322,7 +324,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 		fileComparisonTable.setColumnExpandRatio("Difference", 1);
 	}
 
-	private void fillFileComparisonTable(List<FileComparison> comparedFiles){
+	private void fillFileComparisonTable(Collection<FileComparison> comparedFiles){
 		fileComparisonTable.removeAllItems();
 
 		int i = 1;

@@ -6,6 +6,7 @@
     <groupId>de.codecentric.ddt</groupId>
     <artifactId>parent</artifactId>
     <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>de.codecentric.ddt</groupId>
   <artifactId>OracleDatabaseStrategy</artifactId>

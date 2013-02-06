@@ -39,8 +39,8 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 	@Override
 	public void init()
 	{	
-		setTheme("DDT-style");
-
+  		setTheme("DDT-style");
+              
 		mainWindow = new Window("Distributed Dependency Tracker (DDT)");
 		mainWindow.setSizeFull();
 		mainWindow.getContent().setSizeFull();

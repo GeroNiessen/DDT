@@ -20,9 +20,10 @@ public class DDTMenuBar extends MenuBar {
 	}
 	
 	private void init(){
-		Set<Class<?>> applicationCheckClasses = ReflectionHelper.getAllImplementations("de.codecentric.ddt", AbstractApplicationCheckComponent.class);
+		Set<Class<?>> applicationCheckClasses = ReflectionHelper.getAllInstanciableImplementations("de.codecentric.ddt", AbstractApplicationCheckComponent.class);
 		for(final Class<?> currentApplicationCheckClass: applicationCheckClasses){
 			try {
+                                //System.out.println("Trying to load:" + currentApplicationCheckClass.getCanonicalName());
 				AbstractApplicationCheckComponent currentApplicationCheck = (AbstractApplicationCheckComponent) currentApplicationCheckClass.newInstance();
 				final String currentApplicationCheckName = currentApplicationCheck.getCheckName();
 				MenuBar.Command command = new MenuBar.Command() {
