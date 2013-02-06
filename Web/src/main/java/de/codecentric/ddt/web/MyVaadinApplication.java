@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * The Application's "main" class
+ * The main Vaadin aplication class, which starts every other one.
+ * @author Gero Niessen
  */
-
 @SessionScoped
 @DependsOn("LocalDatabase")
 public class MyVaadinApplication extends Application implements HttpServletRequestListener
@@ -90,15 +90,28 @@ public class MyVaadinApplication extends Application implements HttpServletReque
 		}
 	}
 
-	// @return the current application instance	  	
+	/**
+         * Get the current instance of the Vaadin application.
+         * The instance differs between the different sessions.
+         * @return 
+         */	  	
 	public static MyVaadinApplication getInstance() { 		
 		return threadLocal.get(); 	
 	}
 
+        /**
+         * returns the main window of the vaadin application of the current session.
+         * The mainWindow is required to showNotifications and open new windows.
+         * @return 
+         */
 	public static Window getMainWindows(){
 		return threadLocal.get().mainWindow;
 	}
 
+        /**
+         * Shows a notification (short popup)
+         * @param notification
+         */
 	public void showNotification(Notification notification){
 		mainWindow.showNotification(notification);
 	}

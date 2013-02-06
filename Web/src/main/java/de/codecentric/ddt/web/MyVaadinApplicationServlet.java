@@ -2,12 +2,12 @@ package de.codecentric.ddt.web;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.AbstractApplicationServlet;
-import de.codecentric.ddt.configuration.LocalDatabase;
 import javax.ejb.DependsOn;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * The MyVaadinApplicationServlet has the only task: Starting the Vaadin Application.
  * @author Gero Niessen
  */
 

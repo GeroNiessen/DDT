@@ -13,7 +13,12 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-
+/**
+ * LogComponent listens to all messages emitted by java.util.logging.Logger and displays them.
+ * LogComponent automatically scrolls down the window, every time a new log-message is received.
+ * LogComponent makes use of the Vaadin-Refresher-Addon in oder to send call-back messages to the client browser.
+ * @author Gero Niessen
+ */
 public class LogComponent extends CustomComponent {
 
 	private static final long serialVersionUID = 2230437374249008072L;

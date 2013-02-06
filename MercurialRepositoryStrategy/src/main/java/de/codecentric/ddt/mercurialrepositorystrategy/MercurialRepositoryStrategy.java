@@ -24,6 +24,10 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * MercurialRepositoryStrategy implements the functionality of a RespositoryStrategy for Mercurial repositories.
+ * @author user
+ */
 @XmlRootElement
 @Entity
 public class MercurialRepositoryStrategy extends RepositoryStrategy {
@@ -48,6 +52,11 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return ConnectionTestHelper.testURLConnection(urlWithUsernameAndPassword, 2000);
 	}
 
+        /**
+         * Gets the repository URL from the context and injects username and password to it.
+         * @param context
+         * @return 
+         */
 	private String getUrlWithUsernameAndPassword(Resource context){
 		String urlWithUsernameAndPassword = context.getUrl(); 
 		URL url;
@@ -70,6 +79,11 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	public List<String> getBranches(Resource repositoryContext) {
 		return getBranches(getMercurialRepository(repositoryContext));
 	}
+        /**
+         * See documentation: getBranches(Resource repositoryContext)
+         * @param mercurialRepository
+         * @return 
+         */
 	private List<String> getBranches(BaseRepository mercurialRepository){
 		return getBranches(getHeadChangesets(mercurialRepository));
 	}
@@ -90,6 +104,11 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		}
 	}
 
+        /**
+         * Checks if the repository has been at least downloaded (pulled) once to disk by checking the .hg file in the folder.
+         * @param repositoryContext
+         * @return 
+         */
 	private boolean isRepositoryAlreadyDownloaded(Resource repositoryContext){
 		String fileSeparator = System.getProperty("file.separator");
 		String mercurialFolderPath = repositoryContext.getWorkDirectory().getPath() + fileSeparator + ".hg";
@@ -130,6 +149,11 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	public int getLatestRepositoryRevision(Resource repositoryContext){		
 		return getLatestRepositoryRevision(getMercurialRepository(repositoryContext));
 	}
+        /**
+         * See documentation: getLatestRepositoryRevision(Resource repositoryContext)
+         * @param mercurialRepository
+         * @return 
+         */
 	private int getLatestRepositoryRevision(BaseRepository mercurialRepository){
 		return getLatestRevision(getHeadChangesets(mercurialRepository));
 	}
@@ -138,6 +162,11 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	public Map<String, Integer> getLatestBranchRevisions(Resource repositoryContext){
 		return getLatestBranchRevisions(getMercurialRepository(repositoryContext));
 	}
+        /**
+         * See documentation: getLatestBranchRevisions(Resource repositoryContext)
+         * @param mercurialRepository
+         * @return 
+         */
 	private Map<String, Integer> getLatestBranchRevisions(BaseRepository mercurialRepository){
 		Map<String, Integer> latestBranchRevisions = new HashMap<>();
 		for(Changeset currentHead: getHeadChangesets(mercurialRepository)){
@@ -146,11 +175,21 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return latestBranchRevisions;		
 	}
 	//===========================================================================
+        /**
+         * Gets a list of simply every change-set in the repository.
+         * @param mercurialRepository
+         * @return 
+         */
 	private List<Changeset> getAllChangesets(BaseRepository mercurialRepository){
 		LogCommand logcommand = new LogCommand(mercurialRepository);
 		return logcommand.execute();
 	}
 
+        /**
+         * Gets the javaHG BaseRepository Object.
+         * @param repositoryContext
+         * @return 
+         */
 	private BaseRepository getMercurialRepository(Resource repositoryContext){
 		RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration();
 		repositoryConfiguration.setCommandWaitTimeout(commandWaitTimeoutInSeconds);
@@ -172,6 +211,11 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return getLatestBranchMerges(getMercurialRepository(repositoryContext));
 	}
 
+        /**
+         * See documentation: getLatestBranchMerges(Resource repositoryContext)
+         * @param mercurialRepository
+         * @return 
+         */
 	private Map<String, Map<String, Integer>> getLatestBranchMerges(BaseRepository mercurialRepository){
 
 		List<Changeset> allChangesets = getAllChangesets(mercurialRepository);
@@ -202,6 +246,12 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return latestBranchMerges;
 	}
 
+        /**
+         * Gets a Map containing all open branches and their change-set in the branch.
+         * @param headChangesets
+         * @param allChangesets
+         * @return 
+         */
 	private Map<String, Set<Changeset>> getAllBranchChangesets(List<Changeset> headChangesets, List<Changeset> allChangesets){
 
 		Map<String, Set<Changeset>> allBranchChangesets = new HashMap<>();
@@ -219,6 +269,12 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return allBranchChangesets;
 	}
 
+        /**
+         * Gets a Map containing all open branches and their associated ancestor change-set in the repository tree.
+         * @param headChangesets
+         * @param allChangesets
+         * @return 
+         */
 	private Map<String, Set<Changeset>> getAllBranchAncestorChangesets(List<Changeset> headChangesets, List<Changeset> allChangesets){
 		Map<String, Set<Changeset>> allBranchAncestorChangesets = new HashMap<>(); 
 
@@ -234,12 +290,22 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return allBranchAncestorChangesets;
 	}
 
+        /**
+         * Gets a set of all ancestor change-sets from a given change-set
+         * @param startChangeset
+         * @return 
+         */
 	private Set<Changeset> getAllAncestorChangesets(Changeset startChangeset){
 		Set<Changeset> allAncestorChangesets = new HashSet<>();
 		getAllAncestorChangesets(startChangeset, allAncestorChangesets);
 		return allAncestorChangesets;
 	}
 
+        /**
+         * Recursion method for getAllAncestorChangesets(Changeset startChangeset)
+         * @param currentChangeset
+         * @param allAncestorChangesets 
+         */
 	private void getAllAncestorChangesets(Changeset currentChangeset, Set<Changeset> allAncestorChangesets){
 		allAncestorChangesets.add(currentChangeset);
 		Changeset[] parentChangesets = new Changeset[]{currentChangeset.getParent1(), currentChangeset.getParent2()};
@@ -251,10 +317,20 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 
 	//==================================================================
+        /**
+         * Gets a list of head change-sets from all open repository branches.
+         * @param mercurialRepository
+         * @return 
+         */
 	private List<Changeset> getHeadChangesets(BaseRepository mercurialRepository){
 		return mercurialRepository.heads();
 	}
 
+        /**
+         * Gets a list of names from all open repository branches.
+         * @param changesets
+         * @return 
+         */
 	private List<String> getBranches(List<Changeset> changesets){
 		List<String> branches = new ArrayList<>();
 		for(Changeset currentChangeset: changesets){
@@ -273,6 +349,11 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 	}
 	 */
 
+        /**
+         * Gets the revision of the latest change-set in the repository
+         * @param changesets
+         * @return 
+         */
 	private int getLatestRevision(List<Changeset> changesets){
 		int latestRevision = -1;
 		for(Changeset currentChangeset: changesets){
@@ -284,6 +365,10 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		return latestRevision;
 	}
 
+        /**
+         * Deprecated method for interim testing
+         * @param repositoryContext 
+         */
 	@Override
 	public void testme(Resource repositoryContext){
 		System.out.println("Start: ANCESTORS");

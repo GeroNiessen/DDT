@@ -21,6 +21,10 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * The JiraIssueTrackerStrategy implements the IssueTrackerTrackerStrategy in order to operate on Jira.
+ * @author Gero Niessen
+ */
 @XmlRootElement
 @Entity
 public class JiraIssueTrackerStrategy extends IssueTrackerStrategy implements Serializable {
@@ -36,7 +40,13 @@ public class JiraIssueTrackerStrategy extends IssueTrackerStrategy implements Se
 	public boolean passesSmokeTest(Resource context) {
 		return ConnectionTestHelper.testURLConnection(context.getUrl(), 2500);
 	}
-		
+	
+        /**
+         * Gets the REST client to access Jira. 
+         * REST has long term support by Jira.
+         * @param issueTrackerContext
+         * @return 
+         */
 	private JiraRestClient getJiraRestClient(Resource issueTrackerContext){
 		JerseyJiraRestClientFactory factory = new JerseyJiraRestClientFactory();
 		JiraRestClient jiraRestClient = null;
@@ -53,18 +63,39 @@ public class JiraIssueTrackerStrategy extends IssueTrackerStrategy implements Se
 		return jiraRestClient;
 	}
 	
+        /**
+         * Gets the REST client for Jira projects
+         * @param issueTrackerContext
+         * @return 
+         */
 	private ProjectRestClient getProjectRestClient(Resource issueTrackerContext){
 		return getJiraRestClient(issueTrackerContext).getProjectClient();
 	}
 	
+        /**
+         * Gets the REST client for Jira issues
+         * @param issueTrackerContext
+         * @return 
+         */
 	private IssueRestClient getIssueRestClient(Resource issueTrackerContext){
 		return getJiraRestClient(issueTrackerContext).getIssueClient();
 	}
 	
+        /**
+         * Gets the REST client for custom seraches in Jira
+         * @param issueTrackerContext
+         * @return 
+         */
 	private SearchRestClient getSearchRestClient(Resource issueTrackerContext){
 		return getJiraRestClient(issueTrackerContext).getSearchClient();
 	}
 	
+        /**
+         * Gets only the issues defined by JQL (Jira Query Language) Queries
+         * @param issueTrackerContext
+         * @param jqlString
+         * @return 
+         */
 	private Iterable<BasicIssue> getSearchedIssues(Resource issueTrackerContext, String jqlString){
 		ProgressMonitor progressMonitor = new NullProgressMonitor();
 		SearchResult searchResult = getSearchRestClient(issueTrackerContext).searchJql(jqlString, MAXIMUM_SEARCH_RESULTS, 0, progressMonitor);

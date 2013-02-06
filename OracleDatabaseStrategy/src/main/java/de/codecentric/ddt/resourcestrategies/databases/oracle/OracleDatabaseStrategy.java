@@ -14,6 +14,10 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * OracleDatabaseStrategy implements the DatabaseStrategy for Oracle-Databases
+ * @author Gero Niessen
+ */
 @XmlRootElement
 @Entity
 public class OracleDatabaseStrategy extends DatabaseStrategy{
@@ -62,6 +66,11 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		}
 	}
 	
+        /**
+         * Gets the connection string (URL) from the context and injects username and password to it.
+         * @param databaseContext
+         * @return 
+         */
 	private String getConnectionString(Resource databaseContext){
 		String userName = databaseContext.getUsername();
 		String password = databaseContext.getPassword();
@@ -74,6 +83,11 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		return connectionString;
 	}
 	
+        /**
+         * Gets the JDBC Connection objects to the database.
+         * @param databaseContext
+         * @return 
+         */
 	private Connection getConnection(Resource databaseContext){
 		Connection returnedConnection = null; //"jdbc:oracle:thin:ICIS/pvcs@wgvli36.swlabor.local:1522:ICISPLUS"
 				
@@ -100,6 +114,13 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		return returnedConnection;
 	}
 	
+        /**
+         * Transforms all Oracle packages and stored procedures in the database
+         * to an Oracle JPublisher suited syntax
+         * e.g. "STORED_PROCEDURE1:JSTORED_PROCEDURE1,STORED_PROCEDURE2:STORED_PROCEDURE2"
+         * @param databaseContext
+         * @return 
+         */
 	private String getPackagesWithTranslation(Resource databaseContext){
 		String returnedString = "";
 		String[] packages = getPackages(databaseContext);
@@ -121,6 +142,11 @@ public class OracleDatabaseStrategy extends DatabaseStrategy{
 		return returnedString;
 	}
 	
+        /**
+         * Reads the names of all stored procedures and oracle packages from the database schema
+         * @param databaseContext
+         * @return 
+         */
 	private String[] getPackages(Resource databaseContext){
 		List<String> packages = new ArrayList<>();
                 try (Connection conn = getConnection(databaseContext); Statement stmt = conn.createStatement()) { 

@@ -7,6 +7,10 @@ import de.codecentric.ddt.configuration.ReflectionHelper;
 import de.codecentric.ddt.web.applicationchecks.AbstractApplicationCheckComponent;
 import java.util.Set;
 
+/**
+ * DDTMenuBar searches the class-path for all classes implementing AbstractApplicationCheck and add them to the menu-bar
+ * @author Gero Niessen
+ */
 public class DDTMenuBar extends MenuBar {
 	
 	private static final long serialVersionUID = 4836045333392767191L;
@@ -19,6 +23,9 @@ public class DDTMenuBar extends MenuBar {
 		init();
 	}
 	
+        /**
+         * Gets all classes implementing AbstractApplicationChecks in order to add them to the menu-bar
+         */
 	private void init(){
 		Set<Class<?>> applicationCheckClasses = ReflectionHelper.getAllInstanciableImplementations("de.codecentric.ddt", AbstractApplicationCheckComponent.class);
 		for(final Class<?> currentApplicationCheckClass: applicationCheckClasses){

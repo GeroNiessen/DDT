@@ -13,6 +13,11 @@ import com.vaadin.ui.CustomComponent;
 
 import de.codecentric.ddt.web.configuration.ConfigurationContainerProvider;
 
+/**
+ * The AbstractApplicationCheckComponent provides a big help for anyone, who wants to write a check for an application.
+ * 
+ * @author Gero Niessen
+ */
 public abstract class AbstractApplicationCheckComponent extends CustomComponent {
 
 	private static final long serialVersionUID = 9024500901710088791L;

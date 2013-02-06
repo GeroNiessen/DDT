@@ -8,6 +8,10 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Repository is a Resource extended by the functionality to access repositories.
+ * @author Gero Niessen
+ */
 @XmlRootElement
 @Entity
 public class Repository extends Resource {
@@ -22,6 +26,9 @@ public class Repository extends Resource {
         super(otherResource);
     }
 
+    /**
+     * Gets/downloads the latest version of the repository from the server.
+     */
     public void getLatestVersion() {
         try {
             getRepositoryStrategy().getLatestVersion(this);
@@ -30,6 +37,10 @@ public class Repository extends Resource {
         }
     }
 
+    /**
+     * Gets a list of all branches in the repository.
+     * @return 
+     */
     public List<String> getBranches() {
         try {
             return getRepositoryStrategy().getBranches(this);
@@ -39,6 +50,11 @@ public class Repository extends Resource {
         return new ArrayList<>();
     }
 
+    /**
+     * Sets (switches) the repository to a given branch, specified by name.
+     * Logs a warning if the branch does not exist (any longer).
+     * @param branchName 
+     */
     public void setBranch(String branchName) {
         try {
             getRepositoryStrategy().setBranch(branchName, this);
@@ -47,6 +63,10 @@ public class Repository extends Resource {
         }
     }
 
+    /**
+     * Gets the name of the current branch of the repository.
+     * @return 
+     */
     public String getCurrentBranch() {
         try {
             return getRepositoryStrategy().getCurrentBranch(this);
@@ -56,6 +76,14 @@ public class Repository extends Resource {
         return "";
     }
 
+    /**
+     * Gets the default main branch of the repository.
+     * E.G.: 
+     * Subversion: HEAD
+     * Mercurial: DEFAULT
+     * Git: MASTER
+     * @return
+     */
     public String getMainBranch() {
         try {
             return getRepositoryStrategy().getMainBranch();
@@ -65,6 +93,10 @@ public class Repository extends Resource {
         return "";
     }
 
+    /**
+     * Gets a Map containing the latest revision-numbers of all branches in the repository
+     * @return 
+     */
     public Map<String, Integer> getLatestBranchRevisions() {
         try {
             return getRepositoryStrategy().getLatestBranchRevisions(this);
@@ -74,6 +106,12 @@ public class Repository extends Resource {
         return new HashMap<>();
     }
 
+    /**
+     * Gets a list of all transitive branch merges.
+     * Map<String, Map<String, Integer>> ==
+     * Map<BranchName>, Map<NameOfTheMergedBranch, RevisionOfTheMergedBranchWhenItWasMerged>
+     * @return 
+     */
     public Map<String, Map<String, Integer>> getLatestBranchMerges() {
         try {
             return getRepositoryStrategy().getLatestBranchMerges(this);
@@ -83,6 +121,11 @@ public class Repository extends Resource {
         return new HashMap<>();
     }
 
+    /**
+     * Gets the latest revision of the repository.
+     * e.G. 8765
+     * @return 
+     */
     public int getLatestRepositoryRevision() {
         try {
             return getRepositoryStrategy().getLatestRepositoryRevision(this);
@@ -92,6 +135,11 @@ public class Repository extends Resource {
         return -1;
     }
 
+    /**
+     * Gets the implementation of the repository-strategy used by the repository.
+     * e.g. Subversion, Mercurial, Git, CVS, etc..
+     * @return 
+     */
     private RepositoryStrategy getRepositoryStrategy() {
         return (RepositoryStrategy) getStrategy();
     }
