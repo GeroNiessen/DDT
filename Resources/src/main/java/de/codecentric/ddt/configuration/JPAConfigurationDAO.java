@@ -10,6 +10,11 @@ import javax.persistence.Query;
 
 //@Stateless
 //@LocalBean
+/**
+ * JPAConfigurationDAO saves and loads the configuration using Java Persistence API (JPA)
+ * See: Configuration
+ * @author Gero Niessen
+ */
 public class JPAConfigurationDAO implements ConfigurationDAO {
 
     //@PersistenceContext

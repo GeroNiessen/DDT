@@ -54,14 +54,27 @@ public class FileComparison {
         }
     }
 
+    /**
+     * A diff of the reference file and the other file
+     * @return 
+     */
     public String getDiff() {
         return this.diff;
     }
 
+    /**
+     * The result of the comparison between the reference file and the other file
+     * @return 
+     */
     public FileComparisonResult getComparisonResult() {
         return this.comparisonResult;
     }
 
+    /**
+     * Gets the contents of a file
+     * @param file
+     * @return A string array containing the lines of the file
+     */
     private String[] getFileContent(File file) {
         List<String> fileContent = new ArrayList<>();
         BufferedReader fileReader = null;
@@ -83,6 +96,14 @@ public class FileComparison {
         return fileContent.toArray(new String[fileContent.size()]);
     }
 
+    /**
+     * Diff-Algorithm implementation by using the
+     * Longest Common Subsequence (LCS) Problem
+     * (Hunt-McIllroy algorithm, published in the 1976 paper "An Algorithm for Differential File Comparison")
+     * @param referenceFileContent
+     * @param otherFileContent
+     * @return 
+     */
     private String getDiff(String[] referenceFileContent, String[] otherFileContent) {
         List<String> returnedDiff = new ArrayList<>();
 
@@ -139,10 +160,18 @@ public class FileComparison {
         return diffString;
     }
 
+    /**
+     * The reference file of the comparison against the other file
+     * @return 
+     */
     public File getReferenceFile() {
         return referenceFile;
     }
 
+    /**
+     * The other file of the comparison against the reference file
+     * @return 
+     */
     public File getOtherFile() {
         return otherFile;
     }

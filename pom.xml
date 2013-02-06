@@ -17,6 +17,7 @@
                  <module>OracleDatabaseStrategy</module>
                 <module>MercurialRepositoryStrategy</module>
                 <module>CommandLineClient</module>
+    <module>AddonMavenArchetype</module>
   </modules>
 
 	<build>

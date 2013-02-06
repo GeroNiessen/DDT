@@ -103,6 +103,7 @@ public class CheckRepositoryProxyClasses {
         System.exit(errorNumber);
     }
 
+    
     private void updateRepository() throws RepositoryUpdateException {
         System.out.println("\n\n========= START: Updating Repository ==================");
 
@@ -200,46 +201,6 @@ public class CheckRepositoryProxyClasses {
         }
 
         return folderComparison;
-
-        /*
-         Set<FileComparison> differences = new HashSet<>();
-         Set<FileComparison> orphaned = new HashSet<>();
-         Set<FileComparison> equal = new HashSet<>();
-
-         for (FileComparison currentFileComparison : comparisonResults) {
-         switch (currentFileComparison.getComparisonResult()) {
-         case DIFFERENT:
-         differences.add(currentFileComparison);
-         break;
-         case EQUAL:
-         equal.add(currentFileComparison);
-         break;
-         case MISSING_OTHER_FILE:
-         orphaned.add(currentFileComparison);
-         break;
-         }
-         }
-
-         if (differences.isEmpty()) {
-         System.out.println("Compared       " + comparisonResults.size() + " files.");
-         System.out.println("Equal Files:   " + equal.size());
-         System.out.println("Orphaned Files:   " + orphaned.size());
-         System.out.println("Orphaned files in repository:");
-         for (FileComparison currentFileComparison : orphaned) {
-         System.out.println(" >" + currentFileComparison.getReferenceFile());
-         }
-         } else {
-         System.out.println("Compared       " + comparisonResults.size() + " files.");
-         System.out.println("Different Files:   " + differences.size());
-         System.out.println("Orphaned Repository Files:   " + orphaned.size());
-         System.out.println("Differences:");
-         for (FileComparison currentFileComparison : differences) {
-         System.out.println("Difference in file:   " + currentFileComparison.getReferenceFile().getPath());
-         }
-         return -1000;
-         }
-         return returnedErrorCode;
-         */
     }
 
     private boolean isFolderEmpty(String folderName) {

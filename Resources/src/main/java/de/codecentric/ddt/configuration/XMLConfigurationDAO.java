@@ -10,6 +10,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+/**
+ * XMLConfigurationDAO saves and loads the configuration using an XML file.
+ * See: Configuration class
+ * @author Gero Niessen
+ */
 //@Stateless
 //@LocalBean
 @Alternative

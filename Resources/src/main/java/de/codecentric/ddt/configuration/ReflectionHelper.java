@@ -10,6 +10,10 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
+/**
+ * ReflectionHelper eases the use of Java Reflection API
+ * @author Gero Niessen
+ */
 public class ReflectionHelper {
 
     private static Reflections reflections = new Reflections(new ConfigurationBuilder()
@@ -18,12 +22,25 @@ public class ReflectionHelper {
             .setScanners(new SubTypesScanner(),
             new ResourcesScanner()));
 
+    /**
+     * Gets all implementations of a given class or package
+     * @param packageName
+     * @param superClass
+     * @return 
+     */
     public static Set<Class<?>> getAllImplementations(String packageName, Class superClass) {
         Set<Class<?>> allImplementations = new HashSet<>();
         allImplementations.addAll(reflections.getSubTypesOf(superClass));
         return allImplementations;
     }
 
+    /**
+     * Gets all instanciable implementations of a given class.
+     * Filters abstract classes and interfaces.
+     * @param packageName
+     * @param superClass
+     * @return 
+     */
     public static Set<Class<?>> getAllInstanciableImplementations(String packageName, Class<?> superClass) {
         Set<Class<?>> allInstantiableClasses = new HashSet<>();
         for (Class<?> currentClass : getAllImplementations(packageName, superClass)) {

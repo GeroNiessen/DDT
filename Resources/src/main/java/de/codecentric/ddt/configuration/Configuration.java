@@ -14,7 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
+/**
+ * Configuration is a logical unit containing all applications of the tool.
+ * Configuration is the root of the configuration-tree.
+ * @author Gero Niessen
+ */
 @XmlRootElement
 @Entity
 public class Configuration implements Serializable{
@@ -34,14 +38,26 @@ public class Configuration implements Serializable{
 		this.applications = new HashSet<>();
 	}
 
+        /**
+         * All applications in the configuration
+         * @return
+         */
 	public Set<de.codecentric.ddt.configuration.Application> getApplications() {
 		return applications;
 	}
 
+        /**
+         * Sets all applications of the configuration
+         * @param applications 
+         */
 	public void setApplications(Set<de.codecentric.ddt.configuration.Application> applications) {
 		this.applications = applications;
 	}
 	
+        /**
+         * The baseWorkDirectory is a folder containing the configuration and temporary data for evaluations.
+         * @return 
+         */
 	public static File getBaseWorkDirectory(){
 		String userHomePath = System.getProperty("user.home");
 		String fileSeparator = System.getProperty("file.separator");
@@ -53,6 +69,10 @@ public class Configuration implements Serializable{
 		return baseWorkDirectoryFolder;
 	}
 	
+        /**
+         * The Data Access Object for storing and loading the configuration
+         * @return 
+         */
 	@Transient
 	public static ConfigurationDAO getConfigurationDAO(){
 		ConfigurationDAO configurationDAO;

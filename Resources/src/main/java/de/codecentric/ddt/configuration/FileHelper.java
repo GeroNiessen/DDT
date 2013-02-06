@@ -9,18 +9,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import javax.media.j3d.Leaf;
 
+/**
+ * FileHelper helps to get files and folders with extra functionality for the Java world.
+ * @author Gero Niessen
+ */
 public class FileHelper {
 
     private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(FileHelper.class.getName());
     private static final String fileSeparator = System.getProperty("file.separator");
 
+    /**
+     * Gets all directories that nested below the given directory
+     * @param directory
+     * @return
+     */
     public static File[] getNestedSubDirectories(File directory) {
         List<File> allSubDirectories = new ArrayList<>();
         return getNestedSubfolders(directory, allSubDirectories).toArray(new File[]{});
     }
 
+    /**
+     * Recursion method for getNestedSubDirectories(File directory)
+     * @param directory
+     * @param allSubDirectories
+     * @return 
+     */
     private static List<File> getNestedSubfolders(File directory, List<File> allSubDirectories) {
         allSubDirectories.add(directory);
         File[] subDirectories = directory.listFiles(new FileFilter() {
@@ -35,10 +49,24 @@ public class FileHelper {
         return allSubDirectories;
     }
     
+    /**
+     * Compares the content (files) of two folders with each other.
+     * DOES NOT TRAVERSE INTO SUBDIRECTORIES!
+     * @param referenceDirectoryPath
+     * @param otherDirectoryPath
+     * @return 
+     */
     public static FolderComparison getFolderComparison(String referenceDirectoryPath, String otherDirectoryPath){
         return new FolderComparison(getDifferences(referenceDirectoryPath, otherDirectoryPath));
     }
 
+    /**
+     * Gets the difference between the files in two folders.
+     * See: FileComparison
+     * @param referenceDirectoryPath
+     * @param otherDirectoryPath
+     * @return 
+     */
     public static Set<FileComparison> getDifferences(String referenceDirectoryPath, String otherDirectoryPath) {
         LOGGER.info("Comparing files in directory:\n" + referenceDirectoryPath + "\n with files in directory:\n" + otherDirectoryPath);
 
@@ -62,6 +90,11 @@ public class FileHelper {
         return differences;
     }
 
+    /**
+     * Gets a list of all java packages in all files nested in all sub-folders below the give startFolder
+     * @param startFolder
+     * @return 
+     */
     public static String[] getAllJavaPackages(File startFolder) {
         Set<String> allJavaPackages = new HashSet<>();
         File[] allSubDirectories = getNestedSubDirectories(startFolder);
@@ -77,6 +110,11 @@ public class FileHelper {
         return allJavaPackages.toArray(new String[]{});
     }
 
+    /**
+     * Reads the java package of a .java file.
+     * @param javaFile
+     * @return 
+     */
     private static String readJavaPackageName(File javaFile) {
         String javaPackageName = "";
         Scanner fileScanner;
@@ -100,6 +138,11 @@ public class FileHelper {
         return javaPackageName;
     }
 
+    /**
+     * Get all .java files within a given directory
+     * @param currentFolder
+     * @return 
+     */
     private static File[] javaFilesInDirectory(File currentFolder) {
         File[] javaFilesInCurrentFolder = currentFolder.listFiles(new FileFilter() {
             @Override
@@ -110,6 +153,12 @@ public class FileHelper {
         return javaFilesInCurrentFolder;
     }
 
+    /**
+     * Gets a list of all folders containing .java files in a specific java package below a given start-folder.
+     * @param startFolder
+     * @param packageName
+     * @return 
+     */
     public static File[] getPackageDirectories(File startFolder, String packageName) {
 
         String packagePath = packageName.replace(".", fileSeparator).toLowerCase();
@@ -124,6 +173,11 @@ public class FileHelper {
         return returnedFolders.toArray(new File[]{});
     }
 
+    /**
+     * Purges a folder from the disk, including all subdirectories.
+     * BE CAREFUL!
+     * @param folder
+     */
     public void deleteFolder(File folder) {
         if (folder.exists()) {
             File[] files = folder.listFiles();

@@ -13,6 +13,14 @@ public class ConnectionTestHelper {
 
     private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(ConnectionTestHelper.class.getName());
 
+    /**
+     * Checks if a TCP/IP socket is open.
+     * Return true if socket could be opened within the given timeout.
+     * Returns false otherwise.
+     * @param url
+     * @param timeOutInMilliSeconds
+     * @return
+     */
     public static boolean isSocketOpen(String url, int timeOutInMilliSeconds) {
         boolean returnedValue;
         URL aURL;
@@ -33,6 +41,15 @@ public class ConnectionTestHelper {
         System.out.println(isSocketOpen("http://www.google.com", 2000));
     }
 
+    /**
+     * Checks if a TCP/IP socket is open.
+     * Return true if socket could be opened within the given timeout.
+     * Returns false otherwise.
+     * @param host
+     * @param port
+     * @param timeOutInMilliSeconds
+     * @return 
+     */
     public static boolean isSocketOpen(String host, int port, int timeOutInMilliSeconds) {
 
         boolean returnedValue = false;
@@ -62,6 +79,14 @@ public class ConnectionTestHelper {
         return returnedValue;
     }
 
+    /**
+     * Checks if a URL can be reached within a given timeout.
+     * Returns true if the URL could be reached.
+     * Returns false otherwise.
+     * @param url
+     * @param timeOutInMilliseconds
+     * @return 
+     */
     public static boolean testURLConnection(String url, int timeOutInMilliseconds) {
         boolean returnedValue = false;
         try {
@@ -76,6 +101,9 @@ public class ConnectionTestHelper {
         return returnedValue;
     }
 
+    /**
+     * Checks if 
+     * @throws Exception 
     public static void readWebPage() throws Exception {
 
         URL oracle = new URL("http://www.oracle.com/");
@@ -87,4 +115,5 @@ public class ConnectionTestHelper {
             }
         }
     }
+    */
 }

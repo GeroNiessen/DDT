@@ -8,8 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
- * @author user
+ * FolderComparison compares the files of two folders with each other.
+ * Does not traverse into sub-directories!
+ * @author Gero Niessen
  */
 public class FolderComparison {
 
@@ -19,10 +20,19 @@ public class FolderComparison {
         this.allComparedFiles = comparedFiles;
     }
 
+    /**
+     * A list of all comparisons between all files in the reference folder to all files in the other folder
+     * @return 
+     */
     public Set<FileComparison> getAllFileComparisons() {
         return allComparedFiles;
     }
 
+    /**
+     * A list of a comparisons between all files in the reference folder to all files in the other folder with a certain outcome
+     * @param comparisonResult
+     * @return 
+     */
     public Set<FileComparison> getFileComparisons(FileComparisonResult comparisonResult) {
         Set<FileComparison> comparisons = new HashSet<>();
         for (FileComparison currentFileComparison : allComparedFiles) {
@@ -33,10 +43,19 @@ public class FolderComparison {
         return comparisons;
     }
 
+    /**
+     * Checks if every single file in the reference folder is equal to the file in the other folder
+     * @return 
+     */
     public boolean isEveryFileEqual() {
         return allComparedFiles.size() == getFileComparisons(FileComparisonResult.EQUAL).size();
     }
 
+    /**
+     * A concatenated string of the names of all reference files in a set of FileComparisons
+     * @param fileComparisons
+     * @return 
+     */
     public String getFileNames(Set<FileComparison> fileComparisons) {
         String fileNames = "";
         for (FileComparison currentFileComparison : fileComparisons) {
