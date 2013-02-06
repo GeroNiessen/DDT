@@ -1,12 +1,20 @@
 @import "../reindeer/styles.css";
 
 .v-table-row.v-table-row-highlight-green,
-.v-table-row-odd.v-table-row-highlight-green {
+.v-table-row-odd.v-table-row-highlight-green,
+.v-label.highlight-green{
   background-color: #00ffa6;
 }
 
+.v-table-row.v-table-row-highlight-yellow,
+.v-table-row-odd.v-table-row-highlight-yellow,
+.v-label.highlight-yellow{
+  background-color: #E6E600;
+}
+
 .v-table-row.v-table-row-highlight-red,
-.v-table-row-odd.v-table-row-highlight-red {
+.v-table-row-odd.v-table-row-highlight-red,
+.v-label.highlight-red{
   background-color: #f78181;
 }
 

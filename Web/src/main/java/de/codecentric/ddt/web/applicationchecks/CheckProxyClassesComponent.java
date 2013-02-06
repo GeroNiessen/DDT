@@ -1,5 +1,6 @@
 package de.codecentric.ddt.web.applicationchecks;
 
+import com.vaadin.data.Item;
 import de.codecentric.ddt.configuration.FileComparison;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -17,6 +18,7 @@ import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import de.codecentric.ddt.configuration.FileComparisonResult;
 import de.codecentric.ddt.configuration.FileHelper;
 import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.resourcestrategies.databases.Database;
@@ -26,6 +28,7 @@ import de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy;
 import de.codecentric.ddt.web.MyVaadinApplication;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,6 +56,7 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 	private Button generateFileComparisons;
 	private Table fileComparisonTable;
 	private VerticalLayout verticalLayout;
+        private Label lastCheckResultLabel;
 
 	public CheckProxyClassesComponent(){
 		super();
@@ -115,7 +119,16 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 
 		initGenerateFileComparisonButton();
 		verticalLayout.addComponent(generateFileComparisons);
-
+                
+                verticalLayout.addComponent(new Label("-----------------------------------------------------------"));
+                verticalLayout.addComponent(new Label("DIFFERENT: Critical deviation from repository and database"));
+                verticalLayout.addComponent(new Label("MISSING_OTHER_FILE: Repository class is not known by the database"));
+                verticalLayout.addComponent(new Label("EQUAL: Repository and database in sync."));
+                verticalLayout.addComponent(new Label("COMPLETELY EMPTY TABLE: Please check the settings above and have a look at the logs. The table must not be empty!"));
+                verticalLayout.addComponent(new Label("-----------------------------------------------------------"));
+                lastCheckResultLabel = new Label("No Check has been performed, yet.");
+                verticalLayout.addComponent(lastCheckResultLabel);
+                
 		initFileComparisonTable();
 		verticalLayout.addComponent(fileComparisonTable);
 		verticalLayout.setExpandRatio(fileComparisonTable, 1.0f);
@@ -308,20 +321,69 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 					String fileSeparator = java.io.File.separator;
 					String generatedProxyClassesPath = selectedDatabase.getWorkDirectory() + fileSeparator + packageName.replace(".", fileSeparator);
 					Set<FileComparison> comparedFiles = FileHelper.getDifferences(existingProxyClassesFolder.getPath(), generatedProxyClassesPath);
-					fillFileComparisonTable(comparedFiles);
+                                        fillLastCheckResultLabel(comparedFiles);
+					fillFileComparisonTable(comparedFiles);                                 
 				}
 			}
 		});
 	}
+        
+        private void fillLastCheckResultLabel(Set<FileComparison> comparedFiles){
+            java.util.Date date= new java.util.Date();
+            Timestamp timestamp = new Timestamp(date.getTime());
+            
+            boolean isCheckFailed = false;
+            for(FileComparison currentFileComparison: comparedFiles){
+                if(!currentFileComparison.getComparisonResult().equals(FileComparisonResult.EQUAL)){
+                    isCheckFailed = true;
+                    break;
+                }
+            }
+            if(comparedFiles.isEmpty()){
+                isCheckFailed = true;
+            }
+            if(isCheckFailed){
+                lastCheckResultLabel.setStyleName("highlight-red");
+                lastCheckResultLabel.setValue("Last Check on: " + timestamp.toString() + " failed! Please check the table and logs for further details!");
+            } else {
+                lastCheckResultLabel.setStyleName("highlight-green");
+                lastCheckResultLabel.setValue("Last Check on: " + timestamp.toString() + " Succeeded!");                
+            }
+        }
 
 	private void initFileComparisonTable(){
-		fileComparisonTable = new Table("Generated Diff:");
+		fileComparisonTable = new Table("Comparison between repository and generated database proxy classes:");
 		fileComparisonTable.setSizeFull();
 		fileComparisonTable.setLazyLoading(false);
 		fileComparisonTable.addContainerProperty("File", String.class, null);
 		fileComparisonTable.addContainerProperty("Result", String.class, null);
+                fileComparisonTable.addContainerProperty("Check Required", Boolean.class, null);
 		fileComparisonTable.addContainerProperty("Difference", FileComparisonComponent.class, null);
 		fileComparisonTable.setColumnExpandRatio("Difference", 1);
+                fileComparisonTable.setCellStyleGenerator(new Table.CellStyleGenerator(){
+			
+			private static final long serialVersionUID = -8831755191981409841L;
+
+			@Override
+			public String getStyle(Object itemId, Object propertyId) {
+				if (propertyId == null) {
+					// Styling for row
+					Item item = fileComparisonTable.getItem(itemId);
+					String difference = (String) item.getItemProperty("Result").getValue();
+                                        switch(difference){
+                                            case "Equal":
+                                                return "highlight-green";
+                                            case "Missing other file":
+                                                return "highlight-yellow";
+                                            case "Different":
+                                                return "highlight-red";
+                                            default:
+                                                return null;       
+                                        }
+				} else {
+					return null;
+				}
+			}});
 	}
 
 	private void fillFileComparisonTable(Collection<FileComparison> comparedFiles){
@@ -333,13 +395,15 @@ public class CheckProxyClassesComponent extends AbstractApplicationCheckComponen
 			if(!currentFileComparison.getDiff().equals("")){
 				currentDiffWindowComponent = new FileComparisonComponent(currentFileComparison);
 			}
+                        Boolean checkRequired = !currentFileComparison.getComparisonResult().equals(FileComparisonResult.EQUAL);
 			fileComparisonTable.addItem(new Object[]{
 					currentFileComparison.getReferenceFile().getName(), 
 					currentFileComparison.getComparisonResult(),
+                                        checkRequired,
 					currentDiffWindowComponent}, new Integer(i));
 			i++;
 		}
-		fileComparisonTable.sort(new String[] { "Result", "File" }, new boolean[] { true, true });
+		fileComparisonTable.sort(new String[] { "Check Required", "Result", "File" }, new boolean[] { false, true, true });
 	}
 
 	private class GenerateProxyClassesThread extends Thread {
