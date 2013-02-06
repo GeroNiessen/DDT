@@ -77,9 +77,9 @@ public class CheckRepositoryProxyClasses {
                     break;
             }
             FolderComparison folderComparison = compareFolders();
-            if(folderComparison.isEveryFileEqual()){
+            if(folderComparison.isEveryFileEqual() && !folderComparison.getAllFileComparisons().isEmpty()){
                 errorNumber = 0;
-            } 
+            }
             this.errorMessage = folderComparison.toString();
             System.out.println("\n\n =============== TEST RESULTS =================\n" + this.errorMessage);
         } catch (IllegalArgumentException ex) {
@@ -100,41 +100,6 @@ public class CheckRepositoryProxyClasses {
             }
         }
 
-        /*
-         Map<String, String> parsedArguments = 
-
-         boolean containsIllegalArguments = false;
-         try {
-         parsedArguments = parseArguments(args);
-         } catch (IllegalArgumentException ex) {
-         containsIllegalArguments = true;
-         }
-        
-         if (!containsIllegalArguments) {
-
-         for (String key : parsedArguments.keySet()) {
-         System.out.println("Parameter:" + key + "\n\tValue:" + parsedArguments.get(key));
-         }
-         System.out.println("===========================================================\n\n");
-
-         try {
-         errorNumber = runTest(parsedArguments);
-         } catch (Exception ex) {
-         //ex.printStackTrace();
-         System.out.println("ERROR: Test Failed!!!");
-         errorNumber = -1;
-         }
-
-         if (parsedArguments.containsKey("jenkinsurl") && parsedArguments.get("jenkinsurl").length() > 0) {
-         String jenkinsUrl = parsedArguments.get("jenkinsurl");
-         if (errorNumber == 0) {
-         notifyJenkins(jenkinsUrl, "true", "Green");
-         } else {
-         notifyJenkins(jenkinsUrl, "false", "Test Error Message with \n newline");
-         }
-         }
-         }
-         */
         System.exit(errorNumber);
     }
 
@@ -379,33 +344,39 @@ public class CheckRepositoryProxyClasses {
             "\nUsage examples:",
             "===============================================",
             "java -jar CommandLineClient-1.0.jar",
-            "   -mode:updateNone",
-            "   -repositoryProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\MyRepo\\src\\main\\java\\com\\company\\proxyclasses\"",
-            "   -databaseProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\company\\proxyclasses\" ",
+            "   -mode:updatenone",
+            "   -repositoryProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\MyProjectRepository\\src\\main\\java\\com\\mycompany\\myproject\\proxyclasses\"",
+            "   -databaseProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\mycompany\\myproject\\proxyclasses\" ",
             "===============================================",
             "java -jar CommandLineClient-1.0.jar",
             "   -mode:updateRepository",
-            "   -repositoryURL:http://UserName:Password@www.myrepourl.com:8976",
-            "   -repositoryFolder:\"C:\\Documents and Settings\\MyUser\\MyRepo\" ",
-            "   -repositoryProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\MyRepo\\src\\main\\java\\com\\company\\proxyclasses\" ",
-            "   -databaseProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\company\\proxyclasses\" ",
+            "   -repositoryURL:http://MyUsername:MyPassword@MyRepository.MyDomain.com:8976",
+            "   -repositoryFolder:\"C:\\Documents and Settings\\MyUser\\MyProjectRepository\" ",
+            "   -repositoryBranch:default",
+            "   -repositoryProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\MyProjectRepository\\src\\main\\java\\com\\mycompany\\myproject\\proxyclasses\" ",
+            "   -databaseProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\mycompany\\myproject\\proxyclasses\" ",
             "===============================================",
             "java -jar CommandLineClient-1.0.jar",
             "   -mode:updateDatabase",
-            "   -databaseURL:thin:oracle:Username/Password@DATABASE.COMPANY.COM:DATABASESCHEMA",
-            "   -repositoryProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\MyRepo\\src\\main\\java\\com\\company\\proxyclasses\" ",
-            "   -packageName:com.company.proxyclasses",
+            "   -databaseURL:jdbc:oracle:thin:MyUsername/MyPassword@MyDatabase.MyDomain.local:1522:MyDatabaseSchema",
+            "   -repositoryProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\MyProjectRepository\\src\\main\\java\\com\\mycompany\\myproject\\proxyclasses\" ",
+            "   -packageName:com.mycompany.myproject.proxyclasses",
             "   -databaseFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\"",
-            "   -databaseProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\company\\proxyclasses\" ",
+            "   -databaseProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\mycompany\\myproject\\proxyclasses\" ",
             "===============================================",
             "java -jar CommandLineClient-1.0.jar",
             "   -mode:updateAll",
-            "   -databaseURL:thin:oracle:Username/Password@8976",
-            "   -repositoryURL:http://UserName:Password@www.myrepourl.com:8976",
-            "   -repositoryFolder:\"C:\\Documents and Settings\\MyUser\\MyRepo\" ",
-            "   -repositoryPath:\"\\src\\main\\java\\com\\company\\proxyclasses\" ",
-            "   -packageName:com.company.proxyclasses",
-            "   -generatedProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\company\\proxyclasses\" "
+            "   -databaseURL:jdbc:oracle:thin:MyUsername/MyPassword@MyDatabase.MyDomain.local:1522:MyDatabaseSchema",
+            "   -repositoryURL:http://MyUsername:MyPassword@MyRepository.MyDomain.com:8976",
+            "   -repositoryFolder:\"C:\\Documents and Settings\\MyUser\\MyProjectRepository\" ",
+            "   -repositoryBranch:default",
+            "   -repositoryProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\MyProjectRepository\\src\\main\\java\\com\\mycompany\\myproject\\proxyclasses\" ",
+            "   -packageName:com.mycompany.myproject.proxyclasses",
+            "   -databaseFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\"",
+            "   -databaseProxyClassesFolder:\"C:\\Documents and Settings\\MyUser\\JPUB\\com\\mycompany\\myproject\\proxyclasses\"\n\n",
+            "----------------------------\n",
+            "Optional parameters for all modes:\n",
+            "   -jenkinsurl=\"http://MyJenkins.MyDomain.local:8080/job/jpub.check/buildWithParameters?delay=0sec&erfolgreich=\"\n"
         };
         for (String currentLine : usage) {
             System.out.println(currentLine);
@@ -424,6 +395,7 @@ public class CheckRepositoryProxyClasses {
 
     private Set<String> getIllegalFormatedArguments(String[] args) {
         Set<String> illegalFormatedArguments = new HashSet<>();
+        
         for (String currentArgument : args) {
             if (!currentArgument.startsWith("-")) {
                 illegalFormatedArguments.add(currentArgument);
@@ -434,14 +406,7 @@ public class CheckRepositoryProxyClasses {
                 illegalFormatedArguments.add(currentArgument);
             }
         }
-        /*
-         for (String illegalArgument : illegalFormatedArguments) {
-         System.out.println("Illegal Argument Found! " + illegalArgument);
-         }
-         if (illegalFormatedArguments.size() > 0) {
-         System.out.println("Example for a proper argument: -folder:\"C:\\Windows\\temp\"");
-         }
-         */
+
         return illegalFormatedArguments;
     }
 
@@ -467,59 +432,6 @@ public class CheckRepositoryProxyClasses {
         }
         return argumentValue;
     }
-
-    /*
-    private class FolderComparison {
-
-        private Set<FileComparison> allComparedFiles;
-
-        public FolderComparison(Set<FileComparison> comparedFiles) {
-            this.allComparedFiles = comparedFiles;
-        }
-
-        public Set<FileComparison> getAllFileComparisons() {
-            return allComparedFiles;
-        }
-
-        public Set<FileComparison> getFileComparisons(FileComparisonResult comparisonResult) {
-            Set<FileComparison> comparisons = new HashSet<>();
-            for (FileComparison currentFileComparison : allComparedFiles) {
-                if (currentFileComparison.getComparisonResult().equals(comparisonResult)) {
-                    comparisons.add(currentFileComparison);
-                }
-            }
-            return comparisons;
-        }
-
-        public boolean isEveryFileEqual() {
-            return allComparedFiles.size() == getFileComparisons(FileComparisonResult.EQUAL).size();
-        }
-
-        public String getFileNames(Set<FileComparison> fileComparisons) {
-            String fileNames = "";
-            for (FileComparison currentFileComparison : fileComparisons) {
-                fileNames = fileNames + ", " + currentFileComparison.getReferenceFile().getName();
-            }
-            return fileNames;
-        }
-
-        @Override
-        public String toString() {
-            String returnedString = ""
-                    .concat("Folder Comparison Result:")
-                    .concat(String.valueOf(allComparedFiles.size()).concat("\tCompared files in total.")
-                    .concat(String.valueOf(getFileComparisons(FileComparisonResult.EQUAL).size())
-                    .concat("\tEqual Files:\t")
-                    .concat(String.valueOf(getFileComparisons(FileComparisonResult.MISSING_OTHER_FILE).size())
-                    .concat("\tMissing files:\t")
-                    .concat(getFileNames(getFileComparisons(FileComparisonResult.MISSING_OTHER_FILE)))
-                    .concat(String.valueOf(getFileComparisons(FileComparisonResult.DIFFERENT).size()))
-                    .concat("\tDifferent Files:\t")
-                    .concat(getFileNames(getFileComparisons(FileComparisonResult.DIFFERENT))))));
-            return returnedString;
-        }
-    }
-    */
 
     private class RepositoryUpdateException extends RuntimeException {
 
