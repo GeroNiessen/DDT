@@ -1,10 +1,11 @@
 #!/bin/bash
-echo -e -n "1.) Pleased download the Oracle JDBC Driver ojdbc6.jar\ fron: \n"
+echo -e -n "1.) Pleased download the Oracle JDBC Driver ojdbc6.jar fron: \n"
 echo -e -n "http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html \n"
-echo -e -n "2.) Pleased download the Oracle JPublicher \n"
+echo -e -n "2.) Pleased download the Oracle JPublicher from\n"
 echo -e -n "http://download.oracle.com/otn/utilities_drivers/jdbc/10201/jpub_102.zip \n"
-echo -e -n "3.) Put the files ojdbc6.jar, runtime12.jar and translator.jar in the current folder."
-echo -e -n "4.) Run the script again."
+echo -e -n "3.) Put the files ojdbc6.jar, runtime12.jar and translator.jar in the current folder. \n"
+echo -e -n "4.) Run the script again. \n"
+echo -e -n "============================================================\n\n\n\n"
 
 mvn install:install-file \
 -DgroupId=Oracle \
