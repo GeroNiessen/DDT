@@ -82,7 +82,7 @@ public class Configuration implements Serializable{
 			String configurationDAOClass = configurationDAOConfiguration.getProperty("ConfigurationDAOImplementation");
 			Class<?> c = Class.forName(configurationDAOClass);
 			configurationDAO = (ConfigurationDAO) c.newInstance();
-		} catch (IOException|ClassNotFoundException|InstantiationException|IllegalAccessException e) {
+		} catch (Exception e) {
 			configurationDAO = new XMLConfigurationDAO();
 			LOGGER.warning("Failed to load ConfigurationDAO implementation from file:" + configurationDAOPropertiesFile + "\n Using XMLConfigurationDAO as default!");
 			e.printStackTrace();
