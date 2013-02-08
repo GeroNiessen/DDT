@@ -70,7 +70,7 @@
 					<runTarget>Web</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<noServer>true</noServer>
-					<port>8080</port>
+					<port>9999</port>
 					<compileReport>false</compileReport>
 				</configuration>
 				<executions>
