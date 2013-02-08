@@ -8,6 +8,7 @@ import com.aragost.javahg.commands.BranchCommand;
 import com.aragost.javahg.commands.LogCommand;
 import com.aragost.javahg.commands.PullCommand;
 import com.aragost.javahg.commands.UpdateCommand;
+import de.codecentric.ddt.configuration.Configuration;
 import de.codecentric.ddt.configuration.ConnectionTestHelper;
 import de.codecentric.ddt.configuration.Resource;
 import de.codecentric.ddt.resourcestrategies.repositories.RepositoryStrategy;
@@ -34,6 +35,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 
 	private static final long serialVersionUID = 34478867951614463L;
 	private static final int commandWaitTimeoutInSeconds = 10;
+        private static final String fileSeparator = System.getProperty("file.separator");
 	private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(MercurialRepositoryStrategy.class .getName());
 
 	public MercurialRepositoryStrategy(){
@@ -110,7 +112,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
          * @return 
          */
 	private boolean isRepositoryAlreadyDownloaded(Resource repositoryContext){
-		String fileSeparator = System.getProperty("file.separator");
+		
 		String mercurialFolderPath = repositoryContext.getWorkDirectory().getPath() + fileSeparator + ".hg";
 		File mercurialFolder = new File(mercurialFolderPath);
 		return mercurialFolder.exists();
@@ -194,6 +196,19 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration();
 		repositoryConfiguration.setCommandWaitTimeout(commandWaitTimeoutInSeconds);
 		repositoryConfiguration.setServerIdleTime(commandWaitTimeoutInSeconds);
+                
+                //If different mercurial is needed
+                File customMercurialExecutableUnix = new File(Configuration.getBaseWorkDirectory() + fileSeparator + "mercurial" + fileSeparator + "hg");
+                if(customMercurialExecutableUnix.exists()){
+                    repositoryConfiguration.setHgBin(customMercurialExecutableUnix.getPath());
+                }
+                
+                //If different mercurial is needed
+                File customMercurialExecutableWindows = new File(Configuration.getBaseWorkDirectory() + fileSeparator + "mercurial" + fileSeparator + "hg.exe");
+                if(customMercurialExecutableWindows.exists()){
+                    repositoryConfiguration.setHgBin(customMercurialExecutableWindows.getPath());
+                }
+                
 		if(!isRepositoryAlreadyDownloaded(repositoryContext)){
 			getLatestVersion(repositoryContext);
 		}
