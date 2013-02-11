@@ -13,11 +13,15 @@ SERVERPORT=9999
 JETTYRUNNER=/home/ddt/jetty-runner-8.1.9.v20130131.jar
 JAVA=/usr/bin/java
 USER=ddt
+LOG=/var/log/ddt.log
 
 start() {
         #initlog -c "echo -n Starting $SERVICENAME: "
         #RESULT=$("/bin/su - $USER -c \"$JAVA -jar $JETTYRUNNER --port $SERVERPORT $DDTWAR\" &")
-	/bin/su - $USER -c "$JAVA -jar $JETTYRUNNER --port $SERVERPORT $DDTWAR &"
+        /bin/rm $LOG
+	/bin/touch $LOG
+	/bin/chown $USER:$USER $LOG
+	/bin/su - $USER -c "$JAVA -jar $JETTYRUNNER --port $SERVERPORT $DDTWAR > $LOG 2>&1 &"
         ### Create the lock file ###
         #touch /var/lock/subsys/FOO
         success $"$SERVICENAME startup"
