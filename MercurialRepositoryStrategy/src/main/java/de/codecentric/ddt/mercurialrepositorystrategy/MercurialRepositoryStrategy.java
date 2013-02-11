@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * MercurialRepositoryStrategy implements the functionality of a RespositoryStrategy for Mercurial repositories.
  * @author user
@@ -130,7 +129,7 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		}
 		if(isRepositoryAlreadyDownloaded(repositoryContext)){
 			try {
-				BaseRepository mercurialRepository = BaseRepository.open(repositoryContext.getWorkDirectory());
+				BaseRepository mercurialRepository = BaseRepository.open(getRepositoryConfiguration(), repositoryContext.getWorkDirectory());
 				PullCommand.on(mercurialRepository).execute();
 				UpdateCommand.on(mercurialRepository).execute();
 			} catch (IOException e) {
@@ -186,19 +185,19 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
 		LogCommand logcommand = new LogCommand(mercurialRepository);
 		return logcommand.execute();
 	}
-
+        
         /**
-         * Gets the javaHG BaseRepository Object.
-         * @param repositoryContext
+         * Get the configuration of the repository
          * @return 
          */
-	private BaseRepository getMercurialRepository(Resource repositoryContext){
-		RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration();
+        private RepositoryConfiguration getRepositoryConfiguration(){
+            	RepositoryConfiguration repositoryConfiguration = new RepositoryConfiguration();
 		repositoryConfiguration.setCommandWaitTimeout(commandWaitTimeoutInSeconds);
 		repositoryConfiguration.setServerIdleTime(commandWaitTimeoutInSeconds);
                 
                 //If different mercurial is needed
                 File customMercurialExecutableUnix = new File(Configuration.getBaseWorkDirectory() + fileSeparator + "mercurial" + fileSeparator + "hg");
+                System.out.println(customMercurialExecutableUnix.getPath());
                 if(customMercurialExecutableUnix.exists()){
                     repositoryConfiguration.setHgBin(customMercurialExecutableUnix.getPath());
                 }
@@ -208,13 +207,22 @@ public class MercurialRepositoryStrategy extends RepositoryStrategy {
                 if(customMercurialExecutableWindows.exists()){
                     repositoryConfiguration.setHgBin(customMercurialExecutableWindows.getPath());
                 }
-                
+            return repositoryConfiguration;
+        }
+
+        /**
+         * Gets the javaHG BaseRepository Object.
+         * @param repositoryContext
+         * @return 
+         */
+	private BaseRepository getMercurialRepository(Resource repositoryContext){
+    
 		if(!isRepositoryAlreadyDownloaded(repositoryContext)){
 			getLatestVersion(repositoryContext);
 		}
 		BaseRepository returnedBaseRepository = null;
 		try{
-			returnedBaseRepository = BaseRepository.open(repositoryConfiguration, repositoryContext.getWorkDirectory());
+			returnedBaseRepository = BaseRepository.open(getRepositoryConfiguration(), repositoryContext.getWorkDirectory());
 		} catch (Exception ex){
 			LOGGER.warning(ex.getMessage());
 		}

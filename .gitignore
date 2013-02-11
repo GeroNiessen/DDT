@@ -55,3 +55,4 @@ Servers/
 /CommandLineClient/CodecentricTest.sh
 /CommandLineClient/CodecentricTest.bat.sh
 /CommandLineClient/CodecentricTest.cmd
+!/Resources/src/main/resources/ConfigurationDAO.properties
