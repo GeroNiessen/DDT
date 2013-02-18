@@ -320,7 +320,7 @@ public class CheckRepositoryProxyClasses {
         }
 
         //Checking mode parameter
-        mode = parsedArguments.get("mode");
+        mode = parsedArguments.get("mode").toLowerCase();
         if (!modeParameters.keySet().contains(mode)) {
             throw new IllegalArgumentException(
                     "Invalid Mode \"" + mode + "\" Specified!\n"
